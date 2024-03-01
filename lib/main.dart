@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.book),
-              label: 'Vocabulary',
+              label: 'Your Vocab',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
               label: 'Profile',
             ),
           ],
-          backgroundColor: Colors.black,
+          iconSize: 32,
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.amber[800],
           unselectedItemColor: Colors.amber[400],
@@ -82,6 +82,7 @@ class _MyAppState extends State<MyApp> {
           unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           showSelectedLabels: true,
           showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
           onTap: _onItemTapped,
         ),
       ),

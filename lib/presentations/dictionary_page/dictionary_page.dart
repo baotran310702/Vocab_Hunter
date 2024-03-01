@@ -5,15 +5,10 @@ class DictionaryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('User Profile'),
-      ),
-      body: Container(
-        color: Colors.amber,
-        child: const Center(
-          child: Text('Dictionary Page'),
-        ),
+    return Container(
+      color: Colors.amber,
+      child: const Center(
+        child: Text('Dictionary Page'),
       ),
     );
   }

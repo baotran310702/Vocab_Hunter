@@ -5,15 +5,10 @@ class UserVocabulary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('User Profile'),
-      ),
-      body: Container(
-        color: Colors.green,
-        child: const Center(
-          child: Text('Vocabulary Page'),
-        ),
+    return Container(
+      color: Colors.green,
+      child: const Center(
+        child: Text('Vocabulary Page'),
       ),
     );
   }

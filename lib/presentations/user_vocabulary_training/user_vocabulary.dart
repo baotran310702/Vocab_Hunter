@@ -1,6 +1,8 @@
 import 'package:english_learner/presentations/user_vocabulary_training/bloc/manage_vocab_bloc.dart';
+import 'package:english_learner/views/card_vocabs/card_vocabs_your_vocabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class UserVocabulary extends StatelessWidget {
   const UserVocabulary({super.key});
@@ -21,11 +23,45 @@ class UserVocabulary extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  context.read<ManageVocabBloc>().add(
-                      LoadVocabEvent(inputVocab: vocabInputController.text));
+                  if (vocabInputController.text.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter vocabulary!',
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                    return;
+                  }
+                  context.read<ManageVocabBloc>().add(GetSimilarityVocabEvent(
+                      inputVocab: vocabInputController.text));
                 },
                 child: const Text('Add'),
               ),
+              //ListView to show state.list
+              state.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Expanded(
+                      child: ListView.builder(
+                        itemCount: state.similarVocabs.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: (){
+                              context.read<ManageVocabBloc>().add(GetMeaningVocab(inputVocab: state.similarVocabs[index].word));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) =>const  FlashCardVocabulary()));
+                            },
+                            child: ListTile(
+                              title: Text(state.similarVocabs[index].word),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
             ],
           );
         },

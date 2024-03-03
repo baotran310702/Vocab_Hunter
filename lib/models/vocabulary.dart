@@ -1,3 +1,4 @@
+import 'package:english_learner/utils/converter.dart';
 import 'package:equatable/equatable.dart';
 
 class Vocabulary extends Equatable {
@@ -19,12 +20,12 @@ class Vocabulary extends Equatable {
 
   factory Vocabulary.fromJson(Map<String, dynamic> json) {
     return Vocabulary(
-      word: json['word'],
-      meaning: json['meaning'],
-      example: json['example'],
-      type: json['type'],
-      pronunciation: json['pronunciation'],
-      imageUrl: json['imageUrl'],
+      word:json['word'] != null ? CustomConverter.convertToString(json['word']) : "",
+      meaning: json['meaning'] != null ? CustomConverter.convertToString(json['meaning']) : "",
+      example: json['example'] != null ? CustomConverter.convertToString(json['example']) : "",
+      type: json['type'] != null ? CustomConverter.convertToString(json['type']) : "",
+      pronunciation: json['pronunciation'] != null ? CustomConverter.convertToString(json['pronunciation']) : "",
+      imageUrl: json['imageUrl'] != null ? CustomConverter.convertToString(json['imageUrl']) : "",
     );
   }
 

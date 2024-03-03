@@ -1,6 +1,7 @@
 import 'package:english_learner/presentations/home/home.dart';
 import 'package:english_learner/presentations/user_vocabulary_training/bloc/manage_vocab_bloc.dart';
 import 'package:english_learner/presentations/user_vocabulary_training/user_vocabulary.dart';
+import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:english_learner/presentations/dictionary_page/dictionary_page.dart';
 import 'package:english_learner/presentations/user_profile/user_profile.dart';
@@ -45,16 +46,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => ManageVocabBloc(),
-            ),
-          ],
-          child: PageView(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ManageVocabBloc(VocabRepository().vocabService),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: PageView(
             controller: _pageController,
             children: bottomBarPages,
             onPageChanged: (int index) {
@@ -63,36 +64,36 @@ class _MyAppState extends State<MyApp> {
               });
             },
           ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'Your Vocab',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Dictionary',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          iconSize: 32,
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          unselectedItemColor: Colors.amber[400],
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          onTap: _onItemTapped,
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.book),
+                label: 'Your Vocab',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Dictionary',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+            ],
+            iconSize: 32,
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.amber[800],
+            unselectedItemColor: Colors.amber[400],
+            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
+            onTap: _onItemTapped,
+          ),
         ),
       ),
     );

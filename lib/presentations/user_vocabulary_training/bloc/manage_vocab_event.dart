@@ -31,3 +31,8 @@ class GetSimilarityVocabEvent extends ManageVocabEvent {
 
   GetSimilarityVocabEvent({required this.inputVocab});
 }
+
+class GetMeaningVocab extends ManageVocabEvent {
+  final String inputVocab;
+  GetMeaningVocab({required this.inputVocab});
+}

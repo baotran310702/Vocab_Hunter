@@ -20,6 +20,8 @@ dependencies:
   flutter_tts: ^3.8.5
   sqflite: ^2.3.2
   dio: ^5.4.1
+  fluttertoast: ^8.2.4
+  translator: ^1.0.0
 
 dev_dependencies:
   flutter_test:

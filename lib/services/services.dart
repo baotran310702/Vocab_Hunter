@@ -1,17 +1,10 @@
-import 'package:english_learner/models/vocabulary.dart';
-import 'package:english_learner/repository/vocab_repository.dart';
+import 'package:english_learner/models/vocab_dto.dart';
+import 'package:english_learner/services/vocab_services.dart';
 
-class AppServices {
-  late AppServices _services;
+class AppService{
+  VocabService vocabService = VocabService();
 
-  VocabRepository vocabRepository = VocabRepository();
-
-  //init constructor
-  AppServices() {
-    _services = AppServices();
-  }
-
-  Future<List<Vocabulary>> getSimilarVocab(String word) async {
-    return await vocabRepository.getSimilarVocab(word);
-  }
+   Future<List<Vocab>> getSimilarVocab(String word) async {
+    return await vocabService.getSimilarVocab(word);
+   }
 }

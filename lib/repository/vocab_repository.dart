@@ -1,28 +1,13 @@
-import 'package:dio/dio.dart';
-import 'package:english_learner/models/vocabulary.dart';
-import 'package:english_learner/utils/constants.dart';
+
+import 'package:english_learner/services/vocab_services.dart';
 
 class VocabRepository {
-  Future<List<Vocabulary>> getSimilarVocab(String word) async {
-    List<Vocabulary> vocabList = [];
-    try {
-      //fetch api using http
-      var apiURL = APIPath.wordSimilarity + word;
-      var response = await Dio().get(apiURL);
+  late  VocabService _vocabService;
 
-      //check if reponse
-      if (response.statusCode == 200) {
-        //parse response to list of vocab
-        var data = response.data;
-        for (var i = 0; i < data.length; i++) {
-          var vocab = Vocabulary.fromJson(data[i]);
-          vocabList.add(vocab);
-        }
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
+  VocabRepository(){
+    _vocabService = VocabService();
+  } 
 
-    return vocabList;
-  }
+  // Getter method for VocabService
+  VocabService get vocabService => _vocabService;
 }

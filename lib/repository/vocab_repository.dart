@@ -1,13 +1,18 @@
-
+import 'package:english_learner/models/vocab_dto.dart';
 import 'package:english_learner/services/vocab_services.dart';
 
 class VocabRepository {
-  late  VocabService _vocabService;
+  late VocabService vocabService;
 
-  VocabRepository(){
-    _vocabService = VocabService();
-  } 
+  VocabRepository() {
+    vocabService = VocabService();
+  }
 
-  // Getter method for VocabService
-  VocabService get vocabService => _vocabService;
+  Future<List<Vocab>> getSimilarVocab(String word) async {
+    return await vocabService.getSimilarVocab(word);
+  }
+
+  Future<String> getTranslation(String inputWord) async {
+    return await vocabService.getTranslation(inputWord);
+  }
 }

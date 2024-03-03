@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:english_learner/models/vocab_dto.dart';
 import 'package:english_learner/models/vocabulary.dart';
-import 'package:english_learner/services/vocab_services.dart';
+import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'manage_vocab_event.dart';
@@ -10,9 +10,8 @@ part 'manage_vocab_state.dart';
 //Handle event to manage vocab
 
 class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
-  final VocabService _vocabService;
-
-  ManageVocabBloc(this._vocabService) : super(ManageVocabState.initial()) {
+  final VocabRepository _vocabRepository;
+  ManageVocabBloc(this._vocabRepository) : super(ManageVocabState.initial()) {
     on<AddVocabEvent>(_onAddVocab);
     on<RemoveVocabEvent>(_onRemoveVocab);
     on<UpdateVocabEvent>(_onUpdateVocab);
@@ -48,7 +47,7 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
       GetSimilarityVocabEvent event, Emitter<ManageVocabState> emit) async {
     emit(state.copyWith(isLoading: true));
     List<Vocab> similarVocabs =
-        await _vocabService.getSimilarVocab(event.inputVocab);
+        await _vocabRepository.getSimilarVocab(event.inputVocab);
     emit(state.copyWith(
       similarVocabs: similarVocabs,
       isLoading: false,
@@ -58,7 +57,7 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
   _onGetMeaningVocab(
       GetMeaningVocab event, Emitter<ManageVocabState> emit) async {
     emit(state.copyWith(isLoading: true));
-    String meaning = await _vocabService.getTranslation(event.inputVocab);
+    String meaning = await _vocabRepository.getTranslation(event.inputVocab);
     emit(state.copyWith(meaningRecommendVocabs: meaning, isLoading: false));
   }
 }

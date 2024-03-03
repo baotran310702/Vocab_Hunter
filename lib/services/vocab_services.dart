@@ -9,8 +9,7 @@ class VocabService {
     final translator = GoogleTranslator();
     try {
       //fetch api using http
-      var translatorResult = await translator.translate(inputWord, to: 'vi');
-      print(translatorResult.text);
+      var translatorResult = await translator.translate(inputWord, to: 'vi',);
       return translatorResult.text;
     } catch (e) {
       print(Exception(e));

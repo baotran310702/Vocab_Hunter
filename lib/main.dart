@@ -1,14 +1,17 @@
+import 'package:english_learner/presentations/dictionary_page/dictionary_page.dart';
 import 'package:english_learner/presentations/home/home.dart';
 import 'package:english_learner/presentations/sign_in_page/sign_in_page.dart';
+import 'package:english_learner/presentations/user_profile/user_profile.dart';
 import 'package:english_learner/presentations/user_vocabulary_training/bloc/manage_vocab_bloc.dart';
 import 'package:english_learner/presentations/user_vocabulary_training/user_vocabulary.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:english_learner/presentations/dictionary_page/dictionary_page.dart';
-import 'package:english_learner/presentations/user_profile/user_profile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

@@ -6,7 +6,7 @@ class UserServices {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
     } catch (e) {
-      print(Exception(e));
+      throw Exception(e);
     }
   }
 
@@ -15,7 +15,7 @@ class UserServices {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
-      print(Exception(e));
+      throw Exception(e);
     }
   }
 
@@ -23,4 +23,3 @@ class UserServices {
     await FirebaseAuth.instance.signOut();
   }
 }
-

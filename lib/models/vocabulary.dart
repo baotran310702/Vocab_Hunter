@@ -1,18 +1,20 @@
+import 'package:equatable/equatable.dart';
+
 class Vocabulary extends Equatable {
   final String word;
   final String meaning;
   final String example;
   final String type;
   final String pronunciation;
-  final String imageUrl;
+  final String? imageUrl;
 
-  Vocabulary({
+  const Vocabulary({
     required this.word,
     required this.meaning,
     required this.example,
     required this.type,
     required this.pronunciation,
-    required this.imageUrl,
+    this.imageUrl = "",
   });
 
   factory Vocabulary.fromJson(Map<String, dynamic> json) {
@@ -54,6 +56,8 @@ class Vocabulary extends Equatable {
       imageUrl: imageUrl ?? this.imageUrl,
     );
   }
-}
 
-class Equatable {}
+  @override
+  List<Object?> get props =>
+      [word, meaning, example, type, pronunciation, imageUrl];
+}

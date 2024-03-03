@@ -1,8 +1,10 @@
 import 'package:english_learner/presentations/home/home.dart';
+import 'package:english_learner/presentations/user_vocabulary_training/bloc/manage_vocab_bloc.dart';
+import 'package:english_learner/presentations/user_vocabulary_training/user_vocabulary.dart';
 import 'package:flutter/material.dart';
 import 'package:english_learner/presentations/dictionary_page/dictionary_page.dart';
 import 'package:english_learner/presentations/user_profile/user_profile.dart';
-import 'package:english_learner/presentations/user_vocabulary/user_vocabulary.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,14 +48,21 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: PageView(
-          controller: _pageController,
-          children: bottomBarPages,
-          onPageChanged: (int index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
+        body: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => ManageVocabBloc(),
+            ),
+          ],
+          child: PageView(
+            controller: _pageController,
+            children: bottomBarPages,
+            onPageChanged: (int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[

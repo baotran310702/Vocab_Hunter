@@ -66,10 +66,5 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
   _onGetSimilarVocabModel(
       GetSimilarVocabModel event, Emitter<ManageVocabState> emit) async {
     emit(state.copyWith(isLoading: true));
-    List<String> listWords =
-        await WordSimilarityML().getSimilarWords(event.inputVocab);
-
-    print(listWords);
   }
 }
-  

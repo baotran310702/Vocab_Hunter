@@ -39,6 +39,27 @@ class UserVocabulary extends StatelessWidget {
                 },
                 child: const Text('Add'),
               ),
+
+              ElevatedButton(
+                onPressed: () {
+                  if (vocabInputController.text.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter vocabulary!',
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                    return;
+                  }
+                  context.read<ManageVocabBloc>().add(
+                        GetSimilarVocabModel(
+                            inputVocab: vocabInputController.text),
+                      );
+                },
+                child: const Text('Get Data From Local Model'),
+              ),
               //ListView to show state.list
               state.isLoading
                   ? const Center(child: CircularProgressIndicator())
@@ -47,9 +68,16 @@ class UserVocabulary extends StatelessWidget {
                         itemCount: state.similarVocabs.length,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            onTap: (){
-                              context.read<ManageVocabBloc>().add(GetMeaningVocab(inputVocab: state.similarVocabs[index].word));
-                              Navigator.push(context, MaterialPageRoute(builder: (context) =>const  FlashCardVocabulary()));
+                            onTap: () {
+                              context.read<ManageVocabBloc>().add(
+                                  GetMeaningVocab(
+                                      inputVocab:
+                                          state.similarVocabs[index].word));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const FlashCardVocabulary()));
                             },
                             child: ListTile(
                               title: Text(state.similarVocabs[index].word),

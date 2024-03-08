@@ -44,37 +44,37 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAm9raYXGLDWSKGzAIpOcWgPEMA5KZLcAQ',
-    appId: '1:593616150940:web:4a8af92c2a2d6a9eae2859',
-    messagingSenderId: '593616150940',
-    projectId: 'vocabhunter-de98d',
-    authDomain: 'vocabhunter-de98d.firebaseapp.com',
-    storageBucket: 'vocabhunter-de98d.appspot.com',
+    apiKey: 'AIzaSyDpdam2Qzr9LQdcxr38Jv2wFk9QoPMVmhc',
+    appId: '1:676058831524:web:386aadc6f113b65d9c2431',
+    messagingSenderId: '676058831524',
+    projectId: 'myenglishlearner-22a85',
+    authDomain: 'myenglishlearner-22a85.firebaseapp.com',
+    storageBucket: 'myenglishlearner-22a85.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDuKmxoDePwOsYorGkBnZEnu05zIybXMDk',
-    appId: '1:593616150940:android:d415c40a5f7278e0ae2859',
-    messagingSenderId: '593616150940',
-    projectId: 'vocabhunter-de98d',
-    storageBucket: 'vocabhunter-de98d.appspot.com',
+    apiKey: 'AIzaSyDICD7rMQf1WpfTb0bgUznYtO_FJw662nI',
+    appId: '1:676058831524:android:5d01fdb5384acaae9c2431',
+    messagingSenderId: '676058831524',
+    projectId: 'myenglishlearner-22a85',
+    storageBucket: 'myenglishlearner-22a85.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBYoTm9RxarKSaKlEwLlDLeCvWaDs5V69g',
-    appId: '1:593616150940:ios:f0be520104919f77ae2859',
-    messagingSenderId: '593616150940',
-    projectId: 'vocabhunter-de98d',
-    storageBucket: 'vocabhunter-de98d.appspot.com',
+    apiKey: 'AIzaSyBKaKdHkm1Dad6Ww4IMbbnevIV0qDqDDxw',
+    appId: '1:676058831524:ios:e7d307797e6a237e9c2431',
+    messagingSenderId: '676058831524',
+    projectId: 'myenglishlearner-22a85',
+    storageBucket: 'myenglishlearner-22a85.appspot.com',
     iosBundleId: 'com.example.englishLearner',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBYoTm9RxarKSaKlEwLlDLeCvWaDs5V69g',
-    appId: '1:593616150940:ios:62aced603b653267ae2859',
-    messagingSenderId: '593616150940',
-    projectId: 'vocabhunter-de98d',
-    storageBucket: 'vocabhunter-de98d.appspot.com',
+    apiKey: 'AIzaSyBKaKdHkm1Dad6Ww4IMbbnevIV0qDqDDxw',
+    appId: '1:676058831524:ios:819c4f8e2c51377b9c2431',
+    messagingSenderId: '676058831524',
+    projectId: 'myenglishlearner-22a85',
+    storageBucket: 'myenglishlearner-22a85.appspot.com',
     iosBundleId: 'com.example.englishLearner.RunnerTests',
   );
 }

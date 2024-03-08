@@ -16,13 +16,15 @@ dependencies:
   flutter_bloc: ^8.1.4
   equatable: ^2.0.5
   firebase_core: ^2.25.5
-  firebase_auth: ^4.17.6
+  firebase_auth: ^4.17.7
   hive: ^2.2.3
   flutter_tts: ^3.8.5
   sqflite: ^2.3.2
   dio: ^5.4.1
   fluttertoast: ^8.2.4
   translator: ^1.0.0
+  tflite_v2: ^1.0.0
+  tflite_flutter: ^0.10.4
 
 dev_dependencies:
   flutter_test:
@@ -34,10 +36,9 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
-
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/labels.txt
+    - assets/glove_model.tflite
 
 
   # fonts:

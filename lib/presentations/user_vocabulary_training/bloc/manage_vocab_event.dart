@@ -36,3 +36,8 @@ class GetMeaningVocab extends ManageVocabEvent {
   final String inputVocab;
   GetMeaningVocab({required this.inputVocab});
 }
+
+class GetSimilarVocabModel extends ManageVocabEvent {
+  final String inputVocab;
+  GetSimilarVocabModel({required this.inputVocab});
+}

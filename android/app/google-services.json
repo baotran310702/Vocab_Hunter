@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "593616150940",
-    "project_id": "vocabhunter-de98d",
-    "storage_bucket": "vocabhunter-de98d.appspot.com"
+    "project_number": "676058831524",
+    "project_id": "myenglishlearner-22a85",
+    "storage_bucket": "myenglishlearner-22a85.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:593616150940:android:d415c40a5f7278e0ae2859",
+        "mobilesdk_app_id": "1:676058831524:android:5d01fdb5384acaae9c2431",
         "android_client_info": {
           "package_name": "com.example.english_learner"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDuKmxoDePwOsYorGkBnZEnu05zIybXMDk"
+          "current_key": "AIzaSyDICD7rMQf1WpfTb0bgUznYtO_FJw662nI"
         }
       ],
       "services": {

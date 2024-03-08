@@ -9,6 +9,8 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -16,6 +18,7 @@ class SignInPage extends StatelessWidget {
         children: [
           //text form field to enter email
           TextFormField(
+            controller: emailController,
             decoration: const InputDecoration(
               labelText: "Email",
               hintText: "Enter your email",
@@ -24,6 +27,7 @@ class SignInPage extends StatelessWidget {
 
           //text form field to enter password
           TextFormField(
+            controller: passwordController,
             decoration: const InputDecoration(
               labelText: "Password",
               hintText: "Enter your password",
@@ -35,13 +39,13 @@ class SignInPage extends StatelessWidget {
             onPressed: () async {
               UserServices services = UserServices();
               try {
-                await services.signIn("email", "password").then((value) =>
-                    Navigator.pushNamedAndRemoveUntil(
+                await services
+                    .signIn(emailController.text, passwordController.text)
+                    .then((value) => Navigator.pushNamedAndRemoveUntil(
                         context, "/home", (route) => false));
               } catch (e) {
-                print(e);
                 Fluttertoast.showToast(
-                    msg: "Tên đăng nhập hoặc mật khẩu không đúng ! $e");
+                    msg: "Tên đăng nhập hoặc mật khẩu không đúng!");
               }
             },
             child: const Text("Sign in"),
@@ -52,8 +56,9 @@ class SignInPage extends StatelessWidget {
             onPressed: () async {
               UserServices services = UserServices();
               try {
-                await services.signUp("email", "password").then((value) =>
-                    Navigator.pushNamedAndRemoveUntil(
+                await services
+                    .signUp(emailController.text, passwordController.text)
+                    .then((value) => Navigator.pushNamedAndRemoveUntil(
                         context, "/home", (route) => false));
               } catch (e) {
                 print(e);

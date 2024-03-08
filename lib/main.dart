@@ -1,3 +1,4 @@
+import 'package:english_learner/firebase_options.dart';
 import 'package:english_learner/presentations/dictionary_page/dictionary_page.dart';
 import 'package:english_learner/presentations/home/home.dart';
 import 'package:english_learner/presentations/sign_in_page/sign_in_page.dart';

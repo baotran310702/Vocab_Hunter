@@ -29,13 +29,13 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
 
   _onRemoveVocab(RemoveVocabEvent event, Emitter<ManageVocabState> emit) {
     List<Vocabulary> newVocabList = List.from(state.vocabList);
-    newVocabList.removeWhere((element) => element.word == event.word);
+    newVocabList.removeWhere((element) => element.vocabId == event.word);
     emit(state.copyWith(vocabList: newVocabList));
   }
 
   _onUpdateVocab(UpdateVocabEvent event, Emitter<ManageVocabState> emit) {
     int index = state.vocabList
-        .indexWhere((element) => element.word == event.word.word);
+        .indexWhere((element) => element.vocabId == event.word.vocabId);
     //update word in list with that index
     List<Vocabulary> newVocabList = List.from(state.vocabList);
     newVocabList[index] = event.word;
@@ -72,3 +72,4 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     print(listWords);
   }
 }
+  

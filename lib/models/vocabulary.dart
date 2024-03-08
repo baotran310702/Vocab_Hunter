@@ -1,58 +1,57 @@
 import 'package:english_learner/utils/converter.dart';
 import 'package:equatable/equatable.dart';
 
+enum typeVocab{adj, adv, noun, verb}
+
+
+
 class Vocabulary extends Equatable {
-  final String word;
-  final String meaning;
-  final String example;
-  final String type;
-  final String pronunciation;
+  final String vocabId;
+  final Map<String,List<String>> meaning;
+  final List<String> example;
+  final List<String> pronunciation;
   final String? imageUrl;
 
   const Vocabulary({
-    required this.word,
+    required this.vocabId,
     required this.meaning,
     required this.example,
-    required this.type,
     required this.pronunciation,
     this.imageUrl = "",
   });
 
   factory Vocabulary.fromJson(Map<String, dynamic> json) {
     return Vocabulary(
-      word:json['word'] != null ? CustomConverter.convertToString(json['word']) : "",
-      meaning: json['meaning'] != null ? CustomConverter.convertToString(json['meaning']) : "",
-      example: json['example'] != null ? CustomConverter.convertToString(json['example']) : "",
-      type: json['type'] != null ? CustomConverter.convertToString(json['type']) : "",
-      pronunciation: json['pronunciation'] != null ? CustomConverter.convertToString(json['pronunciation']) : "",
-      imageUrl: json['imageUrl'] != null ? CustomConverter.convertToString(json['imageUrl']) : "",
+      vocabId:json['vocabId'] != null ? CustomConverter.convertToString(json['vocabId']) : "",
+      meaning: json['meaning'] != null ? CustomConverter.convertToMeanings(json['meaning']) : "",
+      example: json['example'] != null ? List.from(json['example']) : [],
+      pronunciation: json['pronunciation'] != null ? List.from(json['pronunciation']) : [],
+      imageUrl: json['imageUrl'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'word': word,
+      'vocabId': vocabId,
       'meaning': meaning,
       'example': example,
-      'type': type,
       'pronunciation': pronunciation,
       'imageUrl': imageUrl,
     };
   }
 
   Vocabulary copyWith({
-    String? word,
-    String? meaning,
-    String? example,
-    String? type,
-    String? pronunciation,
+    String? vocabId,
+    Map<String,List<String>>? meaning,
+    List<String>? example,  
+    List<String>? pronunciation,
     String? imageUrl,
   }) {
     return Vocabulary(
-      word: word ?? this.word,
+      vocabId: vocabId ?? this.vocabId,
       meaning: meaning ?? this.meaning,
       example: example ?? this.example,
-      type: type ?? this.type,
+    
       pronunciation: pronunciation ?? this.pronunciation,
       imageUrl: imageUrl ?? this.imageUrl,
     );
@@ -60,5 +59,5 @@ class Vocabulary extends Equatable {
 
   @override
   List<Object?> get props =>
-      [word, meaning, example, type, pronunciation, imageUrl];
+      [vocabId, meaning, example, pronunciation, imageUrl];
 }

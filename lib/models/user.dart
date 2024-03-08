@@ -3,28 +3,28 @@ class User {
   final String userName;
   final int rank;
   final List<String> learnedWords;
-  final List<String> recommendedVocabs;
+  final List<String> learningWors;
 
   const User({
     required this.uid,
     required this.userName,
     required this.rank,
     required this.learnedWords,
-    required this.recommendedVocabs,
+    required this.learningWors,
   });
 
   factory User.fromMap(Map<String, dynamic> data, String documentId) {
     final String userName = data['userName'];
     final int rank = data['rank'];
     final List<dynamic> learnedWords = data['learnedWords'];
-    final List<dynamic> recommendedVocabs = data['recommendedVocabs'];
+    final List<dynamic> learningWors = data['learningWors'];
 
     return User(
       uid: documentId,
       userName: userName,
       rank: rank,
       learnedWords: learnedWords.map((e) => e.toString()).toList(),
-      recommendedVocabs: recommendedVocabs.map((e) => e.toString()).toList(),
+      learningWors: learningWors.map((e) => e.toString()).toList(),
     );
   }
 
@@ -33,14 +33,14 @@ class User {
     String? userName,
     int? rank,
     List<String>? learnedWords,
-    List<String>? recommendedVocabs,
+    List<String>? learningWors,
   }) {
     return User(
       uid: uid ?? this.uid,
       userName: userName ?? this.userName,
       rank: rank ?? this.rank,
       learnedWords: learnedWords ?? this.learnedWords,
-      recommendedVocabs: recommendedVocabs ?? this.recommendedVocabs,
+      learningWors: learningWors ?? this.learningWors,
     );
   }
 
@@ -50,7 +50,7 @@ class User {
       'userName': userName,
       'rank': rank,
       'learnedWords': learnedWords,
-      'recommendedVocabs': recommendedVocabs,
+      'learningWors': learningWors,
     };
   }
 }

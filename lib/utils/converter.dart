@@ -18,6 +18,16 @@ class CustomConverter {
     }
   }
 
+static convertToMeanings(Map<String, List<String>> json){
+  return {
+    'adj':json['adj'],
+    'verb':json['verb'],
+    'adv':json['adv'],
+    'noun':json['noun'],
+    'default':json['noun'],
+  };
+}
+
   //write a function that convert anytype to double
   static double convertToDouble(dynamic value) {
     if (value is String) {

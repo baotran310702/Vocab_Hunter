@@ -1,13 +1,11 @@
 import 'package:english_learner/utils/converter.dart';
 import 'package:equatable/equatable.dart';
 
-enum typeVocab{adj, adv, noun, verb}
-
-
+enum typeVocab { adj, adv, noun, verb }
 
 class Vocabulary extends Equatable {
   final String vocabId;
-  final Map<String,List<String>> meaning;
+  final Map<String, List<String>> meaning;
   final List<String> example;
   final List<String> pronunciation;
   final String? imageUrl;
@@ -22,11 +20,26 @@ class Vocabulary extends Equatable {
 
   factory Vocabulary.fromJson(Map<String, dynamic> json) {
     return Vocabulary(
-      vocabId:json['vocabId'] != null ? CustomConverter.convertToString(json['vocabId']) : "",
-      meaning: json['meaning'] != null ? CustomConverter.convertToMeanings(json['meaning']) : "",
+      vocabId: json['vocabId'] != null
+          ? CustomConverter.convertToString(json['vocabId'])
+          : "",
+      meaning: json['meaning'] != null
+          ? CustomConverter.convertToMeanings(json['meaning'])
+          : "",
       example: json['example'] != null ? List.from(json['example']) : [],
-      pronunciation: json['pronunciation'] != null ? List.from(json['pronunciation']) : [],
+      pronunciation:
+          json['pronunciation'] != null ? List.from(json['pronunciation']) : [],
       imageUrl: json['imageUrl'],
+    );
+  }
+
+  factory Vocabulary.empty() {
+    return const Vocabulary(
+      vocabId: "",
+      meaning: {},
+      example: [],
+      pronunciation: [],
+      imageUrl: "",
     );
   }
 
@@ -42,8 +55,8 @@ class Vocabulary extends Equatable {
 
   Vocabulary copyWith({
     String? vocabId,
-    Map<String,List<String>>? meaning,
-    List<String>? example,  
+    Map<String, List<String>>? meaning,
+    List<String>? example,
     List<String>? pronunciation,
     String? imageUrl,
   }) {
@@ -51,7 +64,6 @@ class Vocabulary extends Equatable {
       vocabId: vocabId ?? this.vocabId,
       meaning: meaning ?? this.meaning,
       example: example ?? this.example,
-    
       pronunciation: pronunciation ?? this.pronunciation,
       imageUrl: imageUrl ?? this.imageUrl,
     );

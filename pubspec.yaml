@@ -37,9 +37,6 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
-  assets:
-    - assets/labels.txt
-    - assets/glove_model.tflite
 
 
   # fonts:

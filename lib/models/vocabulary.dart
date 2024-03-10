@@ -1,7 +1,7 @@
 import 'package:english_learner/utils/converter.dart';
 import 'package:equatable/equatable.dart';
 
-enum typeVocab { adj, adv, noun, verb }
+enum TypeVocab { adj, adv, noun, verb }
 
 class Vocabulary extends Equatable {
   final String vocabId;
@@ -72,4 +72,35 @@ class Vocabulary extends Equatable {
   @override
   List<Object?> get props =>
       [vocabId, meaning, example, pronunciation, imageUrl];
+
+  static List<Vocabulary> seedData = const [
+    Vocabulary(
+      vocabId: 'hello',
+      meaning: {
+        'noun': ['xin chào'],
+        'verb': ['chào']
+      },
+      example: ['Hello, how are you?'],
+      pronunciation: ['həˈloʊ'],
+      imageUrl: 'https://www.google.com.vn',
+    ),
+    Vocabulary(
+      vocabId: 'world',
+      meaning: {
+        'noun': ['thế giới']
+      },
+      example: ['The world is beautiful'],
+      pronunciation: ['wɜːrld'],
+      imageUrl: 'https://www.google.com.vn',
+    ),
+    Vocabulary(
+      vocabId: 'beautiful',
+      meaning: {
+        'adj': ['đẹp']
+      },
+      example: ['She is very beautiful'],
+      pronunciation: ['ˈbjuːtɪfl'],
+      imageUrl: 'https://www.google.com.vn',
+    ),
+  ];
 }

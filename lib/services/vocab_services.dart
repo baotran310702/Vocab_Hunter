@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:english_learner/models/vocab_dto.dart';
 import 'package:english_learner/utils/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
 
 class VocabService {
@@ -9,10 +10,13 @@ class VocabService {
     final translator = GoogleTranslator();
     try {
       //fetch api using http
-      var translatorResult = await translator.translate(inputWord, to: 'vi',);
+      var translatorResult = await translator.translate(
+        inputWord,
+        to: 'vi',
+      );
       return translatorResult.text;
     } catch (e) {
-      print(Exception(e));
+      debugPrint(Exception(e).toString());
     }
 
     return "Can't translate";
@@ -36,7 +40,7 @@ class VocabService {
         }
       }
     } catch (e) {
-      print(Exception(e));
+      debugPrint(Exception(e).toString());
     }
 
     return vocabList;

@@ -9,7 +9,7 @@ class Topic extends Equatable {
   final String topicDescription;
   final String topicStatus;
 
-  Topic(
+  const Topic(
       {required this.topicId,
       required this.topicName,
       required this.topicImage,

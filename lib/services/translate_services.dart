@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TranslateServices {
@@ -12,15 +13,13 @@ class TranslateServices {
   void _init() async {
     await openDatabase(pathDb).then((value) {
       _db = value;
-      print("debug#1 :DB OPENED");
+      debugPrint("debug#1 :DB OPENED");
     });
   }
 
   Future<void> translateLocal(String word) async {
     var result = await _db.rawQuery("select * from dictionary");
-    if (result.isNotEmpty) {
-      print(result);
-    }
+    if (result.isNotEmpty) {}
     await _db.close();
   }
 }

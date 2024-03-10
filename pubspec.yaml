@@ -24,7 +24,7 @@ dependencies:
   dio: ^5.4.1
   fluttertoast: ^8.2.4
   translator: ^1.0.0
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

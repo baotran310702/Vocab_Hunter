@@ -61,7 +61,6 @@ class SignInPage extends StatelessWidget {
                     .then((value) => Navigator.pushNamedAndRemoveUntil(
                         context, "/home", (route) => false));
               } catch (e) {
-                print(e);
                 Fluttertoast.showToast(
                     msg: "Tên đăng nhập hoặc mật khẩu không đúng !$e");
               }

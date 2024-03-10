@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:english_learner/models/vocab_dto.dart';
 import 'package:english_learner/models/vocabulary.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
-import 'package:english_learner/utils/word_similarity.dart';
 import 'package:equatable/equatable.dart';
 
 part 'manage_vocab_event.dart';

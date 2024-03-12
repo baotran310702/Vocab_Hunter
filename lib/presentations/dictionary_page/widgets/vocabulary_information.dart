@@ -1,6 +1,8 @@
 import 'package:english_learner/models/vocabulary.dart';
+import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
 import 'package:english_learner/presentations/dictionary_page/widgets/pronounce_word.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VocabularyInfor extends StatefulWidget {
   final Vocabulary vocabulary;
@@ -15,11 +17,20 @@ class _VocabularyInforState extends State<VocabularyInfor> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          widget.vocabulary.vocabId,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.vocabulary.vocabId,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Icon(Icons.star, size: 30, color: Colors.blue[400])
+            ],
           ),
         ),
         const SizedBox(height: 10),
@@ -48,6 +59,21 @@ class _VocabularyInforState extends State<VocabularyInfor> {
             ),
           ),
         ),
+
+        //creat a button with search text
+
+        GestureDetector(
+          onTap: () {
+            context
+                .read<TranslatePageBloc>()
+                .add(TranslateWordLocal(widget.vocabulary.vocabId));
+          },
+          child: const Text(
+            "Meaninhhhhhhg",
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+        ),
+
         Flexible(
           child: Container(
             color: Colors.amber,

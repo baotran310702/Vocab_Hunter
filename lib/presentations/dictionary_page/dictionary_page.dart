@@ -17,6 +17,24 @@ class _DictionaryPageState extends State<DictionaryPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> vocabList = [
+      'ok ok ok',
+      'low g',
+      ' chan gai 707',
+      'ok ok ok',
+      'low g',
+      ' chan gai 707',
+      'ok ok ok',
+      'low g',
+      ' chan gai 707',
+      'ok ok ok',
+      'low g',
+      ' chan gai 707',
+      'ok ok ok',
+      'low g',
+      ' chan gai 707',
+    ];
+
     return BlocProvider(
       create: (context) => TranslatePageBloc(),
       child: BlocBuilder<TranslatePageBloc, TranslatePageState>(
@@ -32,14 +50,14 @@ class _DictionaryPageState extends State<DictionaryPage> {
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   children: [
-                    SearchBox(
-                      vocabInputController: vocabInputController,
-                      vocabList: const [
-                        'ok ok ok',
-                        'low g',
-                        ' chan gai 707',
-                      ],
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: SearchBox(
+                        vocabInputController: vocabInputController,
+                      ),
                     ),
+                    const SizedBox(height: 10),
                     Expanded(
                       child:
                           VocabularyInfor(vocabulary: Vocabulary.seedData[0]),

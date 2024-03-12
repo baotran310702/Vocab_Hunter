@@ -1,9 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class TranslateServices {
-  static const String pathDb = "assets/data/dictionary.db";
-
   late Database _db;
 
   TranslateServices() {
@@ -11,15 +9,20 @@ class TranslateServices {
   }
 
   void _init() async {
-    await openDatabase(pathDb).then((value) {
-      _db = value;
-      debugPrint("debug#1 :DB OPENED");
-    });
+    var databasesPath = await getDatabasesPath();
+    var path = join(databasesPath, "database.db");
+    var exist = await databaseExists(path);
+    if (exist) {
+      _db = await openDatabase(path);
+    }
   }
 
   Future<void> translateLocal(String word) async {
-    var result = await _db.rawQuery("select * from dictionary");
-    if (result.isNotEmpty) {}
-    await _db.close();
+    print("debug#1 _db ${await _db.getVersion()}");
+    List<Map<String, dynamic>> results =
+        await _db.rawQuery("Select * from vocabulary");
+    // Thực hiện truy vấn để lấy tất cả tên bảng
+
+    print("debug#1 result ${results.first}");
   }
 }

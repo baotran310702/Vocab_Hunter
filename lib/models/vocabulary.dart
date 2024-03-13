@@ -18,18 +18,31 @@ class Vocabulary extends Equatable {
     this.imageUrl = "",
   });
 
-  factory Vocabulary.fromJson(Map<String, dynamic> json) {
+  factory Vocabulary.fromFirebase(Map<String, dynamic> json) {
     return Vocabulary(
       vocabId: json['vocabId'] != null
           ? CustomConverter.convertToString(json['vocabId'])
           : "",
       meaning: json['meaning'] != null
-          ? CustomConverter.convertToMeanings(json['meaning'])
+          ? CustomConverter.convertToMeaningsFirebase(json['meaning'])
           : "",
       example: json['example'] != null ? List.from(json['example']) : [],
       pronunciation:
           json['pronunciation'] != null ? List.from(json['pronunciation']) : [],
       imageUrl: json['imageUrl'],
+    );
+  }
+
+  factory Vocabulary.fromLocal(List<dynamic> item) {
+    return Vocabulary(
+      vocabId: item[1].toString(),
+      meaning: item[2] != null
+          ? CustomConverter.convertToMeaningLocal(item[2], item[4])
+          : {},
+      //update example late
+      example: const [],
+      pronunciation: item[3][0].split(','),
+      imageUrl: "",
     );
   }
 

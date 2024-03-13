@@ -1,28 +1,35 @@
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+import 'dart:convert';
+
+import 'package:english_learner/models/vocabulary.dart';
+import 'package:flutter/services.dart';
 
 class TranslateServices {
-  late Database _db;
+  late String jsonString;
 
   TranslateServices() {
     _init();
   }
 
   void _init() async {
-    var databasesPath = await getDatabasesPath();
-    var path = join(databasesPath, "database.db");
-    var exist = await databaseExists(path);
-    if (exist) {
-      _db = await openDatabase(path);
-    }
+    jsonString = await rootBundle.loadString('assets/dictionary.json');
   }
 
-  Future<void> translateLocal(String word) async {
-    print("debug#1 _db ${await _db.getVersion()}");
-    List<Map<String, dynamic>> results =
-        await _db.rawQuery("Select * from vocabulary");
-    // Thực hiện truy vấn để lấy tất cả tên bảng
+  Future<List<Vocabulary>> translateLocal(String word) async {
+    var jsonResult = json.decode(jsonString) as List;
+    List<Vocabulary> vocabList = [];
 
-    print("debug#1 result ${results.first}");
+    List<dynamic> result = jsonResult;
+
+    for (var item in result) {
+      String itemString = item[1].toString();
+      if (itemString.contains(word)) {
+        vocabList.add(Vocabulary.fromLocal(item));
+        if (vocabList.length > 15) {
+          return vocabList;
+        }
+      }
+    }
+
+    return vocabList;
   }
 }

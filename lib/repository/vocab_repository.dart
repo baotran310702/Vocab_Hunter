@@ -27,7 +27,7 @@ class VocabRepository {
     List<Vocabulary> listVocabularies = [];
     final ref = await firestore.collection(AppCollections.vocabulary).get();
     for (var doc in ref.docs) {
-      listVocabularies.add(Vocabulary.fromJson(doc.data()));
+      listVocabularies.add(Vocabulary.fromFirebase(doc.data()));
     }
     return listVocabularies;
   }

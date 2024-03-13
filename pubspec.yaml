@@ -36,7 +36,7 @@ flutter:
 
   uses-material-design: true
   assets:
-    - assets/data/dictionary.db
+    - assets/dictionary.json
 
   # fonts:
   #   - family: Schyler

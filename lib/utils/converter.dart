@@ -1,4 +1,4 @@
-
+import 'package:english_learner/utils/word_type.dart';
 
 class CustomConverter {
   // convert anytype to string
@@ -18,15 +18,15 @@ class CustomConverter {
     }
   }
 
-static convertToMeanings(Map<String, List<String>> json){
-  return {
-    'adj':json['adj'],
-    'verb':json['verb'],
-    'adv':json['adv'],
-    'noun':json['noun'],
-    'default':json['noun'],
-  };
-}
+  static convertToMeaningsFirebase(Map<String, List<String>> json) {
+    return {
+      'adj': json['adj'],
+      'verb': json['verb'],
+      'adv': json['adv'],
+      'noun': json['noun'],
+      'default': json['noun'],
+    };
+  }
 
   //write a function that convert anytype to double
   static double convertToDouble(dynamic value) {
@@ -41,5 +41,29 @@ static convertToMeanings(Map<String, List<String>> json){
     } else {
       return 0.0;
     }
+  }
+
+  static Map<String, List<String>> convertToMeaningLocal(
+      List<dynamic> meaning1, List<dynamic> meaning2) {
+    Map<String, List<String>> result = {};
+
+    List<String> raw = meaning1[0].toString().split(":");
+
+    List<String> meaningVietnames = raw.length > 1 ? raw[1].split(',') : [];
+
+    result.addAll({
+      raw[0]: [...meaningVietnames]
+    });
+
+    String wordTypes =
+        raw[0].split(',').isNotEmpty ? raw[0].split(',')[0] : raw[0];
+
+    result.addAll({
+      WordTypeExt.fromVietNameseToEnglish(wordTypes): [
+        ...meaning2[0].toString().split(',')
+      ]
+    });
+
+    return result;
   }
 }

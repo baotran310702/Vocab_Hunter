@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:english_learner/models/vocab_dto.dart';
-import 'package:english_learner/models/vocabulary.dart';
+import 'package:english_learner/models/vocabulary/vocab_dto.dart';
+import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/services/vocab_services.dart';
 import 'package:english_learner/utils/collections.dart';
 
@@ -15,7 +15,7 @@ class VocabRepository {
     vocabService = VocabService();
   }
 
-  Future<List<Vocab>> getSimilarVocab(String word) async {
+  Future<List<VocabDTO>> getSimilarVocab(String word) async {
     return await vocabService.getSimilarVocab(word);
   }
 

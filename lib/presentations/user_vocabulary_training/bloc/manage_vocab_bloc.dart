@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:english_learner/models/vocab_dto.dart';
-import 'package:english_learner/models/vocabulary.dart';
+import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../../models/vocabulary/vocab_dto.dart';
 
 part 'manage_vocab_event.dart';
 part 'manage_vocab_state.dart';
@@ -47,7 +48,7 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
   _onGetSimilarityVocab(
       GetSimilarityVocabEvent event, Emitter<ManageVocabState> emit) async {
     emit(state.copyWith(isLoading: true));
-    List<Vocab> similarVocabs =
+    List<VocabDTO> similarVocabs =
         await _vocabRepository.getSimilarVocab(event.inputVocab);
     emit(state.copyWith(
       similarVocabs: similarVocabs,

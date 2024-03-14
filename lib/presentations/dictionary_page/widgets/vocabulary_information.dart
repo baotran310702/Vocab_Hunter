@@ -1,8 +1,6 @@
-import 'package:english_learner/models/vocabulary.dart';
-import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
+import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/presentations/dictionary_page/widgets/pronounce_word.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VocabularyInfor extends StatefulWidget {
   final Vocabulary vocabulary;
@@ -59,21 +57,6 @@ class _VocabularyInforState extends State<VocabularyInfor> {
             ),
           ),
         ),
-
-        //creat a button with search text
-
-        GestureDetector(
-          onTap: () {
-            context
-                .read<TranslatePageBloc>()
-                .add(TranslateWordLocal(widget.vocabulary.vocabId));
-          },
-          child: const Text(
-            "Meaninhhhhhhg",
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-        ),
-
         Flexible(
           child: Container(
             color: Colors.amber,
@@ -90,10 +73,6 @@ class _VocabularyInforState extends State<VocabularyInfor> {
               },
             ),
           ),
-        ),
-        const Text(
-          "Example",
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
         Flexible(
           child: Container(

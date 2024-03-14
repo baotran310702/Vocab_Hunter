@@ -1,5 +1,4 @@
 import 'package:english_learner/presentations/user_vocabulary_training/bloc/manage_vocab_bloc.dart';
-import 'package:english_learner/views/card_vocabs/card_vocabs_your_vocabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -76,8 +75,7 @@ class UserVocabulary extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const FlashCardVocabulary()));
+                                      builder: (context) => Container()));
                             },
                             child: ListTile(
                               title: Text(state.similarVocabs[index].word),

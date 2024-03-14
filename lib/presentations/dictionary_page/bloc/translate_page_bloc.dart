@@ -20,9 +20,16 @@ class TranslatePageBloc extends Bloc<TranslateEvent, TranslatePageState> {
 
   _onTranslateWordLocal(
       TranslateWordLocal event, Emitter<TranslatePageState> emit) async {
-    await _translateRepository.translateLocal(event.word);
+    if (event.word.trim().isEmpty) {
+      emit(state.copyWith(
+          isLoading: false, searchedVocabulary: [], isLocal: true));
+      return;
+    }
+    emit(state.copyWith(isLoading: true));
+    List<Vocabulary> result =
+        await _translateRepository.translateLocal(event.word);
 
-    emit(state.copyWith(
-        isLoading: false, currentVocabulary: Vocabulary.empty()));
+    emit(state.copyWith( 
+        isLoading: false, searchedVocabulary: result, isLocal: true));
   }
 }

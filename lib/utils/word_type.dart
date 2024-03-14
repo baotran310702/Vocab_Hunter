@@ -90,4 +90,19 @@ class WordTypeExt {
         return "";
     }
   }
+
+  static bool isEnglishWordType(String type) {
+    switch (type) {
+      case "Noun":
+        return true;
+      case "Adjective":
+        return true;
+      case "Adverb":
+        return true;
+      case "Verb":
+        return true;
+      default:
+        return false;
+    }
+  }
 }

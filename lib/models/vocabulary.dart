@@ -1,4 +1,5 @@
 import 'package:english_learner/utils/converter.dart';
+import 'package:english_learner/utils/word_type.dart';
 import 'package:equatable/equatable.dart';
 
 enum TypeVocab { adj, adv, noun, verb }
@@ -35,7 +36,7 @@ class Vocabulary extends Equatable {
 
   factory Vocabulary.fromLocal(List<dynamic> item) {
     return Vocabulary(
-      vocabId: item[1].toString(),
+      vocabId: item[1][0].toString(),
       meaning: item[2] != null
           ? CustomConverter.convertToMeaningLocal(item[2], item[4])
           : {},
@@ -64,6 +65,17 @@ class Vocabulary extends Equatable {
       'pronunciation': pronunciation,
       'imageUrl': imageUrl,
     };
+  }
+
+  get vietNameseMeaining {
+    List<String> listVietnamesMeanings = [];
+
+    for (var entry in meaning.entries) {
+      if (!WordTypeExt.isEnglishWordType(entry.key)) {
+        listVietnamesMeanings = [...listVietnamesMeanings, ...entry.value];
+      }
+    }
+    return listVietnamesMeanings;
   }
 
   Vocabulary copyWith({

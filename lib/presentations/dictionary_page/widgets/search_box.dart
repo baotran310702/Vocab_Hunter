@@ -25,12 +25,21 @@ class _SearchBoxState extends State<SearchBox> {
         controller: controller,
         hintText: 'Search for a word',
         onChanged: (value) {
-          print(value);
+          print("Search for $value");
         },
         onTap: () {
           controller.openView();
         },
-        leading: const Icon(Icons.search),
+        leading: const Padding(
+          padding: EdgeInsets.only(
+            left: 8,
+            right: 8,
+            top: 2,
+          ),
+          child: Icon(
+            Icons.search,
+          ),
+        ),
         trailing: <Widget>[
           Tooltip(
             message: 'Change brightness mode',

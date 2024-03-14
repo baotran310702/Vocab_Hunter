@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:english_learner/models/vocabulary.dart';
+import 'package:english_learner/utils/extension.dart';
 import 'package:flutter/services.dart';
 
 class TranslateServices {
@@ -21,8 +22,8 @@ class TranslateServices {
     List<dynamic> result = jsonResult;
 
     for (var item in result) {
-      String itemString = item[1].toString();
-      if (itemString.contains(word)) {
+      String itemString = item[1][0].toString();
+      if (itemString == word || itemString.isStartWith(word)) {
         vocabList.add(Vocabulary.fromLocal(item));
         if (vocabList.length > 15) {
           return vocabList;

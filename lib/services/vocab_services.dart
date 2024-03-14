@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:english_learner/models/vocab_dto.dart';
 import 'package:english_learner/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
+
+import '../models/vocabulary/vocab_dto.dart';
 
 class VocabService {
   //fetch translation from api
@@ -23,8 +24,8 @@ class VocabService {
   }
 
   //fetch similar vocab from api
-  Future<List<Vocab>> getSimilarVocab(String word) async {
-    List<Vocab> vocabList = [];
+  Future<List<VocabDTO>> getSimilarVocab(String word) async {
+    List<VocabDTO> vocabList = [];
     try {
       //fetch api using http
       var apiURL = APIPath.wordSimilarity + word;
@@ -35,7 +36,7 @@ class VocabService {
         //parse response to list of vocab
         var data = response.data;
         for (var i = 0; i < data.length; i++) {
-          Vocab vocab = Vocab.fromJson(data[i]);
+          VocabDTO vocab = VocabDTO.fromJson(data[i]);
           vocabList.add(vocab);
         }
       }

@@ -32,14 +32,14 @@ class WordTypeExt {
   }
 
   static WordType fromEnglish(String type) {
-    switch (type) {
-      case "Noun":
+    switch (type.toLowerCase()) {
+      case "noun":
         return WordType.noun;
-      case "Adjective":
+      case "adjective":
         return WordType.adj;
-      case "Adverb":
+      case "adverb":
         return WordType.adv;
-      case "Verb":
+      case "verb":
         return WordType.verb;
       default:
         return WordType.undefined;
@@ -47,14 +47,14 @@ class WordTypeExt {
   }
 
   static WordType fromVietNamese(String type) {
-    switch (type) {
-      case "Danh từ":
+    switch (type.toLowerCase()) {
+      case "danh từ":
         return WordType.noun;
-      case "Tính từ":
+      case "tính từ":
         return WordType.adj;
-      case "Trạng từ":
+      case "trạng từ":
         return WordType.adv;
-      case "Động từ":
+      case "động từ":
         return WordType.verb;
       default:
         return WordType.undefined;
@@ -62,14 +62,14 @@ class WordTypeExt {
   }
 
   static String fromVietNameseToEnglish(String type) {
-    switch (type) {
-      case "Danh từ":
+    switch (type.toLowerCase()) {
+      case "danh từ":
         return "Noun";
-      case "Tính từ":
+      case "tính từ":
         return "Adjective";
-      case "Trạng từ":
+      case "trạng từ":
         return "Adverb";
-      case "Động từ":
+      case "động từ":
         return "Verb";
       default:
         return "";
@@ -77,14 +77,14 @@ class WordTypeExt {
   }
 
   static String fromEnglishToVietNamese(String type) {
-    switch (type) {
-      case "Noun":
+    switch (type.toLowerCase()) {
+      case "noun":
         return "Danh từ";
-      case "Adjective":
+      case "adjective":
         return "Tính từ";
-      case "Adverb":
+      case "adverb":
         return "Trạng từ";
-      case "Verb":
+      case "verb":
         return "Động từ";
       default:
         return "";
@@ -92,14 +92,14 @@ class WordTypeExt {
   }
 
   static bool isEnglishWordType(String type) {
-    switch (type) {
-      case "Noun":
+    switch (type.toLowerCase()) {
+      case "noun":
         return true;
-      case "Adjective":
+      case "adjective":
         return true;
-      case "Adverb":
+      case "adverb":
         return true;
-      case "Verb":
+      case "verb":
         return true;
       default:
         return false;

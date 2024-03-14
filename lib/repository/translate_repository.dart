@@ -1,4 +1,5 @@
-import 'package:english_learner/models/vocabulary.dart';
+import 'package:english_learner/models/vocabulary/vocabulary.dart';
+import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/services/translate_services.dart';
 
 class TranslateRepository {
@@ -10,5 +11,9 @@ class TranslateRepository {
 
   Future<List<Vocabulary>> translateLocal(String word) async {
     return await _services.translateLocal(word);
+  }
+
+  Future<VocabularyRemote> translateWordOnline(String word) async {
+    return await _services.translateWordOnline(word);
   }
 }

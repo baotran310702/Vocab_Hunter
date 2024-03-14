@@ -1,4 +1,4 @@
-import 'package:english_learner/models/vocabulary.dart';
+import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
 import 'package:english_learner/presentations/dictionary_page/widgets/vocabulary_information.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +14,18 @@ class DictionaryPage extends StatefulWidget {
 }
 
 class _DictionaryPageState extends State<DictionaryPage> {
+  //params for search box
   TextEditingController vocabInputController = TextEditingController();
+
+  //params for vocabulary
+  Vocabulary? currentVocabulary;
+
+  //params showing box result
+  bool isShowingResult = false;
+
   final Debouncer _debouncer = Debouncer(
     delay: const Duration(
-      milliseconds: 800,
+      milliseconds: 650,
     ),
   );
 
@@ -28,6 +36,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
       child: BlocBuilder<TranslatePageBloc, TranslatePageState>(
         builder: (context, state) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             appBar: AppBar(
               title: const Text('Dictionary'),
               centerTitle: true,
@@ -44,7 +53,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                         const SizedBox(height: 60),
                         Expanded(
                           child: VocabularyInfor(
-                              vocabulary: Vocabulary.seedData[0]),
+                            vocabulary: currentVocabulary ?? Vocabulary.empty(),
+                          ),
                         ),
                       ],
                     ),
@@ -55,23 +65,47 @@ class _DictionaryPageState extends State<DictionaryPage> {
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 2),
-                          child: TextFormField(
-                            style: const TextStyle(color: Colors.black),
-                            controller: vocabInputController,
-                            onChanged: (value) {
-                              _debouncer.run(() {
-                                _onSearchChange(context, value.toString());
-                              });
-                            },
-                            decoration: const InputDecoration(
-                              hintText: 'Search vocabulary here...',
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                          child: Stack(
+                            children: [
+                              TextFormField(
+                                style: const TextStyle(color: Colors.black),
+                                controller: vocabInputController,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isShowingResult = true;
+                                  });
+                                  _debouncer.run(() {
+                                    context
+                                        .read<TranslatePageBloc>()
+                                        .add(LoadingSearch());
+                                    _onSearchChange(context, value.toString());
+                                  });
+                                },
+                                onTap: () {
+                                  setState(() {
+                                    isShowingResult = true;
+                                  });
+                                },
+                                decoration: const InputDecoration(
+                                  hintText: 'Search vocabulary here...',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                  ),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 16),
+                                ),
                               ),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 8),
-                            ),
+                              Positioned(
+                                right: 0,
+                                child: IconButton(
+                                  onPressed: () {
+                                    vocabInputController.clear();
+                                  },
+                                  icon: const Icon(Icons.search),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Flexible(
@@ -88,7 +122,9 @@ class _DictionaryPageState extends State<DictionaryPage> {
                             ),
                             child: ListView.builder(
                               shrinkWrap: true,
-                              itemCount: state.searchedVocabulary.length,
+                              itemCount: isShowingResult
+                                  ? state.searchedVocabulary.length
+                                  : 0,
                               itemBuilder: (context, index) {
                                 return ListTile(
                                   title: Text(
@@ -96,16 +132,21 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                   trailing: Text(
                                     state.searchedVocabulary[index]
                                                 .vietNameseMeaining[0].length <
-                                            30
+                                            24
                                         ? state.searchedVocabulary[index]
                                             .vietNameseMeaining[0]
-                                        : state.searchedVocabulary[index]
-                                            .vietNameseMeaining[0]
-                                            .toString()
-                                            .substring(0, 30),
+                                        : "${state.searchedVocabulary[index].vietNameseMeaining[0].toString().substring(0, 24)}...",
                                   ),
                                   onTap: () {
-                                    print('Word $index');
+                                    setState(() {
+                                      isShowingResult = false;
+                                    });
+                                    setState(() {
+                                      currentVocabulary =
+                                          state.searchedVocabulary[index];
+                                    });
+                                    vocabInputController.text =
+                                        state.searchedVocabulary[index].vocabId;
                                   },
                                 );
                               },
@@ -125,6 +166,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
   }
 
   void _onSearchChange(BuildContext context, String text) {
-    BlocProvider.of<TranslatePageBloc>(context).add(TranslateWordLocal(text));
+    // BlocProvider.of<TranslatePageBloc>(context).add(TranslateWordLocal(text));
+    BlocProvider.of<TranslatePageBloc>(context).add(TranslateWordRemote(text));
   }
 }

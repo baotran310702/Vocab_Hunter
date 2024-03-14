@@ -16,3 +16,10 @@ class TranslateWordLocal extends TranslateEvent {
   final String word;
   TranslateWordLocal(this.word);
 }
+
+class TranslateWordRemote extends TranslateEvent {
+  final String word;
+  TranslateWordRemote(this.word);
+}
+
+class LoadingSearch extends TranslateEvent {}

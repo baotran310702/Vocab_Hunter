@@ -5,6 +5,7 @@ class TranslatePageState extends Equatable {
   final bool? isLocal;
   final Vocabulary currentVocabulary;
   final List<Vocabulary> searchedVocabulary;
+  final VocabularyRemote? currentVocabularyRemote;
 
   //required params
   const TranslatePageState({
@@ -12,6 +13,7 @@ class TranslatePageState extends Equatable {
     required this.currentVocabulary,
     required this.searchedVocabulary,
     this.isLocal,
+    this.currentVocabularyRemote,
   });
 
   //initial state
@@ -20,6 +22,7 @@ class TranslatePageState extends Equatable {
         currentVocabulary: Vocabulary.empty(),
         searchedVocabulary: const [],
         isLocal: false,
+        currentVocabularyRemote: null,
       );
 
   //copyWith method
@@ -29,15 +32,24 @@ class TranslatePageState extends Equatable {
     Vocabulary? currentVocabulary,
     List<Vocabulary>? searchedVocabulary,
     bool? isLocal,
+    VocabularyRemote? currentVocabularyRemote,
   }) {
     return TranslatePageState(
       isLoading: isLoading ?? this.isLoading,
       currentVocabulary: currentVocabulary ?? this.currentVocabulary,
       searchedVocabulary: searchedVocabulary ?? this.searchedVocabulary,
       isLocal: isLocal ?? this.isLocal,
+      currentVocabularyRemote:
+          currentVocabularyRemote ?? this.currentVocabularyRemote,
     );
   }
 
   @override
-  List<Object?> get props => [isLoading, currentVocabulary, searchedVocabulary];
+  List<Object?> get props => [
+        isLoading,
+        currentVocabulary,
+        searchedVocabulary,
+        isLocal,
+        currentVocabularyRemote
+      ];
 }

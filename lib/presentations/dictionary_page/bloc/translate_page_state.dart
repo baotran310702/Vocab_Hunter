@@ -5,7 +5,7 @@ class TranslatePageState extends Equatable {
   final bool? isLocal;
   final Vocabulary currentVocabulary;
   final List<Vocabulary> searchedVocabulary;
-  final VocabularyRemote? currentVocabularyRemote;
+  final (VocabularyRemote, VocabularyRemote)? currentVocabularyRemote;
 
   //required params
   const TranslatePageState({
@@ -32,7 +32,7 @@ class TranslatePageState extends Equatable {
     Vocabulary? currentVocabulary,
     List<Vocabulary>? searchedVocabulary,
     bool? isLocal,
-    VocabularyRemote? currentVocabularyRemote,
+    (VocabularyRemote, VocabularyRemote)? currentVocabularyRemote,
   }) {
     return TranslatePageState(
       isLoading: isLoading ?? this.isLoading,

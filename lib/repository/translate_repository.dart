@@ -13,7 +13,8 @@ class TranslateRepository {
     return await _services.translateLocal(word);
   }
 
-  Future<VocabularyRemote> translateWordOnline(String word) async {
+  Future<(VocabularyRemote, VocabularyRemote)> translateWordOnline(
+      String word) async {
     return await _services.translateWordOnline(word);
   }
 }

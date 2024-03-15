@@ -1,5 +1,4 @@
 import 'package:english_learner/services/translate_services.dart';
-import 'package:english_learner/utils/converter.dart';
 
 abstract class VocabularyRemoteService {
   TranslateServices services = TranslateServices();

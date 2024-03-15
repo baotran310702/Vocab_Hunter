@@ -52,7 +52,7 @@ class TranslatePageBloc extends Bloc<TranslateEvent, TranslatePageState> {
     }
     emit(state.copyWith(isLoading: true));
     // Vocabulary result =
-    VocabularyRemote vocabularyRemote =
+    (VocabularyRemote, VocabularyRemote) vocabularyRemote =
         await _translateRepository.translateWordOnline(event.word);
     emit(
       state.copyWith(

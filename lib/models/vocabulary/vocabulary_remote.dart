@@ -1,8 +1,11 @@
-import 'dart:convert';
-
+import 'package:english_learner/services/translate_services.dart';
 import 'package:english_learner/utils/converter.dart';
 
-class VocabularyRemote {
+abstract class VocabularyRemoteService {
+  TranslateServices services = TranslateServices();
+}
+
+class VocabularyRemote extends VocabularyRemoteService {
   String? word;
   String? phonetic;
   List<Phonetics>? phonetics;
@@ -65,25 +68,39 @@ class VocabularyRemote {
     return data;
   }
 
-  Map<String, dynamic> jsonVietnameseEncode() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data[CustomConverter.convertKeyVocabToId('word').toString()] = word;
-    data[CustomConverter.convertKeyVocabToId('phonetic').toString()] = phonetic;
-    if (phonetics != null) {
-      data[CustomConverter.convertKeyVocabToId('phonetics').toString()] =
-          phonetics!.map((v) => v.toVietnameseEncode()).toList();
-    }
+  Future<VocabularyRemote> toVietnamese() async {
+    List<dynamic> vocabTranslate = await Future.wait([
+      services.translatePerWordRemote(word ?? ""),
+      meaningsTranslate(),
+    ]);
+
+    return VocabularyRemote(
+      word: vocabTranslate[0].toString(),
+      phonetic: phonetic,
+      phonetics: phonetics,
+      meanings: vocabTranslate[1] as List<Meanings>?,
+      license: license,
+      sourceUrls: sourceUrls,
+    );
+  }
+
+  Future<List<Meanings>> meaningsTranslate() async {
+    List<Meanings> result = [];
+
     if (meanings != null) {
-      data[CustomConverter.convertKeyVocabToId('meanings').toString()] =
-          meanings!.map((v) => v.toVietnameseEncode()).toList();
+      List<dynamic> resultTranslated = await Future.wait(
+        meanings!.map((e) async {
+          return await e.toVietnamese();
+        }),
+      );
+
+      for (var item in resultTranslated) {
+        result.add(item as Meanings);
+      }
+      return result;
+    } else {
+      return [];
     }
-    if (license != null) {
-      data[CustomConverter.convertKeyVocabToId('license').toString()] =
-          license!.toVietnameseEncode();
-    }
-    data[CustomConverter.convertKeyVocabToId('sourceUrls').toString()] =
-        sourceUrls;
-    return data;
   }
 }
 
@@ -107,18 +124,9 @@ class Phonetics {
     data['sourceUrl'] = sourceUrl;
     return data;
   }
-
-  Map<String, dynamic> toVietnameseEncode() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data[CustomConverter.convertKeyVocabToId('text').toString()] = text;
-    data[CustomConverter.convertKeyVocabToId('audio').toString()] = audio;
-    data[CustomConverter.convertKeyVocabToId('sourceUrl').toString()] =
-        sourceUrl;
-    return data;
-  }
 }
 
-class Meanings {
+class Meanings extends VocabularyRemoteService {
   String? partOfSpeech;
   List<Definitions>? definitions;
   List<String>? synonyms;
@@ -149,21 +157,71 @@ class Meanings {
     return data;
   }
 
-  Map<String, dynamic> toVietnameseEncode() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data[CustomConverter.convertKeyVocabToId('partOfSpeech').toString()] =
-        partOfSpeech;
+  Future<Meanings> toVietnamese() async {
+    List<Definitions> definitionsTranslated = await translateDefinitions();
+    List<String> synonymsTranslated = await getVietnameseSynonyms();
+    List<String> antonymsTranslated = await getVietNameseAtonyms();
+
+    return Meanings(
+      partOfSpeech: partOfSpeech,
+      definitions: definitionsTranslated,
+      synonyms: synonymsTranslated,
+      antonyms: antonymsTranslated,
+    );
+  }
+
+  Future<List<Definitions>> translateDefinitions() async {
+    List<Definitions> result = [];
     if (definitions != null) {
-      data[CustomConverter.convertKeyVocabToId('definitions').toString()] =
-          definitions!.map((v) => v.toVietnameseEncode()).toList();
+      List<dynamic> resultTranslated = await Future.wait(
+        definitions!.map((e) async {
+          return await e.toVietnamese();
+        }),
+      );
+
+      for (var item in resultTranslated) {
+        result.add(item as Definitions);
+      }
+      return result;
+    } else {
+      return [];
     }
-    data[CustomConverter.convertKeyVocabToId('synonyms').toString()] = synonyms;
-    data[CustomConverter.convertKeyVocabToId('antonyms').toString()] = antonyms;
-    return data;
+  }
+
+  Future<List<String>> getVietnameseSynonyms() async {
+    List<String> result = [];
+    if (synonyms != null) {
+      List<dynamic> vietnameses = await Future.wait(
+        synonyms!.map((e) async {
+          return await services.translatePerWordRemote(e);
+        }),
+      );
+      for (var item in vietnameses) {
+        result.add(item.toString());
+      }
+      return result;
+    }
+    return [];
+  }
+
+  Future<List<String>> getVietNameseAtonyms() async {
+    List<String> result = [];
+    if (antonyms != null) {
+      List<dynamic> vietnameses = await Future.wait(
+        antonyms!.map((e) async {
+          return await services.translatePerWordRemote(e);
+        }),
+      );
+      for (var item in vietnameses) {
+        result.add(item.toString());
+      }
+      return result;
+    }
+    return [];
   }
 }
 
-class Definitions {
+class Definitions extends VocabularyRemoteService {
   String? definition;
   List<String>? synonyms;
   List<String>? antonyms;
@@ -187,14 +245,62 @@ class Definitions {
     return data;
   }
 
-  Map<String, dynamic> toVietnameseEncode() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data[CustomConverter.convertKeyVocabToId('definition').toString()] =
-        definition;
-    data[CustomConverter.convertKeyVocabToId('synonyms').toString()] = synonyms;
-    data[CustomConverter.convertKeyVocabToId('antonyms').toString()] = antonyms;
-    data[CustomConverter.convertKeyVocabToId('example').toString()] = example;
-    return data;
+  Future<Definitions> toVietnamese() async {
+    String definitionTranslated = await getVietnameseDefinition();
+    List<String> synonymsTranslated = await getVietnameseSynonyms();
+    List<String> antonymsTranslated = await getVietNameseAtonyms();
+    String exampleTranslated = await getVietnameseExample();
+
+    return Definitions(
+      definition: definitionTranslated,
+      synonyms: synonymsTranslated,
+      antonyms: antonymsTranslated,
+      example: exampleTranslated,
+    );
+  }
+
+  Future<String> getVietnameseDefinition() async {
+    return definition != null
+        ? await services.translatePerWordRemote(definition!)
+        : "";
+  }
+
+  Future<String> getVietnameseExample() async {
+    return example != null
+        ? await services.translatePerWordRemote(example!)
+        : "";
+  }
+
+  Future<List<String>> getVietnameseSynonyms() async {
+    List<String> result = [];
+    if (synonyms != null) {
+      List<dynamic> vietnameses = await Future.wait(
+        synonyms!.map((e) async {
+          return await services.translatePerWordRemote(e);
+        }),
+      );
+      for (var item in vietnameses) {
+        result.add(item.toString());
+      }
+      return result;
+    }
+    return [];
+  }
+
+  Future<List<String>> getVietNameseAtonyms() async {
+    List<String> result = [];
+    if (antonyms != null) {
+      List<dynamic> vietnameses = await Future.wait(
+        antonyms!.map((e) async {
+          return await services.translatePerWordRemote(e);
+        }),
+      );
+      for (var item in vietnameses) {
+        result.add(item.toString());
+      }
+      return result;
+    }
+    return [];
   }
 }
 
@@ -213,13 +319,6 @@ class License {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['url'] = url;
-    return data;
-  }
-
-  Map<String, dynamic> toVietnameseEncode() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data[CustomConverter.convertKeyVocabToId('name').toString()] = name;
-    data[CustomConverter.convertKeyVocabToId('url').toString()] = url;
     return data;
   }
 }

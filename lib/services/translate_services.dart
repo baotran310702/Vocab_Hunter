@@ -8,9 +8,12 @@ import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/utils/constants.dart';
 import 'package:english_learner/utils/extension.dart';
 import 'package:flutter/services.dart';
+import 'package:translator/translator.dart';
 
 class TranslateServices {
   late String jsonString;
+
+  late GoogleTranslator translator;
 
   TranslateServices() {
     _init();
@@ -18,6 +21,7 @@ class TranslateServices {
 
   void _init() async {
     jsonString = await rootBundle.loadString('assets/dictionary.json');
+    translator = GoogleTranslator();
   }
 
   Future<List<Vocabulary>> translateLocal(String word) async {
@@ -39,13 +43,27 @@ class TranslateServices {
     return vocabList;
   }
 
-  Future<VocabularyRemote> translateWordOnline(String word) async {
+  //params contain both eng - vi
+  Future<(VocabularyRemote, VocabularyRemote)> translateWordOnline(
+      String value) async {
+    String word = value.trim();
     final response = await Dio().get("${APIPath.dictionaryDev}$word");
     if (response.statusCode == 200) {
       final data = response.data;
-      return VocabularyRemote.fromJson(data[0]);
+      VocabularyRemote englishVocabMeaning = VocabularyRemote.fromJson(data[0]);
+
+      VocabularyRemote vietnamVocabMeaning =
+          await englishVocabMeaning.toVietnamese();
+
+      return (englishVocabMeaning, vietnamVocabMeaning);
     } else {
-      return VocabularyRemote.empty();
+      return (VocabularyRemote.empty(), VocabularyRemote.empty());
     }
+  }
+
+  Future<String> translatePerWordRemote(String word) async {
+    final translator = GoogleTranslator();
+    final translation = await translator.translate(word, from: 'en', to: 'vi');
+    return translation.text;
   }
 }

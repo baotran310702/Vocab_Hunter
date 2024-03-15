@@ -140,11 +140,10 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                   onTap: () {
                                     setState(() {
                                       isShowingResult = false;
-                                    });
-                                    setState(() {
                                       currentVocabulary =
                                           state.searchedVocabulary[index];
                                     });
+
                                     vocabInputController.text =
                                         state.searchedVocabulary[index].vocabId;
                                   },

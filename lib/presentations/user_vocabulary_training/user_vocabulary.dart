@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../utils/notifications/notifications_services.dart';
+
 class UserVocabulary extends StatelessWidget {
   const UserVocabulary({super.key});
 
@@ -37,6 +39,18 @@ class UserVocabulary extends StatelessWidget {
                       inputVocab: vocabInputController.text));
                 },
                 child: const Text('Add'),
+              ),
+
+              ElevatedButton(
+                onPressed: () {
+                  LocalNotifications.showSimpleNotification(
+                      title: "Simple Notification",
+                      body: "This is a simple notification",
+                      payload: "This is simple data");
+
+                  LocalNotifications.showRepeatedNotification();
+                },
+                child: const Text('Show Notification'),
               ),
 
               ElevatedButton(

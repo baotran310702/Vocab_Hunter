@@ -6,15 +6,39 @@ import 'package:english_learner/presentations/user_profile/user_profile.dart';
 import 'package:english_learner/presentations/user_vocabulary_training/bloc/manage_vocab_bloc.dart';
 import 'package:english_learner/presentations/user_vocabulary_training/user_vocabulary.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
+import 'package:english_learner/utils/notifications/notifications_services.dart';
+import 'package:english_learner/utils/notifications/word_manager_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await Future.wait([
+    LocalNotifications.init(),
+    WorkManagerService().init(),
+  ]);
+
+  //  handle in terminated state
+  var initialNotification =
+      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  if (initialNotification?.didNotificationLaunchApp == true) {
+    // LocalNotifications.onClickNotification.stream.listen((event) {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      // print(event);
+      navigatorKey.currentState!.pushNamed('/another',
+          arguments: initialNotification?.notificationResponse?.payload);
+    });
+  }
   runApp(const MyApp());
 }
 

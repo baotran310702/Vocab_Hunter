@@ -10,9 +10,9 @@ class WorkManagerService {
   void registerMyTask() async {
     //register my task
     await Workmanager().registerPeriodicTask(
-      'id1',
+      'mng_task1',
       'Pratise Vocabulary Reminder',
-      frequency: const Duration(seconds: 5),
+      frequency: const Duration(hours: 1),
     );
   }
 

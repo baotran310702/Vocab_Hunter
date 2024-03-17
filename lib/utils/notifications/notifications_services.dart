@@ -117,6 +117,8 @@ class LocalNotifications {
       'id 4',
       importance: Importance.max,
       priority: Priority.high,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('notification'),
     );
     NotificationDetails details = const NotificationDetails(
       android: android,
@@ -125,14 +127,7 @@ class LocalNotifications {
     tz.setLocalLocation(tz.getLocation('Asia/Bangkok'));
     var currentTime = tz.TZDateTime.now(tz.local);
 
-    // var scheduleTime = tz.TZDateTime(
-    //   tz.local,
-    //   currentTime.year,
-    //   currentTime.month,
-    //   currentTime.day,
-    //   currentTime.hour,
-    //   currentTime.minute,
-    // );
+    //Custom schedule here
 
     var listSchedule = [
       tz.TZDateTime(
@@ -141,7 +136,7 @@ class LocalNotifications {
         currentTime.month,
         currentTime.day,
         18,
-        16,
+        45,
       ),
       tz.TZDateTime(
         tz.local,
@@ -149,7 +144,7 @@ class LocalNotifications {
         currentTime.month,
         currentTime.day,
         18,
-        17,
+        46,
       ),
       tz.TZDateTime(
         tz.local,
@@ -157,7 +152,7 @@ class LocalNotifications {
         currentTime.month,
         currentTime.day,
         18,
-        18,
+        47,
       ),
     ];
     for (var index = 0; index < listSchedule.length; index++) {
@@ -167,7 +162,7 @@ class LocalNotifications {
       debugPrint('---------------------------------');
 
       await _flutterLocalNotificationsPlugin.zonedSchedule(
-        index + 10, // Unique ID based on index
+        index + 17, // Unique ID based on index
         'Daily Schduled Notification',
         'Ôn tập từ vựng thôi nào!',
         item,

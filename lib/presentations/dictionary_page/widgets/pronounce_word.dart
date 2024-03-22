@@ -56,6 +56,12 @@ class _PronounceWordState extends State<PronounceWord> {
     );
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    flutterTts.stop();
+  }
+
   Future _speak() async {
     if (widget.word.isNotEmpty) {
       await flutterTts.speak(widget.word);

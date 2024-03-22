@@ -36,35 +36,7 @@ class SignInPage extends StatelessWidget {
 
           //buttom submit
           ElevatedButton(
-            onPressed: () async {
-              UserServices services = UserServices();
-              try {
-                await services
-                    .signIn(emailController.text, passwordController.text)
-                    .then((value) => Navigator.pushNamedAndRemoveUntil(
-                        context, "/home", (route) => false));
-              } catch (e) {
-                Fluttertoast.showToast(
-                    msg: "Tên đăng nhập hoặc mật khẩu không đúng!");
-              }
-            },
-            child: const Text("Sign in"),
-          ),
-
-          //buttom submit
-          ElevatedButton(
-            onPressed: () async {
-              UserServices services = UserServices();
-              try {
-                await services
-                    .signUp(emailController.text, passwordController.text)
-                    .then((value) => Navigator.pushNamedAndRemoveUntil(
-                        context, "/home", (route) => false));
-              } catch (e) {
-                Fluttertoast.showToast(
-                    msg: "Tên đăng nhập hoặc mật khẩu không đúng !$e");
-              }
-            },
+            onPressed: () async {},
             child: const Text("Sign up"),
           ),
         ],

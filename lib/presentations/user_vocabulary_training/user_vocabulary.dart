@@ -47,8 +47,6 @@ class UserVocabulary extends StatelessWidget {
                       title: "Simple Notification",
                       body: "This is a simple notification",
                       payload: "This is simple data");
-
-                  LocalNotifications.showRepeatedNotification();
                 },
                 child: const Text('Show Notification'),
               ),

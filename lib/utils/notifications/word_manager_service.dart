@@ -1,8 +1,3 @@
-// steps
-//1.init work manager
-//2.excute our task.
-//3.register our task in work manager
-
 import 'package:english_learner/utils/notifications/notifications_services.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -12,7 +7,7 @@ class WorkManagerService {
     await Workmanager().registerPeriodicTask(
       'mng_task1',
       'Pratise Vocabulary Reminder',
-      frequency: const Duration(hours: 1),
+      frequency: const Duration(minutes: 30),
     );
   }
 
@@ -31,7 +26,7 @@ class WorkManagerService {
 void actionTask() {
   //show notification
   Workmanager().executeTask((taskName, inputData) {
-    LocalNotifications.showDailySchduledNotification();
+    LocalNotifications.showMultiNotificationsSchedule();
     return Future.value(true);
   });
 }

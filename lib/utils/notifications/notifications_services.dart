@@ -1,10 +1,9 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:async';
-import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -20,7 +19,7 @@ class LocalNotifications {
   }
 
 // initialize the local notifications
-  static Future init() async {
+  Future init() async {
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -30,13 +29,12 @@ class LocalNotifications {
         return;
       },
     );
-    const LinuxInitializationSettings initializationSettingsLinux =
-        LinuxInitializationSettings(defaultActionName: 'Open notification');
+
     final InitializationSettings initializationSettings =
         InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsDarwin,
-            linux: initializationSettingsLinux);
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsDarwin,
+    );
     _flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: onNotificationTap,
         onDidReceiveBackgroundNotificationResponse: onNotificationTap);
@@ -85,92 +83,73 @@ class LocalNotifications {
         payload: payload);
   }
 
-  // to schedule a local notification
-  static Future showScheduleNotification({
-    required String title,
-    required String body,
-    required String payload,
-  }) async {
-    tz.initializeTimeZones();
-    await _flutterLocalNotificationsPlugin.zonedSchedule(
-        2,
-        title,
-        body,
-        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-        const NotificationDetails(
-            android: AndroidNotificationDetails(
-                'channel 3', 'your channel name',
-                channelDescription: 'your channel description',
-                importance: Importance.max,
-                priority: Priority.high,
-                ticker: 'ticker')),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        payload: payload);
+  //request permission notifications
+  static Future requestPermission() async {
+    var status = await Permission.notification.status;
+    if (status.isDenied) {
+      await Permission.notification.request();
+    }
   }
 
   //showDailySchduledNotification
-  static void showDailySchduledNotification() async {
-    const AndroidNotificationDetails android = AndroidNotificationDetails(
+  static Future<void> showDailySchduledNotification(
+      {required int hour, required int minutes, required int id}) async {
+    AndroidNotificationDetails android = AndroidNotificationDetails(
+      id.toString(),
       'daily schduled notification',
-      'id 4',
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
-      sound: RawResourceAndroidNotificationSound('notification'),
+      sound: const RawResourceAndroidNotificationSound('notification'),
     );
-    NotificationDetails details = const NotificationDetails(
+    NotificationDetails details = NotificationDetails(
       android: android,
     );
+
+    await _flutterLocalNotificationsPlugin.zonedSchedule(
+      id, // Unique ID based on index
+      'Daily Schduled Notification',
+      'Ôn tập từ vựng thôi nào!',
+      _convertTime(hour, minutes),
+      details,
+      // ignore: deprecated_member_use
+      androidAllowWhileIdle: true,
+      payload: 'zonedSchedule',
+
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  /// Set right date and time for notifications
+  static tz.TZDateTime _convertTime(int hour, int minutes) {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Asia/Bangkok'));
-    var currentTime = tz.TZDateTime.now(tz.local);
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduleDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minutes,
+    );
+    if (scheduleDate.isBefore(now)) {
+      scheduleDate = scheduleDate.add(const Duration(days: 1));
+    }
+    return scheduleDate;
+  }
 
-    //Custom schedule here
-
-    var listSchedule = [
-      tz.TZDateTime(
-        tz.local,
-        currentTime.year,
-        currentTime.month,
-        currentTime.day,
-        18,
-        45,
-      ),
-      tz.TZDateTime(
-        tz.local,
-        currentTime.year,
-        currentTime.month,
-        currentTime.day,
-        18,
-        46,
-      ),
-      tz.TZDateTime(
-        tz.local,
-        currentTime.year,
-        currentTime.month,
-        currentTime.day,
-        18,
-        47,
-      ),
+  static Future<void> showMultiNotificationsSchedule() async {
+    final listTimeSchedule = [
+      _convertTime(9, 9),
+      _convertTime(9, 10),
+      _convertTime(9, 11),
     ];
-    for (var index = 0; index < listSchedule.length; index++) {
-      var item = listSchedule[index];
-      debugPrint('---------------------------------');
-      debugPrint('currentTime: $item');
-      debugPrint('---------------------------------');
 
-      await _flutterLocalNotificationsPlugin.zonedSchedule(
-        index + 17, // Unique ID based on index
-        'Daily Schduled Notification',
-        'Ôn tập từ vựng thôi nào!',
-        item,
-        details,
-        payload: 'zonedSchedule',
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-      );
+    for (var item in listTimeSchedule) {
+      showDailySchduledNotification(
+          hour: item.hour, minutes: item.minute, id: item.hour * item.minute);
     }
   }
 

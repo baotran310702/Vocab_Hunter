@@ -24,7 +24,7 @@ void main() async {
   );
 
   await Future.wait([
-    LocalNotifications.init(),
+    LocalNotifications().init(),
     WorkManagerService().init(),
   ]);
 
@@ -39,6 +39,7 @@ void main() async {
           arguments: initialNotification?.notificationResponse?.payload);
     });
   }
+
   runApp(const MyApp());
 }
 
@@ -73,6 +74,16 @@ class _MyAppState extends State<MyApp> {
       _selectedIndex = index;
       _pageController.jumpToPage(index);
     });
+  }
+
+  @override
+  void initState() {
+    requestPermission();
+    super.initState();
+  }
+
+  void requestPermission() async {
+    await LocalNotifications.requestPermission();
   }
 
   @override

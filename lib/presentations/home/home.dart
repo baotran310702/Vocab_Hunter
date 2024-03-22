@@ -1,3 +1,5 @@
+import 'package:english_learner/presentations/home/widgets/box_list_vocab_type.dart';
+import 'package:english_learner/presentations/home/widgets/header_informations.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,10 +15,27 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Container(
-          color: Colors.green,
-          child: const Center(
-            child: Text('Home Page'),
+        body: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            width: MediaQuery.of(context).size.width,
+            color: Colors.white,
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                HeaderInformations(),
+                Text(
+                  'Welcome to English Learner',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+                ListVocabType(),
+              ],
+            ),
           ),
         ),
       ),

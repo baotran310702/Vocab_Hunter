@@ -16,6 +16,8 @@ class $AssetsIconsGen {
   AssetGenImage get logoText =>
       const AssetGenImage('assets/icons/logo_text.png');
   AssetGenImage get bell => const AssetGenImage('assets/icons/bell.png');
+  AssetGenImage get logo => const AssetGenImage('assets/icons/logo.png');
+  AssetGenImage get google => const AssetGenImage('assets/icons/google.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [logoText, bell];

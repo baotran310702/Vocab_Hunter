@@ -98,9 +98,9 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => const SignInPage(),
+          '/sign-in': (context) => const SignInPage(),
           '/sign-up': (context) => const SignUpPage(),
-          '/home': (context) => home()
+          '/': (context) => home()
         },
       ),
     );

@@ -1,4 +1,3 @@
-import 'package:english_learner/gen/assets.gen.dart';
 import 'package:english_learner/presentations/home/widgets/box_list_vocab_type.dart';
 import 'package:english_learner/presentations/home/widgets/box_vocab_item.dart';
 import 'package:english_learner/presentations/home/widgets/header_informations.dart';

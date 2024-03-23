@@ -1,4 +1,6 @@
 import 'package:english_learner/gen/assets.gen.dart';
+import 'package:english_learner/presentations/home/views/flash_card_page.dart';
+import 'package:english_learner/presentations/home/views/list_vocabulary_page.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -139,7 +141,12 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                               ), // Adjust color and width as needed
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const FlashCardPage();
+                            }));
+                          },
                           child: Text(
                             "Flash Card",
                             style:
@@ -158,7 +165,16 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                               const Size(120, 40),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const ListVocabularyItem();
+                                },
+                              ),
+                            );
+                          },
                           child: Text(
                             "All Words",
                             style: TextStyle(

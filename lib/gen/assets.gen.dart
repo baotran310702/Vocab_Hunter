@@ -18,6 +18,13 @@ class $AssetsIconsGen {
   AssetGenImage get bell => const AssetGenImage('assets/icons/bell.png');
   AssetGenImage get logo => const AssetGenImage('assets/icons/logo.png');
   AssetGenImage get google => const AssetGenImage('assets/icons/google.png');
+  AssetGenImage get back_btn =>
+      const AssetGenImage('assets/icons/back_btn.png');
+  AssetGenImage get heart => const AssetGenImage('assets/icons/heart.png');
+  AssetGenImage get heart_selected =>
+      const AssetGenImage('assets/icons/heart_selected.png');
+  AssetGenImage get start => const AssetGenImage('assets/icons/start.png');
+  AssetGenImage get speaker => const AssetGenImage('assets/icons/speaker.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [logoText, bell];

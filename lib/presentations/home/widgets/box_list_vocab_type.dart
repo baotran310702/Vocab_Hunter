@@ -1,3 +1,8 @@
+import 'package:english_learner/gen/assets.gen.dart';
+import 'package:english_learner/presentations/home/views/detail_news_vocabulary.dart';
+import 'package:english_learner/presentations/home/views/topic_vocabs_page.dart';
+import 'package:english_learner/presentations/home/widgets/divider.dart';
+import 'package:english_learner/presentations/home/widgets/item_type_vocab.dart';
 import 'package:flutter/material.dart';
 
 class ListVocabType extends StatelessWidget {
@@ -5,32 +10,94 @@ class ListVocabType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double sizeIcon = 30;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 7,
-            offset: const Offset(0, 3),
-          ),
-        ],
+      padding: const EdgeInsets.symmetric(
+        vertical: 4,
       ),
+      decoration: BoxDecoration(
+        color: Colors.amber,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      width: MediaQuery.of(context).size.width,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text("Học từ vựng"),
-          Row(
-            children: [
-              Container(
-                width: 100,
-                height: 100,
-                color: Colors.red,
+          const Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              "Type of Vocab",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
               ),
-            ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ItemTypeVocab(
+                  text: "Flashcard",
+                  icon: Assets.icons.flash_card
+                      .image(width: sizeIcon, height: sizeIcon),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => const TopicVocab(),
+                      ),
+                    );
+                  },
+                ),
+                const Devider(),
+                ItemTypeVocab(
+                  text: "Topics",
+                  icon: Assets.icons.topics
+                      .image(width: sizeIcon, height: sizeIcon),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => const TopicVocab(),
+                      ),
+                    );
+                  },
+                ),
+                const Devider(),
+                ItemTypeVocab(
+                  text: "News",
+                  icon: Assets.icons.news
+                      .image(width: sizeIcon, height: sizeIcon),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => const DetailNewsPage(),
+                      ),
+                    );
+                  },
+                ),
+                const Devider(),
+                ItemTypeVocab(
+                  text: "Ielts - Toeic",
+                  icon: Assets.icons.ielts_toeic
+                      .image(width: sizeIcon, height: sizeIcon),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => const TopicVocab(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),

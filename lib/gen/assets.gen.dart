@@ -18,6 +18,14 @@ class $AssetsIconsGen {
   AssetGenImage get bell => const AssetGenImage('assets/icons/bell.png');
   AssetGenImage get logo => const AssetGenImage('assets/icons/logo.png');
   AssetGenImage get google => const AssetGenImage('assets/icons/google.png');
+  AssetGenImage get flash_card =>
+      const AssetGenImage('assets/icons/flash_card.png');
+  AssetGenImage get ielts_toeic =>
+      const AssetGenImage('assets/icons/ielts_toeic.png');
+  AssetGenImage get news => const AssetGenImage('assets/icons/news.png');
+  AssetGenImage get topics => const AssetGenImage('assets/icons/topic.png');
+  AssetGenImage get tag_save =>
+      const AssetGenImage('assets/icons/tag_save.png');
   AssetGenImage get back_btn =>
       const AssetGenImage('assets/icons/back_btn.png');
   AssetGenImage get heart => const AssetGenImage('assets/icons/heart.png');

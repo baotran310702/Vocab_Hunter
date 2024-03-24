@@ -1,5 +1,6 @@
 import 'package:english_learner/presentations/global_widgets/appbar.dart';
 import 'package:english_learner/presentations/home/widgets/card.dart';
+import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
@@ -12,6 +13,17 @@ class FlashCardPage extends StatefulWidget {
 
 class _FlashCardPageState extends State<FlashCardPage> {
   final CardSwiperController controller = CardSwiperController();
+  List<Widget> cards = const [
+    FlashCard(),
+    FlashCard(),
+    FlashCard(),
+    FlashCard(),
+    FlashCard(),
+    FlashCard(),
+    FlashCard(),
+    FlashCard(),
+    FlashCard(),
+  ];
 
   @override
   void dispose() {
@@ -21,17 +33,6 @@ class _FlashCardPageState extends State<FlashCardPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> cards = const [
-      FlashCard(),
-      FlashCard(),
-      FlashCard(),
-      FlashCard(),
-      FlashCard(),
-      FlashCard(),
-      FlashCard(),
-      FlashCard(),
-      FlashCard(),
-    ];
     return Scaffold(
       appBar: const MyAppbar(text: "Flash Card"),
       body: Container(
@@ -43,8 +44,8 @@ class _FlashCardPageState extends State<FlashCardPage> {
             child: CardSwiper(
                 controller: controller,
                 cardsCount: cards.length,
-                numberOfCardsDisplayed: 6,
-                backCardOffset: const Offset(12, 12),
+                numberOfCardsDisplayed: 3,
+                backCardOffset: const Offset(0, 60),
                 padding: const EdgeInsets.all(12.0),
                 onSwipe: _onSwipe,
                 onUndo: _onUndo,
@@ -57,6 +58,61 @@ class _FlashCardPageState extends State<FlashCardPage> {
                   return cards[index];
                 }),
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    AppColors.secondaryBackgroundButton,
+                  ),
+                  fixedSize: MaterialStateProperty.all<Size>(
+                    Size(MediaQuery.of(context).size.width / 2.5, 52),
+                  ),
+                  side: MaterialStateProperty.all<BorderSide>(
+                    BorderSide(
+                      color: AppColors.primaryBackgroundButton,
+                      width: 1,
+                    ), // Adjust color and width as needed
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text("Flip"),
+              ),
+              const SizedBox(
+                width: 40,
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    AppColors.primaryBackgroundButton,
+                  ),
+                  fixedSize: MaterialStateProperty.all<Size>(
+                    Size(MediaQuery.of(context).size.width / 2.5, 52),
+                  ),
+                  side: MaterialStateProperty.all<BorderSide>(
+                    BorderSide(
+                      color: AppColors.primaryBackgroundButton,
+                      width: 1,
+                    ), // Adjust color and width as needed
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(
+                  "Remembered",
+                  style: TextStyle(
+                    color: AppColors.primaryTextButton,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 60,
+          )
         ]),
       ),
     );
@@ -67,7 +123,6 @@ class _FlashCardPageState extends State<FlashCardPage> {
     int? currentIndex,
     CardSwiperDirection direction,
   ) {
-    print("current index: $currentIndex");
     controller.swipe(CardSwiperDirection.left);
     return true;
   }

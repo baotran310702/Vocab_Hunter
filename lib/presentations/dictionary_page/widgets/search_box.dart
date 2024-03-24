@@ -24,9 +24,7 @@ class _SearchBoxState extends State<SearchBox> {
         ),
         controller: controller,
         hintText: 'Search for a word',
-        onChanged: (value) {
-          print("Search for $value");
-        },
+        onChanged: (value) {},
         onTap: () {
           controller.openView();
         },

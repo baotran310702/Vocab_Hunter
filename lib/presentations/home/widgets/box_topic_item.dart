@@ -2,8 +2,6 @@ import 'package:english_learner/gen/assets.gen.dart';
 import 'package:english_learner/presentations/home/views/list_topic_vocab_page.dart';
 import 'package:flutter/material.dart';
 
-import 'list_topics_vocab.dart';
-
 class BoxTopicItem extends StatefulWidget {
   const BoxTopicItem({super.key});
 

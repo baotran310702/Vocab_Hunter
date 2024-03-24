@@ -1,7 +1,6 @@
 import 'package:english_learner/firebase_options.dart';
 import 'package:english_learner/presentations/dictionary_page/dictionary_page.dart';
 import 'package:english_learner/presentations/home/home.dart';
-import 'package:english_learner/presentations/home/views/topic_vocabs_page.dart';
 import 'package:english_learner/presentations/login_page/sign_in_page.dart';
 import 'package:english_learner/presentations/login_page/sign_up_page.dart';
 import 'package:english_learner/presentations/user_profile/user_profile.dart';

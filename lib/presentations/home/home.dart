@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  List<int> listNews = [1, 2, 3, 4];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +26,9 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const HeaderInformations(),
+                const HeaderInformations(
+                  title: "Welcome back KICM",
+                ),
                 const SizedBox(height: 40),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -78,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 20),
                 Column(
                   children: [
-                    for (int i in list)
+                    for (int i in listNews)
                       BoxNews(
                         key: Key(
                           i.toString(),

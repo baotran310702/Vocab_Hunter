@@ -2,7 +2,8 @@ import 'package:english_learner/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class HeaderInformations extends StatefulWidget {
-  const HeaderInformations({super.key});
+  final String title;
+  const HeaderInformations({super.key, required this.title});
 
   @override
   State<HeaderInformations> createState() => _HeaderInformationsState();
@@ -49,9 +50,9 @@ class _HeaderInformationsState extends State<HeaderInformations> {
               )
             ],
           ),
-          const Text(
-            "Welcome to English Learner",
-            style: TextStyle(
+          Text(
+            widget.title,
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 18,
               fontWeight: FontWeight.bold,

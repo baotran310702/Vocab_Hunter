@@ -1,4 +1,5 @@
 import 'package:english_learner/gen/assets.gen.dart';
+import 'package:english_learner/presentations/home/views/detail_news_vocabulary.dart';
 import 'package:english_learner/presentations/home/views/topic_vocabs_page.dart';
 import 'package:english_learner/presentations/home/widgets/divider.dart';
 import 'package:english_learner/presentations/home/widgets/item_type_vocab.dart';
@@ -76,7 +77,7 @@ class ListVocabType extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (builder) => const TopicVocab(),
+                        builder: (builder) => const DetailNewsPage(),
                       ),
                     );
                   },

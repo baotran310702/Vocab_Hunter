@@ -101,8 +101,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
           '/sign-in': (context) => const SignInPage(),
           '/sign-up': (context) => const SignUpPage(),
-          '/home': (context) => home(),
-          '/': (context) => const TopicVocab(),
+          '/': (context) => home(),
         },
       ),
     );

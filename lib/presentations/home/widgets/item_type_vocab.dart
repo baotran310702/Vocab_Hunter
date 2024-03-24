@@ -4,7 +4,13 @@ import 'package:flutter/material.dart';
 class ItemTypeVocab extends StatefulWidget {
   final String text;
   final Widget icon;
-  const ItemTypeVocab({super.key, required this.text, required this.icon});
+  final Function onTap;
+  const ItemTypeVocab({
+    super.key,
+    required this.text,
+    required this.icon,
+    required this.onTap,
+  });
 
   @override
   State<ItemTypeVocab> createState() => _ItemTypeVocabState();
@@ -15,12 +21,15 @@ class _ItemTypeVocabState extends State<ItemTypeVocab> {
 
   void handleScale() async {
     setState(() {
-      scale = 1.4;
+      scale = 1.2;
     });
-    await Future.delayed(const Duration(milliseconds: 160));
+    await Future.delayed(const Duration(milliseconds: 140));
     setState(() {
       scale = 1;
     });
+    await Future.delayed(const Duration(milliseconds: 80));
+
+    widget.onTap();
   }
 
   @override
@@ -31,7 +40,7 @@ class _ItemTypeVocabState extends State<ItemTypeVocab> {
       },
       child: AnimatedScale(
         scale: scale,
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 120),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),

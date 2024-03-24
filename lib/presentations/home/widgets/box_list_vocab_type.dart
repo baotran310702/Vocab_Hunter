@@ -1,4 +1,5 @@
 import 'package:english_learner/gen/assets.gen.dart';
+import 'package:english_learner/presentations/home/views/topic_vocabs_page.dart';
 import 'package:english_learner/presentations/home/widgets/divider.dart';
 import 'package:english_learner/presentations/home/widgets/item_type_vocab.dart';
 import 'package:flutter/material.dart';
@@ -43,24 +44,56 @@ class ListVocabType extends StatelessWidget {
                   text: "Flashcard",
                   icon: Assets.icons.flash_card
                       .image(width: sizeIcon, height: sizeIcon),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => const TopicVocab(),
+                      ),
+                    );
+                  },
                 ),
                 const Devider(),
                 ItemTypeVocab(
                   text: "Topics",
                   icon: Assets.icons.topics
                       .image(width: sizeIcon, height: sizeIcon),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => const TopicVocab(),
+                      ),
+                    );
+                  },
                 ),
                 const Devider(),
                 ItemTypeVocab(
                   text: "News",
                   icon: Assets.icons.news
                       .image(width: sizeIcon, height: sizeIcon),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => const TopicVocab(),
+                      ),
+                    );
+                  },
                 ),
                 const Devider(),
                 ItemTypeVocab(
                   text: "Ielts - Toeic",
                   icon: Assets.icons.ielts_toeic
                       .image(width: sizeIcon, height: sizeIcon),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => const TopicVocab(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

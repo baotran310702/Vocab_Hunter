@@ -7,6 +7,8 @@ import 'package:english_learner/presentations/user_profile/user_profile.dart';
 import 'package:english_learner/presentations/user_vocabulary_training/bloc/manage_vocab_bloc.dart';
 import 'package:english_learner/presentations/user_vocabulary_training/user_vocabulary.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
+import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/icons.dart';
 import 'package:english_learner/utils/notifications/notifications_services.dart';
 import 'package:english_learner/utils/notifications/word_manager_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -64,8 +66,8 @@ class _MyAppState extends State<MyApp> {
   /// widget list
   final List<Widget> bottomBarPages = [
     const HomePage(),
-    const UserVocabulary(),
     const DictionaryPage(),
+    const UserVocabulary(),
     const UserProfile(),
   ];
 
@@ -118,32 +120,49 @@ class _MyAppState extends State<MyApp> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Image.asset(
+              AppIcons.home,
+              width: 24,
+              height: 24,
+            ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Your Vocab',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Image.asset(
+              AppIcons.dictionaryIcon,
+              width: 24,
+              height: 24,
+            ),
             label: 'Dictionary',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Image.asset(
+              AppIcons.book,
+              width: 24,
+              height: 24,
+            ),
+            label: 'Your Vocab',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              AppIcons.user,
+              width: 24,
+              height: 24,
+            ),
             label: 'Profile',
           ),
         ],
-        iconSize: 32,
+        iconSize: 34,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        unselectedItemColor: Colors.amber[400],
+        backgroundColor: AppColors.bottomBarColor,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
         showSelectedLabels: true,
-        showUnselectedLabels: true,
+        showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,
       ),

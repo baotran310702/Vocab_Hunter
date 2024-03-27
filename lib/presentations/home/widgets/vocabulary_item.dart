@@ -16,7 +16,6 @@ class VocabularyItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text("123"),
               const SizedBox(
                 width: 10,
               ),

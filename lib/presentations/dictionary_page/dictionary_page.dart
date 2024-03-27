@@ -1,11 +1,13 @@
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
+import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
-import 'package:english_learner/presentations/dictionary_page/widgets/vocabulary_information.dart';
 import 'package:english_learner/presentations/home/widgets/header_informations.dart';
+import 'package:english_learner/presentations/home/widgets/vocabulary_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../utils/debouce.dart';
+import 'views/detail_vocabulary.dart';
 
 class DictionaryPage extends StatefulWidget {
   const DictionaryPage({super.key});
@@ -52,7 +54,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
                     Expanded(
                       child: Stack(
                         children: [
-                          searchBox(context, state),
                           Padding(
                             padding: const EdgeInsets.only(top: 66),
                             child: Column(
@@ -72,11 +73,24 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                       children: List.generate(
                                         10,
                                         (index) => Container(
-                                          padding: const EdgeInsets.all(10),
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          height: 100,
-                                          color: Colors.amber,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          decoration: const BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: Colors.grey,
+                                                width: 0.5,
+                                              ),
+                                            ),
+                                          ),
+                                          child: InkWell(
+                                              onTap: () {
+                                                _onTapDetailVocabulary(
+                                                    context,
+                                                    state.searchedVocabulary[
+                                                        index]);
+                                              },
+                                              child: const VocabularyItem()),
                                         ),
                                       ),
                                     ),
@@ -85,6 +99,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
                               ],
                             ),
                           ),
+                          searchBox(context, state),
                         ],
                       ),
                     ),
@@ -173,6 +188,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
 
                     vocabInputController.text =
                         state.searchedVocabulary[index].vocabId;
+                    _onTapDetailVocabulary(
+                        context, state.searchedVocabulary[index]);
                   },
                 );
               },
@@ -180,6 +197,17 @@ class _DictionaryPageState extends State<DictionaryPage> {
           ),
         )
       ],
+    );
+  }
+
+  void _onTapDetailVocabulary(BuildContext context, Vocabulary vocabulary) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailVocabulary(
+          vocabularyRemote: VocabularyRemote.empty(),
+        ),
+      ),
     );
   }
 

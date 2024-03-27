@@ -1,4 +1,6 @@
 import 'package:english_learner/gen/assets.gen.dart';
+import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class HeaderInformations extends StatefulWidget {
@@ -12,7 +14,8 @@ class HeaderInformations extends StatefulWidget {
 class _HeaderInformationsState extends State<HeaderInformations> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: AppColors.backgroundHeader,
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
       ),
@@ -23,26 +26,26 @@ class _HeaderInformationsState extends State<HeaderInformations> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                child: Assets.icons.logoText.image(
-                  width: 140,
-                  height: 80,
-                ),
+              Image.asset(
+                AppIcons.logoText,
+                width: 180,
+                height: 80,
               ),
               Stack(
                 children: [
                   Assets.icons.bell.image(
-                    width: 24,
-                    height: 24,
+                    width: 36,
+                    height: 36,
                   ),
                   const Positioned(
-                    top: -2.5,
-                    right: 3,
+                    top: -0.5,
+                    right: 6.5,
                     child: Text(
                       "6",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 8,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   )
@@ -52,16 +55,17 @@ class _HeaderInformationsState extends State<HeaderInformations> {
           ),
           Text(
             widget.title,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 18,
+            style: TextStyle(
+              color: AppColors.titleHeaderColor,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
+          const SizedBox(height: 4),
           Text(
             "Have a nice day!",
             style: TextStyle(
-              color: Colors.black.withOpacity(0.4),
+              color: AppColors.descriptionHeaderColor,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),

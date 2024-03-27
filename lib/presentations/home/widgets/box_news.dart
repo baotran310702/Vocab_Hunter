@@ -26,7 +26,7 @@ class _BoxNewsState extends State<BoxNews> {
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
-          color: Colors.black12,
+          color: Colors.white,
         ),
         child: Row(
           children: [

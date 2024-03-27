@@ -2,6 +2,7 @@ import 'package:english_learner/presentations/home/widgets/box_list_vocab_type.d
 import 'package:english_learner/presentations/home/widgets/box_news.dart';
 import 'package:english_learner/presentations/home/widgets/box_vocab_item.dart';
 import 'package:english_learner/presentations/home/widgets/header_informations.dart';
+import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,10 +18,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundAppbar,
+      extendBody: true,
       body: SafeArea(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          color: Colors.white,
+          color: AppColors.backgroundHeader,
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -35,17 +38,18 @@ class _HomePageState extends State<HomePage> {
                   child: ListVocabType(),
                 ),
                 const SizedBox(height: 20),
-                const Row(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Text(
                       "Daily Vocabulary",
                       style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                        color: AppColors.titleHeaderColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      textAlign: TextAlign.start,
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
@@ -64,15 +68,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Row(
+                Row(
                   children: [
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Text(
                       "News Recommended for You",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: AppColors.titleHeaderColor,
                         fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.start,
                     ),

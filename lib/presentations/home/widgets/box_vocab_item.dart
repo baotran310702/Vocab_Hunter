@@ -1,4 +1,5 @@
 import 'package:english_learner/gen/assets.gen.dart';
+import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class BoxVocab extends StatefulWidget {
@@ -35,7 +36,7 @@ class _BoxVocabState extends State<BoxVocab> {
           width: 185,
           height: 185,
           decoration: BoxDecoration(
-            color: Colors.amber,
+            color: AppColors.boxVocabColor,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -78,7 +79,7 @@ class _BoxVocabState extends State<BoxVocab> {
                   style: TextStyle(
                     fontSize: 13,
                     color: Colors.black,
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w400,
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,

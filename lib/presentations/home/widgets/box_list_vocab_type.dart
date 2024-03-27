@@ -1,5 +1,4 @@
 import 'package:english_learner/gen/assets.gen.dart';
-import 'package:english_learner/presentations/home/views/detail_news_vocabulary.dart';
 import 'package:english_learner/presentations/home/views/topic_vocabs_page.dart';
 import 'package:english_learner/presentations/home/widgets/divider.dart';
 import 'package:english_learner/presentations/home/widgets/item_type_vocab.dart';
@@ -16,7 +15,7 @@ class ListVocabType extends StatelessWidget {
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        color: Colors.amber,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(10),
       ),
       width: MediaQuery.of(context).size.width,
@@ -29,7 +28,7 @@ class ListVocabType extends StatelessWidget {
               "Type of Vocab",
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 22,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -64,20 +63,6 @@ class ListVocabType extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (builder) => const TopicVocab(),
-                      ),
-                    );
-                  },
-                ),
-                const Devider(),
-                ItemTypeVocab(
-                  text: "News",
-                  icon: Assets.icons.news
-                      .image(width: sizeIcon, height: sizeIcon),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (builder) => const DetailNewsPage(),
                       ),
                     );
                   },

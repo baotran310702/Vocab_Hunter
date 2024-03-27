@@ -1,5 +1,5 @@
-import 'package:english_learner/gen/assets.gen.dart';
 import 'package:english_learner/presentations/home/views/list_topic_vocab_page.dart';
+import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class BoxTopicItem extends StatefulWidget {
@@ -78,7 +78,7 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
                       child: AnimatedScale(
                         scale: scale,
                         duration: const Duration(milliseconds: 200),
-                        child: Assets.icons.heart.image(),
+                        child: Image.asset(AppIcons.heartUnselected),
                       ),
                     ),
                   ),
@@ -133,20 +133,20 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
                         ),
                       ),
                       Container(
-                        height: 40,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 10),
-                        decoration: const BoxDecoration(
-                          color: Color(0xffe0e0e0),
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(12),
-                              bottomRight: Radius.circular(12)),
-                        ),
-                        child: Assets.icons.start.image(
-                          width: 16,
-                          height: 16,
-                        ),
-                      ),
+                          height: 40,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 10),
+                          decoration: const BoxDecoration(
+                            color: Color(0xffe0e0e0),
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(12),
+                                bottomRight: Radius.circular(12)),
+                          ),
+                          child: Image.asset(
+                            AppIcons.start,
+                            width: 16,
+                            height: 16,
+                          )),
                     ],
                   )
                 ],

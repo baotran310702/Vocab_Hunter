@@ -1,8 +1,11 @@
 import 'package:english_learner/gen/assets.gen.dart';
+import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class HeaderInformations extends StatefulWidget {
-  const HeaderInformations({super.key});
+  final String title;
+  const HeaderInformations({super.key, required this.title});
 
   @override
   State<HeaderInformations> createState() => _HeaderInformationsState();
@@ -11,46 +14,64 @@ class HeaderInformations extends StatefulWidget {
 class _HeaderInformationsState extends State<HeaderInformations> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              child: Assets.icons.logoText.image(
-                width: 140,
+    return Container(
+      color: AppColors.backgroundHeader,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.asset(
+                AppIcons.logoText,
+                width: 180,
                 height: 80,
               ),
+              Stack(
+                children: [
+                  Assets.icons.bell.image(
+                    width: 36,
+                    height: 36,
+                  ),
+                  const Positioned(
+                    top: -0.5,
+                    right: 6.5,
+                    child: Text(
+                      "6",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+          Text(
+            widget.title,
+            style: TextStyle(
+              color: AppColors.titleHeaderColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            Stack(
-              children: [
-                Assets.icons.bell.image(
-                  width: 40,
-                  height: 40,
-                ),
-              ],
-            )
-          ],
-        ),
-        const Text(
-          "Welcome to English Learner",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
           ),
-        ),
-        Text(
-          "Have a nice day!",
-          style: TextStyle(
-            color: Colors.black.withOpacity(0.4),
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
+          const SizedBox(height: 4),
+          Text(
+            "Have a nice day!",
+            style: TextStyle(
+              color: AppColors.descriptionHeaderColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

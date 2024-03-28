@@ -12,13 +12,14 @@ class VocabularyRemote extends VocabularyRemoteService {
   License? license;
   List<String>? sourceUrls;
 
-  VocabularyRemote(
-      {this.word,
-      this.phonetic,
-      this.phonetics,
-      this.meanings,
-      this.license,
-      this.sourceUrls});
+  VocabularyRemote({
+    this.word,
+    this.phonetic,
+    this.phonetics,
+    this.meanings,
+    this.license,
+    this.sourceUrls,
+  });
 
   VocabularyRemote.fromJson(Map<String, dynamic> json) {
     word = json['word'];

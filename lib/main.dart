@@ -1,11 +1,12 @@
+import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:english_learner/firebase_options.dart';
 import 'package:english_learner/presentations/dictionary_page/dictionary_page.dart';
 import 'package:english_learner/presentations/home/home.dart';
 import 'package:english_learner/presentations/login_page/sign_in_page.dart';
 import 'package:english_learner/presentations/login_page/sign_up_page.dart';
 import 'package:english_learner/presentations/user_profile/user_profile.dart';
-import 'package:english_learner/presentations/user_vocabulary_training/bloc/manage_vocab_bloc.dart';
-import 'package:english_learner/presentations/user_vocabulary_training/user_vocabulary.dart';
+import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
+import 'package:english_learner/presentations/user_vocabulary/user_vocabulary.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/icons.dart';
@@ -55,6 +56,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _pageController = PageController(initialPage: 0);
+  final _controller = NotchBottomBarController();
+
   int maxCount = 4;
   int _selectedIndex = 0;
   @override
@@ -67,7 +70,7 @@ class _MyAppState extends State<MyApp> {
   final List<Widget> bottomBarPages = [
     const HomePage(),
     const DictionaryPage(),
-    const UserVocabulary(),
+    const UserVocabularyTrain(),
     const UserProfile(),
   ];
 
@@ -111,6 +114,7 @@ class _MyAppState extends State<MyApp> {
   Scaffold home() {
     return Scaffold(
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: bottomBarPages,
         onPageChanged: (int index) {
@@ -119,52 +123,60 @@ class _MyAppState extends State<MyApp> {
           });
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Image.asset(
+      bottomNavigationBar: AnimatedNotchBottomBar(
+        notchBottomBarController: _controller,
+        color: AppColors.bottomBarColor,
+        notchColor: AppColors.mainBackgroundColor,
+        bottomBarItems: [
+          BottomBarItem(
+            inActiveItem: Image.asset(
               AppIcons.home,
-              width: 24,
-              height: 24,
+              color: Colors.white,
             ),
-            label: 'Home',
+            activeItem: Image.asset(
+              AppIcons.home,
+            ),
+            itemLabel: "Home",
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
+          BottomBarItem(
+            inActiveItem: Image.asset(
               AppIcons.dictionaryIcon,
-              width: 24,
-              height: 24,
+              color: Colors.white,
             ),
-            label: 'Dictionary',
+            activeItem: Image.asset(AppIcons.dictionaryIcon),
+            itemLabel: "Dictionary",
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
+          BottomBarItem(
+            inActiveItem: Image.asset(
               AppIcons.book,
-              width: 24,
-              height: 24,
+              color: Colors.white,
             ),
-            label: 'Your Vocab',
+            activeItem: Image.asset(AppIcons.book),
+            itemLabel: "Your Words",
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
+          BottomBarItem(
+            inActiveItem: Image.asset(
               AppIcons.user,
-              width: 24,
-              height: 24,
+              color: Colors.white,
             ),
-            label: 'Profile',
+            activeItem: Image.asset(AppIcons.user),
+            itemLabel: "User",
           ),
         ],
-        iconSize: 34,
-        currentIndex: _selectedIndex,
-        backgroundColor: AppColors.bottomBarColor,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
-        showSelectedLabels: true,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        onTap: _onItemTapped,
+        onTap: (int value) {
+          setState(() {
+            _selectedIndex = value;
+            _pageController.jumpToPage(value);
+          });
+        },
+        kIconSize: 25,
+        kBottomRadius: 24,
+        removeMargins: false,
+        bottomBarHeight: 64,
+        itemLabelStyle: const TextStyle(
+          fontSize: 10,
+          color: Colors.white,
+        ),
       ),
     );
   }

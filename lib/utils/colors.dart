@@ -16,4 +16,5 @@ class AppColors {
   static Color descriptionHeaderColor = const Color(0xFF7B7B7B);
   static Color boxVocabColor = const Color(0xFFDCFFB3);
   static Color bottomBarColor = const Color(0xFF3D4D01);
+  static Color backgroundSearchColor = const Color(0xFFDCF8BB);
 }

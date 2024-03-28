@@ -1,4 +1,4 @@
-import 'package:english_learner/presentations/user_vocabulary_training/bloc/manage_vocab_bloc.dart';
+import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';

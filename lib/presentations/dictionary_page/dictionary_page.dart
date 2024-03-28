@@ -3,6 +3,8 @@ import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/header_informations.dart';
 import 'package:english_learner/presentations/home/widgets/vocabulary_item.dart';
+import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,6 +27,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
 
   //params showing box result
   bool isShowingResult = false;
+  bool isTapResult = false;
 
   final Debouncer _debouncer = Debouncer(
     delay: const Duration(
@@ -39,71 +42,88 @@ class _DictionaryPageState extends State<DictionaryPage> {
       child: BlocBuilder<TranslatePageBloc, TranslatePageState>(
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: AppColors.backgroundAppbar,
             resizeToAvoidBottomInset: false,
+            extendBody: true,
+            extendBodyBehindAppBar: true,
             body: SafeArea(
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const HeaderInformations(
-                      title: "Search anywords you want,lets learn togother!",
-                    ),
-                    const SizedBox(height: 20),
-                    Expanded(
-                      child: Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 66),
-                            child: Column(
-                              children: [
-                                const Text(
-                                  "Search History",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                child: Container(
+                  color: AppColors.backgroundHeader,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const HeaderInformations(
+                        title: "Search anywords you want,lets learn togother!",
+                      ),
+                      const SizedBox(height: 20),
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 66),
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    "Search History",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 10),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.vertical,
-                                    child: Column(
-                                      children: List.generate(
-                                        10,
-                                        (index) => Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          decoration: const BoxDecoration(
-                                            border: Border(
-                                              bottom: BorderSide(
-                                                color: Colors.grey,
-                                                width: 0.5,
+                                  const SizedBox(height: 10),
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: Column(
+                                        children: List.generate(
+                                          10,
+                                          (index) => Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            decoration: const BoxDecoration(
+                                              border: Border(
+                                                bottom: BorderSide(
+                                                  color: Colors.grey,
+                                                  width: 0.5,
+                                                ),
                                               ),
                                             ),
+                                            child: InkWell(
+                                                onTap: () {
+                                                  _onTapDetailVocabulary(
+                                                      context,
+                                                      state.searchedVocabulary[
+                                                          index]);
+                                                },
+                                                child: const VocabularyItem()),
                                           ),
-                                          child: InkWell(
-                                              onTap: () {
-                                                _onTapDetailVocabulary(
-                                                    context,
-                                                    state.searchedVocabulary[
-                                                        index]);
-                                              },
-                                              child: const VocabularyItem()),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          searchBox(context, state),
-                        ],
+                            TapRegion(
+                                onTapOutside: (tap) {
+                                  setState(() {
+                                    isShowingResult = false;
+                                  });
+                                  FocusScopeNode currentFocus =
+                                      FocusScope.of(context);
+                                  if (!currentFocus.hasPrimaryFocus) {
+                                    currentFocus.unfocus();
+                                  }
+                                },
+                                child: searchBox(context, state)),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -164,7 +184,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
               maxHeight: MediaQuery.of(context).size.height * 0.4,
             ),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.backgroundSearchColor,
               borderRadius: BorderRadius.circular(10),
             ),
             child: ListView.builder(
@@ -172,17 +192,54 @@ class _DictionaryPageState extends State<DictionaryPage> {
               itemCount: isShowingResult ? state.searchedVocabulary.length : 0,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(state.searchedVocabulary[index].vocabId),
-                  trailing: Text(
-                    state.searchedVocabulary[index].vietNameseMeaining[0]
-                                .length <
-                            24
-                        ? state.searchedVocabulary[index].vietNameseMeaining[0]
-                        : "${state.searchedVocabulary[index].vietNameseMeaining[0].toString().substring(0, 24)}...",
+                  title: Container(
+                    padding: const EdgeInsets.only(
+                      bottom: 12,
+                      left: 12,
+                      right: 12,
+                    ),
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.grey,
+                          width: 0.5,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(state.searchedVocabulary[index].vocabId),
+                            Text(
+                              state.searchedVocabulary[index]
+                                          .vietNameseMeaining[0].length <
+                                      24
+                                  ? state.searchedVocabulary[index]
+                                      .vietNameseMeaining[0]
+                                  : "${state.searchedVocabulary[index].vietNameseMeaining[0].toString().substring(0, 24)}...",
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Image.asset(
+                          AppIcons.arrowRight,
+                          width: 26,
+                          height: 20,
+                        ),
+                      ],
+                    ),
                   ),
                   onTap: () {
                     setState(() {
                       isShowingResult = false;
+                      isTapResult = false;
                       currentVocabulary = state.searchedVocabulary[index];
                     });
 

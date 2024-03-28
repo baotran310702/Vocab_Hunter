@@ -15,9 +15,22 @@ class _HeaderInformationsState extends State<HeaderInformations> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.backgroundHeader,
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
+        vertical: 12,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.backgroundAppbar,
+        border: const Border(
+          bottom: BorderSide(
+            color: Colors.grey,
+            width: 1,
+          ),
+        ),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

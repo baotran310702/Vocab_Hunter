@@ -18,4 +18,5 @@ class AppIcons {
   static const String user = "assets/icons/user.png";
   static const String home = "assets/icons/home.png";
   static const String book = "assets/icons/book.png";
+  static const String arrowRight = "assets/icons/arrow_right.png";
 }

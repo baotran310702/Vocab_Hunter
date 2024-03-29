@@ -1,5 +1,6 @@
 import 'package:english_learner/presentations/global_widgets/appbar.dart';
 import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/converter.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ class AchievementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<int> initdefault = List.generate(7, (value) => 0);
     return Scaffold(
       backgroundColor: AppColors.backgroundAppbar,
       extendBodyBehindAppBar: true,
@@ -17,10 +19,16 @@ class AchievementPage extends StatelessWidget {
       body: SafeArea(
         child: Container(
           color: AppColors.backgroundPageAchievement,
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
           child: Column(
             children: [
-              ItemAchievement(
-                achievement: Achievement.defaultInit(),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: initdefault.length,
+                  itemBuilder: (context, index) => ItemAchievement(
+                    achievement: Achievement.defaultInit(),
+                  ),
+                ),
               )
             ],
           ),
@@ -41,6 +49,7 @@ class ItemAchievement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(bottom: 12),
       height: 120,
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -64,7 +73,7 @@ class ItemAchievement extends StatelessWidget {
               ),
             ),
             child: Image.asset(
-              AppIcons.sleepyBoi,
+              CustomConverter.convertAchievement(achievement.type),
               width: 60,
               height: 60,
             ),
@@ -82,7 +91,7 @@ class ItemAchievement extends StatelessWidget {
                   achievement.title,
                   style: TextStyle(
                     color: AppColors.mainTextColor,
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.w400,
                   ),
                 ),

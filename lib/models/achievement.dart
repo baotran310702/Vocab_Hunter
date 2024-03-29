@@ -1,4 +1,4 @@
-enum AchievementType { eatingBoi, sleepyBoi, writingBoi, bathingBoi }
+import 'package:english_learner/utils/enum.dart';
 
 class Achievement {
   final String title;
@@ -19,7 +19,7 @@ class Achievement {
     return Achievement(
       title: "title",
       description: "description",
-      type: AchievementType.eatingBoi,
+      type: AchievementType.sleepyBoi,
       amount: 100,
       total: 150,
     );

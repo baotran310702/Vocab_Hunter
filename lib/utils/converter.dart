@@ -1,3 +1,5 @@
+import 'package:english_learner/utils/enum.dart';
+import 'package:english_learner/utils/icons.dart';
 import 'package:english_learner/utils/word_type.dart';
 
 class CustomConverter {
@@ -65,5 +67,20 @@ class CustomConverter {
     });
 
     return result;
+  }
+
+  static String convertAchievement(AchievementType type) {
+    switch (type) {
+      case AchievementType.bathingBoi:
+        return AppIcons.bathingBoi;
+      case AchievementType.eatingBoi:
+        return AppIcons.eatingBoi;
+      case AchievementType.sleepyBoi:
+        return AppIcons.eatingBoi;
+      case AchievementType.writingBoi:
+        return AppIcons.writingBoi;
+      default:
+        return "";
+    }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:english_learner/presentations/user_profile/views/achievements.dart';
+import 'package:english_learner/presentations/user_profile/views/achievement_page.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';

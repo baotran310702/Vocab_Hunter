@@ -5,11 +5,15 @@ class ItemTypeVocab extends StatefulWidget {
   final String text;
   final Widget icon;
   final Function onTap;
+  final bool? isAbleToEdit;
+  final bool? isSync;
   const ItemTypeVocab({
     super.key,
     required this.text,
     required this.icon,
     required this.onTap,
+    this.isAbleToEdit,
+    this.isSync,
   });
 
   @override
@@ -43,6 +47,9 @@ class _ItemTypeVocabState extends State<ItemTypeVocab> {
         duration: const Duration(milliseconds: 120),
         child: Container(
           decoration: BoxDecoration(
+            color: widget.isAbleToEdit != null && widget.isAbleToEdit == true
+                ? AppColors.backgroundEditButton
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(10),
           ),
           width: 95,
@@ -51,7 +58,11 @@ class _ItemTypeVocabState extends State<ItemTypeVocab> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              widget.icon,
+              widget.isSync != null && widget.isSync == true
+                  ? CircularProgressIndicator(
+                      color: AppColors.backgroundEditButton,
+                    )
+                  : widget.icon,
               const SizedBox(height: 10),
               Text(
                 widget.text,

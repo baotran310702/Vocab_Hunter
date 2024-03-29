@@ -1,3 +1,4 @@
+import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class UserProfile extends StatelessWidget {
@@ -5,21 +6,27 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("User Profile Page"),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
+      backgroundColor: AppColors.backgroundAppbar,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("User Profile Page"),
 
-          //buttom log out
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
-            },
-            child: const Text("Log Out"),
-          ),
-        ],
+            //buttom log out
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/", (route) => false);
+              },
+              child: const Text("Log Out"),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -57,6 +57,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
                     children: [
                       const HeaderInformations(
                         title: "Search anywords you want,lets learn togother!",
+                        description: "Learn as much as possible!",
                       ),
                       const SizedBox(height: 20),
                       Expanded(

@@ -46,14 +46,14 @@ class _HeaderInformationsState extends State<HeaderInformations> {
             children: [
               Image.asset(
                 AppIcons.logoText,
-                width: 180,
-                height: 80,
+                width: 156,
+                height: 60,
               ),
               Stack(
                 children: [
                   Assets.icons.bell.image(
-                    width: 36,
-                    height: 36,
+                    width: 28,
+                    height: 28,
                   ),
                   const Positioned(
                     top: -0.5,
@@ -75,7 +75,7 @@ class _HeaderInformationsState extends State<HeaderInformations> {
             widget.title,
             style: TextStyle(
               color: AppColors.titleHeaderColor,
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -84,7 +84,7 @@ class _HeaderInformationsState extends State<HeaderInformations> {
             widget.description,
             style: TextStyle(
               color: AppColors.descriptionHeaderColor,
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: FontWeight.w400,
             ),
           ),

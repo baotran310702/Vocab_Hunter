@@ -112,6 +112,8 @@ class _MyAppState extends State<MyApp> {
 
   Scaffold home() {
     return Scaffold(
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),

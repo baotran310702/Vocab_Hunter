@@ -19,4 +19,9 @@ class AppIcons {
   static const String home = "assets/icons/home.png";
   static const String book = "assets/icons/book.png";
   static const String arrowRight = "assets/icons/arrow_right.png";
+  static const String sync = "assets/icons/sync.png";
+  static const String setting = "assets/icons/setting.png";
+  static const String createNew = "assets/icons/create_new.png";
+  static const String edit = "assets/icons/edit.png";
+  static const String xMark = "assets/icons/x_mark.png";
 }

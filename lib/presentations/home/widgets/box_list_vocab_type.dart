@@ -53,7 +53,7 @@ class ListVocabType extends StatelessWidget {
                     );
                   },
                 ),
-                const Devider(),
+                const DeviderVerticle(),
                 ItemTypeVocab(
                   text: "Topics",
                   icon: Assets.icons.topics
@@ -67,7 +67,7 @@ class ListVocabType extends StatelessWidget {
                     );
                   },
                 ),
-                const Devider(),
+                const DeviderVerticle(),
                 ItemTypeVocab(
                   text: "Ielts - Toeic",
                   icon: Assets.icons.ielts_toeic

@@ -30,7 +30,8 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const HeaderInformations(
-                  title: "Welcome back KICM",
+                  title: "Welcome back Kevin",
+                  description: "Let's learn something new today",
                 ),
                 const SizedBox(height: 40),
                 const Padding(

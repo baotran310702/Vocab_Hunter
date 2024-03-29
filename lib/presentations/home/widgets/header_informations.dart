@@ -4,8 +4,13 @@ import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class HeaderInformations extends StatefulWidget {
+  final String description;
   final String title;
-  const HeaderInformations({super.key, required this.title});
+  const HeaderInformations({
+    super.key,
+    required this.title,
+    required this.description,
+  });
 
   @override
   State<HeaderInformations> createState() => _HeaderInformationsState();
@@ -76,7 +81,7 @@ class _HeaderInformationsState extends State<HeaderInformations> {
           ),
           const SizedBox(height: 4),
           Text(
-            "Have a nice day!",
+            widget.description,
             style: TextStyle(
               color: AppColors.descriptionHeaderColor,
               fontSize: 16,

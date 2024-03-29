@@ -10,11 +10,13 @@ class AppColors {
   static Color primaryTextButton = const Color(0xFFFFFFFF);
   static Color secondaryBackgroundButton = const Color(0xFFF0F0F0);
   static Color secondaryTextButton = const Color(0xFF0F0F0F);
-  static Color backgroundAppbar = const Color(0xFFFFE7BC);
+  static Color backgroundAppbar = const Color(0xFFFFD691);
   static Color backgroundHeader = const Color(0xFFFFF7E8);
   static Color titleHeaderColor = const Color(0xFF709302);
   static Color descriptionHeaderColor = const Color(0xFF7B7B7B);
   static Color boxVocabColor = const Color(0xFFDCFFB3);
   static Color bottomBarColor = const Color(0xFF3D4D01);
   static Color backgroundSearchColor = const Color(0xFFDCF8BB);
+  static Color backGroupDeleteButton = const Color(0xFFEF8075);
+  static Color backgroundEditButton = const Color(0xFF5ED0B9);
 }

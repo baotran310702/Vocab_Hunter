@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Devider extends StatelessWidget {
-  const Devider({super.key});
+class DeviderVerticle extends StatelessWidget {
+  const DeviderVerticle({super.key});
 
   @override
   Widget build(BuildContext context) {

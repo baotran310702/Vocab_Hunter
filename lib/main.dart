@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
   final _controller = NotchBottomBarController();
 
   int maxCount = 4;
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
   @override
   void dispose() {
     _pageController.dispose();
@@ -77,7 +77,6 @@ class _MyAppState extends State<MyApp> {
   /// on item tapped
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
       _pageController.jumpToPage(index);
     });
   }
@@ -113,15 +112,12 @@ class _MyAppState extends State<MyApp> {
 
   Scaffold home() {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: bottomBarPages,
-        onPageChanged: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        onPageChanged: (int index) {},
       ),
       bottomNavigationBar: AnimatedNotchBottomBar(
         notchBottomBarController: _controller,
@@ -165,10 +161,10 @@ class _MyAppState extends State<MyApp> {
         ],
         onTap: (int value) {
           setState(() {
-            _selectedIndex = value;
             _pageController.jumpToPage(value);
           });
         },
+        durationInMilliSeconds: 500,
         kIconSize: 25,
         kBottomRadius: 24,
         removeMargins: false,

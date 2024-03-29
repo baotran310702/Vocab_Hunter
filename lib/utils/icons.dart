@@ -23,5 +23,18 @@ class AppIcons {
   static const String setting = "assets/icons/setting.png";
   static const String createNew = "assets/icons/create_new.png";
   static const String edit = "assets/icons/edit.png";
+  static const String arrow = "assets/icons/arrow.png";
   static const String xMark = "assets/icons/x_mark.png";
+  static const String userProfile = "assets/icons/user_profile.png";
+  static const String support = "assets/icons/support.png";
+  static const String cup = "assets/icons/cup.png";
+  static const String language = "assets/icons/language.png";
+  static const String alert = "assets/icons/alert.png";
+  static const String security = "assets/icons/security.png";
+  static const String following = "assets/icons/following.png";
+  static const String bathingBoi = "assets/icons/bathing_boi.png";
+  static const String sleepyBoi = "assets/icons/sleepy_boi.png";
+  static const String writingBoi = "assets/icons/writing_boi.png";
+  static const String eatingBoi = "assets/icons/eating_boi.png";
+  static const String orange = "assets/icons/orange.png";
 }

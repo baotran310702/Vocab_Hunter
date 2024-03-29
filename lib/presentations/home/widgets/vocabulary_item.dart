@@ -1,7 +1,8 @@
-import 'package:english_learner/gen/assets.gen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import '../../../utils/icons.dart';
 
 class VocabularyItem extends StatelessWidget {
   const VocabularyItem({super.key});
@@ -51,7 +52,8 @@ class VocabularyItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Assets.icons.speaker.image(
+                  Image.asset(
+                    AppIcons.speaker,
                     width: 24,
                     height: 24,
                   ),

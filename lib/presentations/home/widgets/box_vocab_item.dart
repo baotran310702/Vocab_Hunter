@@ -1,5 +1,5 @@
-import 'package:english_learner/gen/assets.gen.dart';
 import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class BoxVocab extends StatefulWidget {
@@ -44,7 +44,11 @@ class _BoxVocabState extends State<BoxVocab> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Assets.icons.tag_save.image(width: 24, height: 24),
+                  Image.asset(
+                    AppIcons.tagSave,
+                    width: 24,
+                    height: 24,
+                  ),
                 ],
               ),
               const Text(

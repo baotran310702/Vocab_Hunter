@@ -1,7 +1,7 @@
-import 'package:english_learner/gen/assets.gen.dart';
 import 'package:english_learner/presentations/home/views/topic_vocabs_page.dart';
 import 'package:english_learner/presentations/home/widgets/divider.dart';
 import 'package:english_learner/presentations/home/widgets/item_type_vocab.dart';
+import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class ListVocabType extends StatelessWidget {
@@ -42,8 +42,11 @@ class ListVocabType extends StatelessWidget {
               children: [
                 ItemTypeVocab(
                   text: "Flashcard",
-                  icon: Assets.icons.flash_card
-                      .image(width: sizeIcon, height: sizeIcon),
+                  icon: Image.asset(
+                    AppIcons.flashCard,
+                    width: sizeIcon,
+                    height: sizeIcon,
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -56,8 +59,11 @@ class ListVocabType extends StatelessWidget {
                 const DeviderVerticle(),
                 ItemTypeVocab(
                   text: "Topics",
-                  icon: Assets.icons.topics
-                      .image(width: sizeIcon, height: sizeIcon),
+                  icon: Image.asset(
+                    AppIcons.topic,
+                    width: sizeIcon,
+                    height: sizeIcon,
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -70,8 +76,11 @@ class ListVocabType extends StatelessWidget {
                 const DeviderVerticle(),
                 ItemTypeVocab(
                   text: "Ielts - Toeic",
-                  icon: Assets.icons.ielts_toeic
-                      .image(width: sizeIcon, height: sizeIcon),
+                  icon: Image.asset(
+                    AppIcons.ieltsToeic,
+                    width: sizeIcon,
+                    height: sizeIcon,
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,

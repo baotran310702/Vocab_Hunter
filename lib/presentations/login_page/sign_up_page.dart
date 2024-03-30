@@ -18,7 +18,7 @@ class SignUpPage extends StatelessWidget {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          color: AppColors.mainBackgroundColor,
+          color: AppColors.backgroundHeader,
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -30,7 +30,7 @@ class SignUpPage extends StatelessWidget {
                 Image.asset(
                   AppIcons.logo,
                   width: 300,
-                  height: 600,
+                  height: 300,
                 ),
                 const SizedBox(
                   height: 20,
@@ -71,7 +71,7 @@ class SignUpPage extends StatelessWidget {
 
                 //buttom submit
                 CustomButton(
-                  backgroundColor: AppColors.primaryBackgroundButton,
+                  backgroundColor: AppColors.textInputs,
                   text: Text(
                     "Đăng ký",
                     style: TextStyle(
@@ -104,7 +104,7 @@ class SignUpPage extends StatelessWidget {
                 const SizedBox(height: 12),
 
                 CustomButton(
-                  backgroundColor: AppColors.secondaryBackgroundButton,
+                  backgroundColor: AppColors.achievedSlider,
                   text: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -141,11 +141,8 @@ class SignUpPage extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        "/",
-                        (Route<dynamic> route) => route.isFirst,
-                      );
+                      Navigator.pushNamedAndRemoveUntil(context, "/sign-in",
+                          (Route<dynamic> route) => route.isFirst);
                     },
                     child: Text(
                       "Đăng nhập",

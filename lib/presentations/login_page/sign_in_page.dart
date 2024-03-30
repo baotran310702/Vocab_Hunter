@@ -18,7 +18,7 @@ class SignInPage extends StatelessWidget {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          color: AppColors.mainBackgroundColor,
+          color: AppColors.backgroundHeader,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -31,7 +31,7 @@ class SignInPage extends StatelessWidget {
                   Image.asset(
                     AppIcons.logo,
                     width: 300,
-                    height: 600,
+                    height: 300,
                   ),
                   const SizedBox(
                     height: 20,
@@ -77,7 +77,7 @@ class SignInPage extends StatelessWidget {
 
                   //buttom submit
                   CustomButton(
-                    backgroundColor: AppColors.primaryBackgroundButton,
+                    backgroundColor: AppColors.textInputs,
                     text: Text(
                       "Đăng nhập",
                       style: TextStyle(
@@ -96,7 +96,9 @@ class SignInPage extends StatelessWidget {
                           textColor: Colors.white,
                           fontSize: 16.0,
                         );
-                      } else {}
+                      } else {
+                        
+                      }
                     },
                   ),
 
@@ -110,7 +112,7 @@ class SignInPage extends StatelessWidget {
                   const SizedBox(height: 12),
 
                   CustomButton(
-                    backgroundColor: AppColors.secondaryBackgroundButton,
+                    backgroundColor: AppColors.achievedSlider,
                     text: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

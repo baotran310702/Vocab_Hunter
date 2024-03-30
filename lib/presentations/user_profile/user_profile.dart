@@ -220,7 +220,7 @@ class UserProfile extends StatelessWidget {
                   ),
                   onPressed: () {
                     Navigator.pushNamedAndRemoveUntil(
-                        context, "/", (route) => false);
+                        context, "/sign-in", (route) => false);
                   },
                   child: const Text("Log Out"),
                 ),

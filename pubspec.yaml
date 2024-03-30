@@ -39,9 +39,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner:
-  flutter_gen_runner:
-
   flutter_lints: ^2.0.0
 
 

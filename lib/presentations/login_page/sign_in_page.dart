@@ -1,11 +1,9 @@
-//create a login page
-
-import 'package:english_learner/gen/assets.gen.dart';
 import 'package:english_learner/presentations/login_page/widgets/custom_button.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../utils/icons.dart';
 import 'widgets/input_text_field.dart';
 
 class SignInPage extends StatelessWidget {
@@ -30,9 +28,10 @@ class SignInPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Assets.icons.logo.image(
-                    width: 600,
-                    height: 300,
+                  Image.asset(
+                    AppIcons.logo,
+                    width: 300,
+                    height: 600,
                   ),
                   const SizedBox(
                     height: 20,
@@ -115,7 +114,11 @@ class SignInPage extends StatelessWidget {
                     text: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Assets.icons.google.image(width: 20, height: 20),
+                        Image.asset(
+                          AppIcons.google,
+                          width: 24,
+                          height: 24,
+                        ),
                         const SizedBox(
                           width: 4,
                         ),

@@ -1,4 +1,4 @@
-import 'package:english_learner/gen/assets.gen.dart';
+import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class ButtonBack extends StatelessWidget {
@@ -12,7 +12,8 @@ class ButtonBack extends StatelessWidget {
       },
       child: Transform.scale(
         scale: 0.4,
-        child: Assets.icons.back_btn.image(
+        child: Image.asset(
+          AppIcons.backBtn,
           width: 12,
           height: 12,
         ),

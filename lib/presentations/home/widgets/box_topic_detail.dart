@@ -1,8 +1,9 @@
-import 'package:english_learner/gen/assets.gen.dart';
 import 'package:english_learner/presentations/home/views/flash_card_page.dart';
 import 'package:english_learner/presentations/home/views/list_vocabulary_page.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
+
+import '../../../utils/icons.dart';
 
 class BoxTopicDetail extends StatefulWidget {
   const BoxTopicDetail({
@@ -116,9 +117,10 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                                 topRight: Radius.circular(12),
                                 bottomRight: Radius.circular(12)),
                           ),
-                          child: Assets.icons.start.image(
-                            width: 16,
-                            height: 16,
+                          child: Image.asset(
+                            AppIcons.start,
+                            width: 24,
+                            height: 24,
                           ),
                         ),
                       ],
@@ -210,7 +212,11 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                   child: AnimatedScale(
                     scale: scale,
                     duration: const Duration(milliseconds: 200),
-                    child: Assets.icons.heart.image(),
+                    child: Image.asset(
+                      AppIcons.heartUnselected,
+                      width: 24,
+                      height: 24,
+                    ),
                   ),
                 ),
               ),

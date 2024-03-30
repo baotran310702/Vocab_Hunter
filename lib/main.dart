@@ -112,7 +112,6 @@ class _MyAppState extends State<MyApp> {
 
   Scaffold home() {
     return Scaffold(
-      extendBody: true,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       body: PageView(
@@ -166,9 +165,9 @@ class _MyAppState extends State<MyApp> {
             _pageController.jumpToPage(value);
           });
         },
-        durationInMilliSeconds: 500,
+        durationInMilliSeconds: 400,
         kIconSize: 25,
-        kBottomRadius: 24,
+        kBottomRadius: 30,
         removeMargins: false,
         bottomBarHeight: 64,
         itemLabelStyle: const TextStyle(

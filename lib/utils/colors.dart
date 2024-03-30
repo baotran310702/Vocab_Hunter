@@ -19,4 +19,10 @@ class AppColors {
   static Color backgroundSearchColor = const Color(0xFFDCF8BB);
   static Color backGroupDeleteButton = const Color(0xFFEF8075);
   static Color backgroundEditButton = const Color(0xFF5ED0B9);
+  static Color backgroundColorAchievement = const Color(0xFFE3FDBD);
+  static Color colorExitButton = const Color(0xFFDCFFB3);
+  static Color backgroundItemAchiement = const Color(0xFF8BAE2E);
+  static Color backgroundPageAchievement = const Color(0xfff5f5f5);
+  static Color achievedSlider = const Color(0xFFfcb514);
+  static Color achievedLeft = const Color(0xFFFFF6AF);
 }

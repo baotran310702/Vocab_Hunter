@@ -1,4 +1,3 @@
-import 'package:english_learner/gen/assets.gen.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +5,12 @@ import 'package:flutter/material.dart';
 class HeaderInformations extends StatefulWidget {
   final String description;
   final String title;
+  final bool? isUserProifile;
   const HeaderInformations({
     super.key,
     required this.title,
     required this.description,
+    this.isUserProifile = false,
   });
 
   @override
@@ -51,9 +52,10 @@ class _HeaderInformationsState extends State<HeaderInformations> {
               ),
               Stack(
                 children: [
-                  Assets.icons.bell.image(
-                    width: 28,
-                    height: 28,
+                  Image.asset(
+                    AppIcons.bell,
+                    width: 24,
+                    height: 24,
                   ),
                   const Positioned(
                     top: -0.5,
@@ -71,23 +73,57 @@ class _HeaderInformationsState extends State<HeaderInformations> {
               )
             ],
           ),
-          Text(
-            widget.title,
-            style: TextStyle(
-              color: AppColors.titleHeaderColor,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            widget.description,
-            style: TextStyle(
-              color: AppColors.descriptionHeaderColor,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
+          widget.isUserProifile != null && widget.isUserProifile == false
+              ? Column(
+                  children: [
+                    Text(
+                      widget.title,
+                      style: TextStyle(
+                        color: AppColors.titleHeaderColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      widget.description,
+                      style: TextStyle(
+                        color: AppColors.descriptionHeaderColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Center(
+                        child: Image.asset(
+                          AppIcons.user,
+                          width: 32,
+                          height: 32,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      "Mr. John Doe",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                ),
         ],
       ),
     );

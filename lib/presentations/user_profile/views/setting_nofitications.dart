@@ -51,7 +51,7 @@ class _SettingNotificationsState extends State<SettingNotifications> {
                         child: ListTile(
                           title: Row(
                             children: [
-                              Text("${switchValues[index].time.toString()}"),
+                              Text(switchValues[index].time.toString()),
                               const SizedBox(
                                 width: 8,
                               ),

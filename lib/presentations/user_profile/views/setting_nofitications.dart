@@ -106,16 +106,38 @@ class _SettingNotificationsState extends State<SettingNotifications> {
             Positioned(
               bottom: 20,
               right: 20,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.titleHeaderColor,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                width: 80,
-                height: 80,
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (builder) {
+                      return TimePickerDialog(
+                        initialTime: TimeOfDay.now(),
+                      );
+                    },
+                  ).then((value) {
+                    setState(() {
+                      switchValues.add(
+                        TimeNotification(
+                          title: "New notification",
+                          time: value,
+                          isActive: false,
+                        ),
+                      );
+                    });
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.titleHeaderColor,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  width: 80,
+                  height: 80,
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

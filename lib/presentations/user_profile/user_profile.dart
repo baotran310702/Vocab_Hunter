@@ -1,9 +1,12 @@
 import 'package:english_learner/presentations/user_profile/views/achievement_page.dart';
+import 'package:english_learner/presentations/user_profile/views/change_password_page.dart';
+import 'package:english_learner/presentations/user_profile/views/user_informations.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 import '../home/widgets/header_informations.dart';
+import 'views/setting_nofitications.dart';
 
 class UserProfile extends StatelessWidget {
   const UserProfile({super.key});
@@ -119,10 +122,10 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
 
-                const Column(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(left: 16, right: 16, bottom: 4),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -141,30 +144,56 @@ class UserProfile extends StatelessWidget {
                     Items(
                       text: "User Informations",
                       icon: AppIcons.userProfile,
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const UserInformations();
+                        }));
+                      },
                     ),
                     Items(
-                      text: "Security",
+                      text: "Change Password",
                       icon: AppIcons.security,
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const ChangePasswordPage();
+                        }));
+                      },
                     ),
                     Items(
                       text: "Targets",
                       icon: AppIcons.cup,
+                      onTap: () {},
                     ),
                     Items(
                       text: "Your Favourite",
                       icon: AppIcons.heartUnselected,
+                      onTap: () {},
                     ),
                     Items(
                       text: "In Progressing",
                       icon: AppIcons.following,
+                      onTap: () {},
                     ),
                     Items(
                       text: "Notifications",
                       icon: AppIcons.alert,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const SettingNotifications();
+                            },
+                          ),
+                        );
+                      },
                     ),
                     Items(
                       text: "Language",
                       icon: AppIcons.language,
+                      onTap: () {},
                     ),
                   ],
                 ),
@@ -210,55 +239,66 @@ class UserProfile extends StatelessWidget {
 class Items extends StatelessWidget {
   final String icon;
   final String text;
-  const Items({super.key, required this.text, required this.icon});
+  final Function onTap;
+  const Items({
+    super.key,
+    required this.text,
+    required this.icon,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      width: MediaQuery.of(context).size.width,
-      height: 54,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Image.asset(
-                icon,
+    return InkWell(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        width: MediaQuery.of(context).size.width,
+        height: 54,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Image.asset(
+                  icon,
+                  width: 22,
+                  height: 22,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  text,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            Transform.rotate(
+              angle: 3.14,
+              child: Image.asset(
+                AppIcons.arrow,
                 width: 22,
                 height: 22,
+                color: Colors.black,
               ),
-              const SizedBox(
-                width: 8,
-              ),
-              Text(
-                text,
-                textAlign: TextAlign.start,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-          Transform.rotate(
-            angle: 3.14,
-            child: Image.asset(
-              AppIcons.arrow,
-              width: 22,
-              height: 22,
-              color: Colors.black,
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

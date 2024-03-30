@@ -37,4 +37,7 @@ class AppIcons {
   static const String writingBoi = "assets/icons/writing_boi.png";
   static const String eatingBoi = "assets/icons/eating_boi.png";
   static const String orange = "assets/icons/orange.png";
+  static const String phone = "assets/icons/phone.png";
+  static const String mail = "assets/icons/mail.png";
+  static const String bin = "assets/icons/bin.png";
 }

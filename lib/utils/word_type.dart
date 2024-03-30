@@ -1,4 +1,4 @@
-enum WordType { noun, adj, adv, verb, undefined }
+import 'enum.dart';
 
 class WordTypeExt {
   static String getEnglishWord(WordType type) {

@@ -32,7 +32,7 @@ class VocabRepository {
     return listVocabularies;
   }
 
-  Future<List<Vocabulary>> getUserLearningVocabs(User user) async {
+  Future<List<Vocabulary>> getUserLearningVocabs(UserModel user) async {
     List<String> usersVocabs = user.learnedWords;
     List<Vocabulary> listVocabs = await getVocabularies();
     List<Vocabulary> userLearningVocabs = listVocabs

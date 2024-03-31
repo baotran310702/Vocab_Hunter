@@ -1,23 +1,22 @@
-import 'package:english_learner/services/user_services.dart';
+import 'package:english_learner/services/auth_service.dart';
 
 class UserRepository {
-  late UserServices userService;
+  late AuthenticationServices authenServices;
 
   UserRepository() {
-    userService = UserServices();
+    authenServices = AuthenticationServices();
   }
 
-  Future<void> signUp(String email, String password) async {
-    await userService.signUp(email, password);
+  Future<(bool, String)> signUp(
+      String email, String password, String userName) async {
+    return await authenServices.signUp(email, password, userName);
   }
 
-  Future<void> signIn(String email, String password) async {
-    await userService.signIn(email, password);
+  Future<String> signIn(String email, String password) async {
+    return await authenServices.signIn(email, password);
   }
 
   Future<void> signOut() async {
-    await userService.signOut();
+    await authenServices.signOut();
   }
-  
-  
 }

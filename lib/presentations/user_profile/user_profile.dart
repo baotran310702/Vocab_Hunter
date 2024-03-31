@@ -31,7 +31,6 @@ class UserProfile extends StatelessWidget {
                   description: "",
                   isUserProifile: true,
                 ),
-
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.backgroundColorAchievement,
@@ -121,7 +120,6 @@ class UserProfile extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -197,12 +195,9 @@ class UserProfile extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(
                   height: 12,
                 ),
-
-                //buttom log out
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(
@@ -219,8 +214,10 @@ class UserProfile extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, "/sign-in", (route) => false);
+                    Navigator.pushReplacementNamed(
+                      context,
+                      "/",
+                    );
                   },
                   child: const Text("Log Out"),
                 ),

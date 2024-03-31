@@ -35,6 +35,16 @@ class Achievement {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'type': type,
+      'amount': amount,
+      'total': total,
+    };
+  }
+
   Achievement copyWith({
     String? title,
     String? description,

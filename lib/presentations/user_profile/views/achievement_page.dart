@@ -1,7 +1,6 @@
 import 'package:english_learner/presentations/global_widgets/appbar.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/converter.dart';
-import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/achievement.dart';

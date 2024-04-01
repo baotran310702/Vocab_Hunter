@@ -35,13 +35,6 @@ class _MyMainAppState extends State<MyMainApp> {
     const UserProfile(),
   ];
 
-  /// on item tapped
-  void _onItemTapped(int index) {
-    setState(() {
-      _pageController.jumpToPage(index);
-    });
-  }
-
   @override
   void initState() {
     if (_pageController.hasClients) {

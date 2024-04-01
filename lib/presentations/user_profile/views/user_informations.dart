@@ -80,7 +80,7 @@ class _UserInformationsState extends State<UserInformations> {
                       child: Checkbox(
                         shape: const CircleBorder(),
                         value: isMan,
-                        onChanged: _changeGener,
+                        onChanged: _changeGender,
                         checkColor: AppColors.titleHeaderColor,
                         fillColor: MaterialStateProperty.all(
                           Colors.transparent,
@@ -97,7 +97,7 @@ class _UserInformationsState extends State<UserInformations> {
                       child: Checkbox(
                         shape: const CircleBorder(),
                         value: !isMan,
-                        onChanged: _changeGener,
+                        onChanged: _changeGender,
                         checkColor: AppColors.titleHeaderColor,
                         fillColor: MaterialStateProperty.all(Colors.white),
                       ),
@@ -154,7 +154,7 @@ class _UserInformationsState extends State<UserInformations> {
     );
   }
 
-  _changeGener(value) {
+  _changeGender(value) {
     setState(() {
       isMan = !isMan;
     });

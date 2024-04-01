@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'services/user_hive_local.dart';
+
 final navigatorKey = GlobalKey<NavigatorState>();
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -24,6 +26,7 @@ void main() async {
   await Future.wait([
     LocalNotifications().init(),
     WorkManagerService().init(),
+    UserHiveLocal().init(),
   ]);
 
   //  handle in terminated state
@@ -43,7 +46,6 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }

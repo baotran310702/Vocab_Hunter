@@ -1,11 +1,22 @@
 import 'package:english_learner/models/achievement.dart';
+import 'package:english_learner/utils/constants.dart';
+import 'package:hive/hive.dart';
 
+part 'user.g.dart';
+
+@HiveType(typeId: KeyHiveLocal.hiveUserId)
 class UserModel {
+  @HiveField(0)
   final String uid;
+  @HiveField(1)
   final String userName;
+  @HiveField(2)
   final int rank;
+  @HiveField(3)
   final List<Achievement> achievements;
+  @HiveField(4)
   final List<String> learnedWords;
+  @HiveField(5)
   final List<String> learningWors;
 
   const UserModel({

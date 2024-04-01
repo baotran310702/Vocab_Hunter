@@ -1,10 +1,20 @@
+import 'package:english_learner/utils/constants.dart';
 import 'package:english_learner/utils/enum.dart';
+import 'package:hive/hive.dart';
 
+part 'achievement.g.dart';
+
+@HiveType(typeId: KeyHiveLocal.hiveAchievementId)
 class Achievement {
+  @HiveField(0)
   final String title;
+  @HiveField(1)
   final String description;
+  @HiveField(2)
   final AchievementType type;
+  @HiveField(3)
   final int amount;
+  @HiveField(4)
   final int total;
 
   Achievement({

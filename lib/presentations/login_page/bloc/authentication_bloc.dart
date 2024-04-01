@@ -1,5 +1,5 @@
 import 'package:english_learner/repository/user_repository.dart';
-import 'package:english_learner/services/user_local.dart';
+import 'package:english_learner/services/user_pref_local.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,14 +18,15 @@ class AuthenticationBloc
     emit(state.copyWith(isLoading: true, success: null, error: null));
 
     await _userRepository.signIn(event.email, event.password).then((value) {
-      UserLocal().saveUserId(value);
+      UserNormalInformationLocal().saveUserId(value);
       emit(state.copyWith(
         isLoading: false,
         success: value,
       ));
+      UserNormalInformationLocal().saveUserId(value);
     }).catchError((error) {
       emit(state.copyWith(
-          isLoading: false, error: "User name or password wrong"));
+          isLoading: false, error: "Something went wrong, please try again."));
     });
   }
 
@@ -41,6 +42,7 @@ class AuthenticationBloc
           success: result.$2,
         ),
       );
+      UserNormalInformationLocal().saveUserId(result.$2);
     } else {
       emit(state.copyWith(isLoading: false, error: result.$2));
     }

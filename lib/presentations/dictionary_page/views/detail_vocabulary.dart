@@ -16,7 +16,6 @@ class _DetailVocabularyState extends State<DetailVocabulary>
     with TickerProviderStateMixin {
   final PageController _pageViewController = PageController();
   late TabController _tabController;
-  int _currentPageIndex = 0;
 
   @override
   void initState() {

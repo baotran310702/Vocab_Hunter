@@ -1,3 +1,4 @@
+import 'package:english_learner/presentations/test/user_test.dart';
 import 'package:english_learner/presentations/user_profile/views/achievement_page.dart';
 import 'package:english_learner/presentations/user_profile/views/change_password_page.dart';
 import 'package:english_learner/presentations/user_profile/views/user_informations.dart';
@@ -162,7 +163,12 @@ class UserProfile extends StatelessWidget {
                     Items(
                       text: "Targets",
                       icon: AppIcons.cup,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const UserTest();
+                        }));
+                      },
                     ),
                     Items(
                       text: "Your Favourite",

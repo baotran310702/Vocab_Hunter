@@ -9,12 +9,13 @@ class Topic extends Equatable {
   final String topicDescription;
   final String topicStatus;
 
-  const Topic(
-      {required this.topicId,
-      required this.topicName,
-      required this.topicImage,
-      required this.topicDescription,
-      required this.topicStatus});
+  const Topic({
+    required this.topicId,
+    required this.topicName,
+    required this.topicImage,
+    required this.topicDescription,
+    required this.topicStatus,
+  });
 
   factory Topic.fromJson(Map<String, dynamic> json) {
     return Topic(

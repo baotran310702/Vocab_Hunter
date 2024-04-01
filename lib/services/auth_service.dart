@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_learner/models/user.dart';
+import 'package:english_learner/services/user_pref_local.dart';
 import 'package:english_learner/utils/firebase_collections.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -33,6 +34,7 @@ class AuthenticationServices {
   }
 
   Future<void> signOut() async {
+    UserNormalInformationLocal().removeUserId();
     await FirebaseAuth.instance.signOut();
   }
 }

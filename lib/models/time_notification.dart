@@ -1,8 +1,16 @@
+import 'package:english_learner/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
+part 'time_notification.g.dart';
+
+@HiveType(typeId: KeyHiveLocal.hiveTimeNotificationId)
 class TimeNotification {
+  @HiveField(0)
   final String title;
+  @HiveField(1)
   final TimeOfDay time;
+  @HiveField(2)
   final bool isActive;
 
   TimeNotification({

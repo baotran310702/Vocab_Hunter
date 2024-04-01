@@ -101,10 +101,4 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       ),
     );
   }
-
-  _changeGener(value) {
-    setState(() {
-      isMan = !isMan;
-    });
-  }
 }

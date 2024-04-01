@@ -31,18 +31,18 @@ class AuthenticationState extends Equatable {
   List<Object> get props => [isLoading, error ?? "", success ?? ""];
 }
 
-class AuthenticationSuccess extends AuthenticationState {
-  @override
-  final String success;
-  const AuthenticationSuccess(this.success) : super(success: success);
-}
+// class AuthenticationSuccess extends AuthenticationState {
+//   @override
+//   final String success;
+//   const AuthenticationSuccess(this.success) : super(success: success);
+// }
 
-class AuthenticationFailure extends AuthenticationState {
-  @override
-  final String error;
+// class AuthenticationFailure extends AuthenticationState {
+//   @override
+//   final String error;
 
-  const AuthenticationFailure(this.error) : super(error: error);
+//   const AuthenticationFailure(this.error) : super(error: error);
 
-  @override
-  List<Object> get props => [error];
-}
+//   @override
+//   List<Object> get props => [error];
+// }

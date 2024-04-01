@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 
-import 'package:english_learner/utils/constants_api.dart';
+import 'package:english_learner/utils/constants.dart';
 import 'package:english_learner/utils/extension.dart';
 import 'package:flutter/services.dart';
 import 'package:translator/translator.dart';

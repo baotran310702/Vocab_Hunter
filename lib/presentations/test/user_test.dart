@@ -23,9 +23,16 @@ class _UserTestState extends State<UserTest> {
           color: Colors.amber,
           child: Column(
             children: [
-              const Text('User Test'),
+              const Text('Save Data User'),
               ElevatedButton(
-                  onPressed: handleLocal, child: const Text("okokokoko"))
+                onPressed: handleLocal,
+                child: const Text("okokokoko"),
+              ),
+              const Text('Get Data'),
+              ElevatedButton(
+                onPressed: getDataLocal,
+                child: const Text("Lowg"),
+              ),
             ],
           ),
         ),
@@ -34,9 +41,12 @@ class _UserTestState extends State<UserTest> {
   }
 
   handleLocal() async {
-    UserHiveLocal().saveUser(UserModel.initWithId(
-      '1',
-      'John Doe',
-    ));
+    UserHiveLocal().saveUser(UserModel.initTest());
+  }
+
+  getDataLocal() async {
+    UserModel user = await UserHiveLocal().getUser();
+
+    print(user.toMap().toString());
   }
 }

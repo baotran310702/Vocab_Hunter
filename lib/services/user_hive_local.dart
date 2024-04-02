@@ -32,6 +32,15 @@ class UserHiveLocal {
   }
 
   Future<UserModel> getUser() async {
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveEnumAchievementTypeId)) {
+      Hive.registerAdapter(AchievementTypeAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveAchievementId)) {
+      Hive.registerAdapter(AchievementAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveUserId)) {
+      Hive.registerAdapter(UserModelAdapter());
+    }
     final box = await Hive.openBox<UserModel>(KeyBoxHiveLocal.userKeyBox);
     UserModel usermodel =
         box.get(KeyBoxHiveLocal.userKeyBox) ?? UserModel.initWithId('', '');

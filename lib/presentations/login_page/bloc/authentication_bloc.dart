@@ -11,23 +11,34 @@ class AuthenticationBloc
   final UserRepository _userRepository = UserRepository();
   AuthenticationBloc() : super(AuthenticationState.initial()) {
     on<Login>(_onLogin);
+    on<AuthWithToken>(_onAuthWithToken);
     on<Register>(_onRegister);
     on<Logout>(_onLogout);
   }
   _onLogin(Login event, Emitter<AuthenticationState> emit) async {
+    print("fuckin state login rerender??? :))");
     emit(state.copyWith(isLoading: true, success: null, error: null));
 
-    await _userRepository.signIn(event.email, event.password).then((value) {
-      UserNormalInformationLocal().saveUserId(value);
-      emit(state.copyWith(
-        isLoading: false,
-        success: value,
-      ));
-      UserNormalInformationLocal().saveUserId(value);
-    }).catchError((error) {
-      emit(state.copyWith(
-          isLoading: false, error: "Something went wrong, please try again."));
-    });
+    try {
+      var result = await _userRepository.signIn(event.email, event.password);
+      emit(
+        state.copyWith(
+          isLoading: false,
+          success: result,
+          error: null,
+        ),
+      );
+      return;
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: "Something went wrong, please try again.",
+          success: null,
+        ),
+      );
+      return;
+    }
   }
 
   _onRegister(Register event, Emitter<AuthenticationState> emit) async {
@@ -50,5 +61,17 @@ class AuthenticationBloc
 
   _onLogout(Logout event, Emitter<AuthenticationState> emit) {
     emit(state.copyWith(isLoading: true));
+  }
+
+  _onAuthWithToken(
+      AuthWithToken event, Emitter<AuthenticationState> emit) async {
+    emit(state.copyWith(isLoading: true, success: null, error: null));
+    var result = await _userRepository.signInWithToken();
+    if (result == true) {
+      emit(state.copyWith(
+          isLoading: false, success: "Login success with token"));
+    } else {
+      emit(state.copyWith(isLoading: false, error: null, success: null));
+    }
   }
 }

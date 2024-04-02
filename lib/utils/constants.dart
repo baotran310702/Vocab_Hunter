@@ -4,8 +4,9 @@ class APIPath {
       "https://api.dictionaryapi.dev/api/v2/entries/en/";
 }
 
-class KeyLocal {
+class KeyLocalPreferences {
   static const String userId = 'userId';
+  static const String token = 'token';
 }
 
 class KeyHiveLocal {

@@ -16,6 +16,10 @@ class UserRepository {
     return await authenServices.signIn(email, password);
   }
 
+  Future<bool> signInWithToken() async {
+    return await authenServices.signInWithToken();
+  }
+
   Future<void> signOut() async {
     await authenServices.signOut();
   }

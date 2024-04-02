@@ -21,4 +21,6 @@ class Register extends AuthenticationEvent {
   });
 }
 
+class AuthWithToken extends AuthenticationEvent {}
+
 class Logout extends AuthenticationEvent {}

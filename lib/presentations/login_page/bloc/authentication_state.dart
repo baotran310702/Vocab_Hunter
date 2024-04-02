@@ -22,13 +22,13 @@ class AuthenticationState extends Equatable {
   }) {
     return AuthenticationState(
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-      success: success ?? this.success,
+      error: error,
+      success: success,
     );
   }
 
   @override
-  List<Object> get props => [isLoading, error ?? "", success ?? ""];
+  List<Object> get props => [isLoading];
 }
 
 // class AuthenticationSuccess extends AuthenticationState {

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_learner/models/user.dart';
+import 'package:english_learner/services/user_hive_local.dart';
 import 'package:english_learner/services/user_pref_local.dart';
 import 'package:english_learner/utils/firebase_collections.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 class AuthenticationServices {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -27,9 +29,50 @@ class AuthenticationServices {
     try {
       var result = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      return result.user!.uid;
+      String uid = result.user?.uid ?? "";
+      String token = await result.user?.getIdToken() ?? "";
+      var response = await _firestore
+          .collection(AppCollections.user)
+          .where("uid", isEqualTo: uid)
+          .get();
+      //update token firebase
+      await _firestore
+          .collection(AppCollections.userAuth)
+          .add({"uid": uid, "token": token});
+      UserHiveLocal().saveUser(UserModel.fromMap(
+          response.docs.first.data(), response.docs.first.id));
+      UserNormalInformationLocal().saveToken(token);
+      return uid;
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  Future<bool> signInWithToken() async {
+    try {
+      String token = await UserNormalInformationLocal().getToken();
+
+      var response = await _firestore
+          .collection(AppCollections.userAuth)
+          .where("token", isEqualTo: token)
+          .get();
+      if (response.docs.isEmpty) {
+        return false;
+      }
+      var userRes = await _firestore
+          .collection(AppCollections.user)
+          .where("uid", isEqualTo: response.docs.first.data()["uid"].toString())
+          .get();
+      UserHiveLocal().saveUser(
+          UserModel.fromMap(userRes.docs.first.data(), userRes.docs.first.id));
+      if (userRes.docs.first.id.isNotEmpty) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      debugPrint("reson for not working good with token:$e");
+      return false;
     }
   }
 

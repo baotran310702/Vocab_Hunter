@@ -39,6 +39,45 @@ class UserModel {
     );
   }
 
+  factory UserModel.initTest() {
+    return UserModel(
+      uid: "aioximaaaaaa",
+      userName: "Bao dep traiii ",
+      rank: 0,
+      learnedWords: [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+      ],
+      learningWors: [
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+      ],
+      achievements: [
+        Achievement.defaultInit(),
+        Achievement.defaultInit(),
+        Achievement.defaultInit(),
+        Achievement.defaultInit(),
+        Achievement.defaultInit(),
+      ],
+    );
+  }
+
   factory UserModel.fromMap(Map<String, dynamic> data, String documentId) {
     final String userName = data['userName'];
     final int rank = data['rank'];

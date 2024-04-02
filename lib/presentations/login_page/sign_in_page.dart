@@ -16,9 +16,13 @@ class SignInPage extends StatelessWidget {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     return BlocProvider(
-      create: (context) => AuthenticationBloc(),
+      create: (context) => AuthenticationBloc()..add(AuthWithToken()),
       child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
+          if (state.isLoading) {
+            return;
+          }
+          print("fuckin state is $state");
           if (state.success != null && state.error == null) {
             Navigator.pushReplacementNamed(context, "/home");
           }
@@ -26,8 +30,8 @@ class SignInPage extends StatelessWidget {
               state.success == null &&
               state.isLoading == false) {
             Fluttertoast.showToast(
-              msg: state.success ?? "",
-              toastLength: Toast.LENGTH_SHORT,
+              msg: state.success ?? "Đăng nhập thất bại!",
+              toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.red,

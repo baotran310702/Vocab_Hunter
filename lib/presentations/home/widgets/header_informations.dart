@@ -75,6 +75,7 @@ class _HeaderInformationsState extends State<HeaderInformations> {
           ),
           widget.isUserProifile != null && widget.isUserProifile == false
               ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.title,

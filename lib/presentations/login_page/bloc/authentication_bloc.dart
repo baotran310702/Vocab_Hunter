@@ -1,4 +1,5 @@
 import 'package:english_learner/repository/user_repository.dart';
+import 'package:english_learner/services/user_hive_local.dart';
 import 'package:english_learner/services/user_pref_local.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,6 @@ class AuthenticationBloc
     on<Logout>(_onLogout);
   }
   _onLogin(Login event, Emitter<AuthenticationState> emit) async {
-    print("fuckin state login rerender??? :))");
     emit(state.copyWith(isLoading: true, success: null, error: null));
 
     try {
@@ -59,14 +59,23 @@ class AuthenticationBloc
     }
   }
 
-  _onLogout(Logout event, Emitter<AuthenticationState> emit) {
-    emit(state.copyWith(isLoading: true));
+  _onLogout(Logout event, Emitter<AuthenticationState> emit) async {
+    emit(state.copyWith(isLoading: true, success: null, error: null));
+    await UserHiveLocal().removeUser();
+    await UserNormalInformationLocal().removeUserId();
+    await UserNormalInformationLocal().removeToken();
+    emit(state.copyWith(isLoading: false, success: null, error: null));
   }
 
   _onAuthWithToken(
       AuthWithToken event, Emitter<AuthenticationState> emit) async {
     emit(state.copyWith(isLoading: true, success: null, error: null));
-    var result = await _userRepository.signInWithToken();
+    String token = await UserNormalInformationLocal().getToken();
+    if (token.isEmpty) {
+      emit(state.copyWith(isLoading: false, error: null, success: null));
+      return;
+    }
+    var result = await _userRepository.signInWithToken(token);
     if (result == true) {
       emit(state.copyWith(
           isLoading: false, success: "Login success with token"));

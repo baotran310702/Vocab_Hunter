@@ -33,4 +33,10 @@ class UserNormalInformationLocal {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(KeyLocalPreferences.token) ?? '';
   }
+
+  /// Remove token when user log out
+  Future<void> removeToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(KeyLocalPreferences.token);
+  }
 }

@@ -78,6 +78,17 @@ class UserModel {
     );
   }
 
+  factory UserModel.empty() {
+    return const UserModel(
+      uid: "",
+      userName: "",
+      rank: 0,
+      learnedWords: [],
+      learningWors: [],
+      achievements: [],
+    );
+  }
+
   factory UserModel.fromMap(Map<String, dynamic> data, String documentId) {
     final String userName = data['userName'];
     final int rank = data['rank'];

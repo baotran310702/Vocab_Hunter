@@ -48,10 +48,8 @@ class AuthenticationServices {
     }
   }
 
-  Future<bool> signInWithToken() async {
+  Future<bool> signInWithToken(String token) async {
     try {
-      String token = await UserNormalInformationLocal().getToken();
-
       var response = await _firestore
           .collection(AppCollections.userAuth)
           .where("token", isEqualTo: token)

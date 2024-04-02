@@ -47,7 +47,7 @@ class UserHiveLocal {
     return usermodel;
   }
 
-  Future<void> deleteUser() async {
+  Future<void> removeUser() async {
     final box = await Hive.openBox<UserModel>(KeyBoxHiveLocal.userKeyBox);
     await box.delete(KeyBoxHiveLocal.userKeyBox);
   }

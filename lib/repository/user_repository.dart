@@ -16,8 +16,8 @@ class UserRepository {
     return await authenServices.signIn(email, password);
   }
 
-  Future<bool> signInWithToken() async {
-    return await authenServices.signInWithToken();
+  Future<bool> signInWithToken(String token) async {
+    return await authenServices.signInWithToken(token);
   }
 
   Future<void> signOut() async {

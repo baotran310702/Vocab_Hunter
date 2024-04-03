@@ -1,14 +1,14 @@
 import 'package:english_learner/utils/converter.dart';
 
-class VocabDTO {
+class VocabWordSimilarity {
   final String word;
   final double accuracy;
 
-  VocabDTO({required this.word, required this.accuracy});
+  VocabWordSimilarity({required this.word, required this.accuracy});
 
   //from json
-  factory VocabDTO.fromJson(Map<String, dynamic> json) {
-    return VocabDTO(
+  factory VocabWordSimilarity.fromJson(Map<String, dynamic> json) {
+    return VocabWordSimilarity(
       word: json['name'] != null
           ? CustomConverter.convertToString(json['name'])
           : '',

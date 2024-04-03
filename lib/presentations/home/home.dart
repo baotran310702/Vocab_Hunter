@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
                   BlocBuilder<HomePageBloc, HomePageState>(
                     builder: (context, state) {
                       return HeaderInformations(
-                        title: "Welcome back ${state.currentUser.userName}", 
+                        title: "Welcome back ${state.currentUser.userName}",
                         description: "Let's learn something new today",
                       );
                     },

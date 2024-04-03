@@ -2,7 +2,8 @@ part of 'manage_vocab_bloc.dart';
 
 class ManageVocabState extends Equatable {
   final List<Vocabulary> vocabList;
-  final List<VocabDTO> similarVocabs;
+  final List<(VocabularyRemote, VocabularyRemote)> vocabRemoteList;
+  final List<VocabWordSimilarity> similarVocabs;
   final String meaningRecommendVocabs;
   final bool isLoading;
   final String error;
@@ -12,6 +13,7 @@ class ManageVocabState extends Equatable {
     required this.isLoading,
     required this.error,
     required this.similarVocabs,
+    required this.vocabRemoteList,
     this.meaningRecommendVocabs = "",
   });
 
@@ -19,6 +21,7 @@ class ManageVocabState extends Equatable {
     return const ManageVocabState(
       vocabList: [],
       similarVocabs: [],
+      vocabRemoteList: [],
       meaningRecommendVocabs: "",
       isLoading: false,
       error: '',
@@ -27,7 +30,8 @@ class ManageVocabState extends Equatable {
 
   ManageVocabState copyWith({
     List<Vocabulary>? vocabList,
-    List<VocabDTO>? similarVocabs,
+    List<VocabWordSimilarity>? similarVocabs,
+    List<(VocabularyRemote, VocabularyRemote)>? vocabRemoteList,
     String? meaningRecommendVocabs,
     bool? isLoading,
     String? error,
@@ -37,12 +41,19 @@ class ManageVocabState extends Equatable {
       similarVocabs: similarVocabs ?? this.similarVocabs,
       meaningRecommendVocabs:
           meaningRecommendVocabs ?? this.meaningRecommendVocabs,
+      vocabRemoteList: vocabRemoteList ?? this.vocabRemoteList,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [vocabList, meaningRecommendVocabs, similarVocabs, isLoading, error];
+  List<Object?> get props => [
+        vocabList,
+        meaningRecommendVocabs,
+        vocabRemoteList,
+        similarVocabs,
+        isLoading,
+        error
+      ];
 }

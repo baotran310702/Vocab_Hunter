@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ManageVocabBloc(VocabRepository()),
+          create: (context) => ManageVocabBloc(),
         ),
       ],
       child: MaterialApp(

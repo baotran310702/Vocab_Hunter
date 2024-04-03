@@ -1,8 +1,9 @@
+import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 class FlashCard extends StatefulWidget {
-  const FlashCard({super.key});
+  final String title;
+  const FlashCard({super.key, required this.title});
 
   @override
   State<FlashCard> createState() => _FlashCardState();
@@ -20,32 +21,40 @@ class _FlashCardState extends State<FlashCard> {
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 600,
+        height: MediaQuery.of(context).size.height * 0.7,
         decoration: BoxDecoration(
-          color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-              .withOpacity(1.0),
+          color: AppColors.backgroundHeader,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: isFront ? const FrontWidget() : const BackWidget(),
+        child: isFront
+            ? FrontWidget(
+                title: widget.title,
+              )
+            : BackWidget(
+                title: widget.title,
+              ),
       ),
     );
   }
 }
 
 class FrontWidget extends StatelessWidget {
-  const FrontWidget({super.key});
+  final String title;
+  const FrontWidget({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Front Card'));
+    return Center(child: Text(title));
   }
 }
 
 class BackWidget extends StatelessWidget {
-  const BackWidget({super.key});
+  final String title;
+
+  const BackWidget({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Back Card'));
+    return Center(child: Text(title));
   }
 }

@@ -4,6 +4,7 @@ class ManageVocabState extends Equatable {
   final List<Vocabulary> vocabList;
   final List<(VocabularyRemote, VocabularyRemote)> vocabRemoteList;
   final List<VocabWordSimilarity> similarVocabs;
+  final List<VocabWordSimilarity> similarVocabsLocal;
   final String meaningRecommendVocabs;
   final bool isLoading;
   final String error;
@@ -13,6 +14,7 @@ class ManageVocabState extends Equatable {
     required this.isLoading,
     required this.error,
     required this.similarVocabs,
+    required this.similarVocabsLocal,
     required this.vocabRemoteList,
     this.meaningRecommendVocabs = "",
   });
@@ -22,6 +24,7 @@ class ManageVocabState extends Equatable {
       vocabList: [],
       similarVocabs: [],
       vocabRemoteList: [],
+      similarVocabsLocal: [],
       meaningRecommendVocabs: "",
       isLoading: false,
       error: '',
@@ -31,6 +34,7 @@ class ManageVocabState extends Equatable {
   ManageVocabState copyWith({
     List<Vocabulary>? vocabList,
     List<VocabWordSimilarity>? similarVocabs,
+    List<VocabWordSimilarity>? similarVocabsLocal,
     List<(VocabularyRemote, VocabularyRemote)>? vocabRemoteList,
     String? meaningRecommendVocabs,
     bool? isLoading,
@@ -39,6 +43,7 @@ class ManageVocabState extends Equatable {
     return ManageVocabState(
       vocabList: vocabList ?? this.vocabList,
       similarVocabs: similarVocabs ?? this.similarVocabs,
+      similarVocabsLocal: similarVocabsLocal ?? this.similarVocabsLocal,
       meaningRecommendVocabs:
           meaningRecommendVocabs ?? this.meaningRecommendVocabs,
       vocabRemoteList: vocabRemoteList ?? this.vocabRemoteList,
@@ -52,6 +57,7 @@ class ManageVocabState extends Equatable {
         vocabList,
         meaningRecommendVocabs,
         vocabRemoteList,
+        similarVocabsLocal,
         similarVocabs,
         isLoading,
         error

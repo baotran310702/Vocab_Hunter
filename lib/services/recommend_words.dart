@@ -30,4 +30,26 @@ class RecommendsWords {
     }
     return result;
   }
+
+  Future<List<VocabWordSimilarity>> getWordsFromWordSimilarityLocal(
+      String word) async {
+    List<VocabWordSimilarity> result = [];
+    try {
+      var apiURL = APIPath.wordSimilarityLocalhost + word;
+      var response = await Dio().get(apiURL);
+
+      if (response.statusCode == 200) {
+        //parse response to list of vocab
+        var data = response.data["similar_words"];
+
+        for (var value in data) {
+          result.add(VocabWordSimilarity.fromLocalJson(value));
+        }
+      }
+    } catch (e) {
+      debugPrint(Exception(e).toString());
+      return result;
+    }
+    return result;
+  }
 }

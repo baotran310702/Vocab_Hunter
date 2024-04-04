@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
@@ -18,10 +19,14 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
   ManageVocabBloc() : super(ManageVocabState.initial()) {
     on<AddVocabEvent>(_onAddVocab);
     on<RemoveVocabEvent>(_onRemoveVocab);
+
     on<UpdateVocabEvent>(_onUpdateVocab);
     on<LoadVocabEvent>(_onLoadVocab);
     on<GetSimilarityVocabEvent>(_onGetSimilarityVocab);
+
     on<GetMeaningVocab>(_onGetMeaningVocab);
+    on<GetSimilarityVocabLocalEvent>(_onGetSimilarityVocabLocal,
+        transformer: droppable());
     on<GetSimilarVocabModel>(_onGetSimilarVocabModel);
   }
 
@@ -54,8 +59,9 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     List<VocabWordSimilarity> similarVocabs =
         await _vocabRepository.getSimilarVocab(event.inputVocab);
 
-    List<VocabWordSimilarity> highestSimilarity =
-        List.generate(10, (index) => similarVocabs[index]);
+    List<VocabWordSimilarity> highestSimilarity = List.generate(
+        similarVocabs.length > 10 ? 10 : similarVocabs.length,
+        (index) => similarVocabs[index]);
 
     var listTranslated = await Future.wait(highestSimilarity
         .map((e) => _translateServices.translateWordOnline(e.word)));
@@ -64,6 +70,33 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
       similarVocabs: similarVocabs,
       isLoading: false,
       vocabRemoteList: listTranslated.map((e) => e).toList(),
+    ));
+  }
+
+  _onGetSimilarityVocabLocal(GetSimilarityVocabLocalEvent event,
+      Emitter<ManageVocabState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    List<VocabWordSimilarity> similarVocabs =
+        await _vocabRepository.getSimilarVocabLocal(event.inputVocab);
+
+    List<VocabWordSimilarity> highestSimilarity = List.generate(
+        similarVocabs.length > 14 ? 14 : similarVocabs.length,
+        (index) => similarVocabs[index]);
+
+    var listTranslated = await Future.wait(highestSimilarity
+        .map((e) => _translateServices.translateWordOnline(e.word)));
+
+    emit(state.copyWith(
+      similarVocabs: similarVocabs,
+      isLoading: false,
+      vocabRemoteList: listTranslated
+          .where(
+            (e) =>
+                e.$1 != VocabularyRemote.empty() &&
+                e.$2 != VocabularyRemote.empty() &&
+                e.$1.meanings?.isNotEmpty == true,
+          )
+          .toList(),
     ));
   }
 

@@ -22,6 +22,10 @@ class VocabRepository {
     return await recommendsWords.getWordsFromWordSimilarity(word);
   }
 
+  Future<List<VocabWordSimilarity>> getSimilarVocabLocal(String word) async {
+    return await recommendsWords.getWordsFromWordSimilarityLocal(word);
+  }
+
   Future<String> getTranslation(String inputWord) async {
     return await vocabService.getTranslation(inputWord);
   }

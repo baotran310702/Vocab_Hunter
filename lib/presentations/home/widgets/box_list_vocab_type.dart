@@ -4,6 +4,8 @@ import 'package:english_learner/presentations/home/widgets/item_type_vocab.dart'
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
+import '../views/flash_card_page.dart';
+
 class ListVocabType extends StatelessWidget {
   const ListVocabType({super.key});
 
@@ -51,7 +53,7 @@ class ListVocabType extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (builder) => const TopicVocab(),
+                        builder: (builder) => const FlashCardPage(),
                       ),
                     );
                   },

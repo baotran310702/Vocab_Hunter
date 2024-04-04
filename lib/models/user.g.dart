@@ -22,7 +22,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       rank: fields[2] as int,
       learnedWords: (fields[4] as List).cast<String>(),
       achievements: (fields[3] as List).cast<Achievement>(),
-      learningWors: (fields[5] as List).cast<String>(),
+      learningWords: (fields[5] as List).cast<String>(),
     );
   }
 
@@ -41,7 +41,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(4)
       ..write(obj.learnedWords)
       ..writeByte(5)
-      ..write(obj.learningWors);
+      ..write(obj.learningWords);
   }
 
   @override

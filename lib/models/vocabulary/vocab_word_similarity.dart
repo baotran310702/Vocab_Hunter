@@ -17,4 +17,12 @@ class VocabWordSimilarity {
           : 0.0,
     );
   }
+
+  //from local list<dynamic>
+  factory VocabWordSimilarity.fromLocalJson(List<dynamic> json) {
+    return VocabWordSimilarity(
+      word: json[0].toString(),
+      accuracy: json[1].toDouble(),
+    );
+  }
 }

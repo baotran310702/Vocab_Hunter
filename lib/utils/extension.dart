@@ -11,6 +11,7 @@ extension StringExtension on String {
   }
 
   String startWithExample() {
+    if (isEmpty) return "";
     return "Example: $this";
   }
 

@@ -1,6 +1,6 @@
 part of 'global_bloc.dart';
 
-class GlobalState {
+class GlobalState extends Equatable {
   final bool isFront;
 
   GlobalState({required this.isFront});
@@ -10,4 +10,7 @@ class GlobalState {
       isFront: isFront ?? this.isFront,
     );
   }
+
+  @override
+  List<Object?> get props => [isFront];
 }

@@ -2,8 +2,10 @@ import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../dictionary_page/widgets/pronounce_word.dart';
+import '../../global_widgets/bloc/global_bloc.dart';
 
 class FlashCard extends StatefulWidget {
   final (VocabularyRemote, VocabularyRemote) vocabularyRemote;
@@ -23,51 +25,47 @@ class FlashCard extends StatefulWidget {
 }
 
 class _FlashCardState extends State<FlashCard> {
-  bool isFront = true;
-
   @override
   void dispose() {
-    setState(() {
-      isFront = true;
-    });
     super.dispose();
   }
 
   @override
   void initState() {
-    isFront = true;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          isFront = !isFront;
-        });
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.6,
-        decoration: BoxDecoration(
-          color: AppColors.backgroundHeader,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: Colors.black,
-            width: 1,
-          ),
-        ),
-        child: isFront
-            ? FrontWidget(
-                vocabularyRemote: widget.vocabularyRemote.$1,
-                onSave: widget.onSave,
-              )
-            : BackWidget(
-                vocabularyRemote: widget.vocabularyRemote.$2,
-                onSave: widget.onSave,
+    return BlocBuilder<GlobalBloc, GlobalState>(
+      builder: (context, state) {
+        return InkWell(
+          onTap: () {
+            context.read<GlobalBloc>().add(ChangeFlashCardSide());
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.6,
+            decoration: BoxDecoration(
+              color: AppColors.backgroundHeader,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Colors.black,
+                width: 1,
               ),
-      ),
+            ),
+            child: state.isFront
+                ? FrontWidget(
+                    vocabularyRemote: widget.vocabularyRemote.$1,
+                    onSave: widget.onSave,
+                  )
+                : BackWidget(
+                    vocabularyRemote: widget.vocabularyRemote.$2,
+                    onSave: widget.onSave,
+                  ),
+          ),
+        );
+      },
     );
   }
 }
@@ -125,7 +123,7 @@ class _FrontWidgetState extends State<FrontWidget> {
                     ),
                     PronounceWord(
                       word: widget.vocabularyRemote.word!,
-                      size: 28,
+                      size: 32,
                       color: Colors.black,
                     ),
                   ],
@@ -268,14 +266,6 @@ class _BackWidgetState extends State<BackWidget> {
                         fontWeight: FontWeight.w400,
                       ),
                       textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    PronounceWord(
-                      word: widget.vocabularyRemote.word!,
-                      size: 28,
-                      color: Colors.black,
                     ),
                   ],
                 )

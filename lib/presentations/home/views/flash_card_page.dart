@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:english_learner/presentations/global_widgets/appbar.dart';
+import 'package:english_learner/presentations/global_widgets/bloc/global_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/card.dart';
 import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
 import 'package:english_learner/utils/colors.dart';
@@ -126,7 +127,6 @@ class _FlashCardPageState extends State<FlashCardPage> {
                     index = index + 1;
                     return FlashCard(
                         vocabularyRemote: e,
-
                         voidCallback: () {
                           _onFlip(index);
                         },
@@ -155,6 +155,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
                     return Flexible(
                       child: CardSwiper(
                         controller: controller,
+                        isDisabled: true,
                         cardsCount: cards.length,
                         numberOfCardsDisplayed: 3,
                         backCardOffset: const Offset(0, 40),
@@ -172,17 +173,44 @@ class _FlashCardPageState extends State<FlashCardPage> {
                   }
                 },
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: _changeNext,
-                      child: const Text("Next"),
+              BlocBuilder<ManageVocabBloc, ManageVocabState>(
+                builder: (context, state) {
+                  if (state.vocabRemoteList.isEmpty) {
+                    return const SizedBox();
+                  }
+                  return Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              AppColors.backgroundEditButton,
+                            ),
+                            fixedSize: MaterialStateProperty.all<Size>(
+                              Size(MediaQuery.of(context).size.width / 1.2, 52),
+                            ),
+                            side: MaterialStateProperty.all<BorderSide>(
+                              BorderSide(
+                                color: AppColors.backgroundEditButton,
+                                width: 1,
+                              ), // Adjust color and width as needed
+                            ),
+                          ),
+                          onPressed: _changeNext,
+                          child: const Text(
+                            "Next",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               )
             ],
           ),
@@ -208,7 +236,10 @@ class _FlashCardPageState extends State<FlashCardPage> {
 
   void _changeNext() {
     //random index value
+
     int index = Random().nextInt(10);
+    context.read<GlobalBloc>().add(ResetFlashCardSide());
+
     if (index % 2 == 0) {
       controller.swipe(CardSwiperDirection.left);
     } else {

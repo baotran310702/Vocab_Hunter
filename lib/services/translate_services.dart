@@ -46,17 +46,22 @@ class TranslateServices {
   //params contain both eng - vi
   Future<(VocabularyRemote, VocabularyRemote)> translateWordOnline(
       String value) async {
-    String word = value.trim();
-    final response = await Dio().get("${APIPath.dictionaryDev}$word");
-    if (response.statusCode == 200) {
-      final data = response.data;
-      VocabularyRemote englishVocabMeaning = VocabularyRemote.fromJson(data[0]);
+    try {
+      String word = value.trim();
+      final response = await Dio().get("${APIPath.dictionaryDev}$word");
+      if (response.statusCode == 200) {
+        final data = response.data;
+        VocabularyRemote englishVocabMeaning =
+            VocabularyRemote.fromJson(data[0]);
 
-      VocabularyRemote vietnamVocabMeaning =
-          await englishVocabMeaning.toVietnamese();
+        VocabularyRemote vietnamVocabMeaning =
+            await englishVocabMeaning.toVietnamese();
 
-      return (englishVocabMeaning, vietnamVocabMeaning);
-    } else {
+        return (englishVocabMeaning, vietnamVocabMeaning);
+      } else {
+        return (VocabularyRemote.empty(), VocabularyRemote.empty());
+      }
+    } catch (e) {
       return (VocabularyRemote.empty(), VocabularyRemote.empty());
     }
   }

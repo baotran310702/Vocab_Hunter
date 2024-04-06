@@ -7,7 +7,7 @@ class WorkManagerService {
     await Workmanager().registerPeriodicTask(
       'mng_task1',
       'Pratise Vocabulary Reminder',
-      frequency: const Duration(hours: 24),
+      frequency: const Duration(hours: 1),
     );
   }
 

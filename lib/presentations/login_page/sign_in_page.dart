@@ -22,7 +22,6 @@ class SignInPage extends StatelessWidget {
           if (state.isLoading) {
             return;
           }
-          print("fuckin state is $state");
           if (state.success != null && state.error == null) {
             Navigator.pushReplacementNamed(context, "/home");
           }

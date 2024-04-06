@@ -45,8 +45,6 @@ class _UserTestState extends State<UserTest> {
   }
 
   getDataLocal() async {
-    UserModel user = await UserHiveLocal().getUser();
-
-    print(user.toMap().toString());
+    // UserModel user = await UserHiveLocal().getUser();
   }
 }

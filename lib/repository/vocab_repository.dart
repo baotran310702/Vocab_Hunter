@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:english_learner/models/vocabulary/vocab_dto.dart';
+import 'package:english_learner/models/vocabulary/vocab_word_similarity.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
+import 'package:english_learner/services/recommend_words.dart';
 import 'package:english_learner/services/vocab_services.dart';
 import 'package:english_learner/utils/firebase_collections.dart';
 
@@ -8,15 +9,21 @@ import '../models/user.dart';
 
 class VocabRepository {
   late VocabService vocabService;
+  late RecommendsWords recommendsWords;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   VocabRepository() {
     vocabService = VocabService();
+    recommendsWords = RecommendsWords();
   }
 
-  Future<List<VocabDTO>> getSimilarVocab(String word) async {
-    return await vocabService.getSimilarVocab(word);
+  Future<List<VocabWordSimilarity>> getSimilarVocab(String word) async {
+    return await recommendsWords.getWordsFromWordSimilarity(word);
+  }
+
+  Future<List<VocabWordSimilarity>> getSimilarVocabLocal(String word) async {
+    return await recommendsWords.getWordsFromWordSimilarityLocal(word);
   }
 
   Future<String> getTranslation(String inputWord) async {

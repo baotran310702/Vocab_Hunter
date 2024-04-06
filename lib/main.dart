@@ -1,9 +1,9 @@
 import 'package:english_learner/firebase_options.dart';
 import 'package:english_learner/my_app.dart';
+import 'package:english_learner/presentations/global_widgets/bloc/global_bloc.dart';
 import 'package:english_learner/presentations/login_page/sign_in_page.dart';
 import 'package:english_learner/presentations/login_page/sign_up_page.dart';
 import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
-import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:english_learner/utils/notifications/notifications_services.dart';
 import 'package:english_learner/utils/notifications/word_manager_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -66,7 +66,10 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ManageVocabBloc(VocabRepository()),
+          create: (context) => ManageVocabBloc(),
+        ),
+        BlocProvider(
+          create: (context) => GlobalBloc(),
         ),
       ],
       child: MaterialApp(

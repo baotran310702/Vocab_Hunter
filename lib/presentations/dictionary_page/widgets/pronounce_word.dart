@@ -3,7 +3,14 @@ import 'package:flutter_tts/flutter_tts.dart';
 
 class PronounceWord extends StatefulWidget {
   final String word;
-  const PronounceWord({super.key, required this.word});
+  final Color? color;
+  final double? size;
+  const PronounceWord({
+    super.key,
+    required this.word,
+    this.color,
+    this.size,
+  });
 
   @override
   State<PronounceWord> createState() => _PronounceWordState();
@@ -13,7 +20,7 @@ class _PronounceWordState extends State<PronounceWord> {
   late FlutterTts flutterTts;
   String? language;
   String? engine;
-  double volume = 0.5;
+  double volume = 0.8;
   double pitch = 1;
   double rate = 0.2;
   bool isCurrentLanguageInstalled = false;
@@ -52,7 +59,11 @@ class _PronounceWordState extends State<PronounceWord> {
       onTap: () {
         _speak();
       },
-      child: Icon(Icons.volume_up_rounded, size: 30, color: Colors.blue[600]),
+      child: Icon(
+        Icons.volume_up_rounded,
+        size: widget.size ?? 20,
+        color: widget.color ?? Colors.black54,
+      ),
     );
   }
 

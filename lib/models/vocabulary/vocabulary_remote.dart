@@ -158,9 +158,16 @@ class Meanings extends VocabularyRemoteService {
   }
 
   Future<Meanings> toVietnamese() async {
-    List<Definitions> definitionsTranslated = await translateDefinitions();
-    List<String> synonymsTranslated = await getVietnameseSynonyms();
-    List<String> antonymsTranslated = await getVietNameseAtonyms();
+    var listMeaning = await Future.wait([
+      translateDefinitions(),
+      getVietnameseSynonyms(),
+      getVietNameseAtonyms(),
+    ]);
+
+    List<Definitions> definitionsTranslated =
+        listMeaning[0] as List<Definitions>;
+    List<String> synonymsTranslated = listMeaning[1] as List<String>;
+    List<String> antonymsTranslated = listMeaning[2] as List<String>;
 
     return Meanings(
       partOfSpeech: partOfSpeech,
@@ -246,10 +253,17 @@ class Definitions extends VocabularyRemoteService {
   }
 
   Future<Definitions> toVietnamese() async {
-    String definitionTranslated = await getVietnameseDefinition();
-    List<String> synonymsTranslated = await getVietnameseSynonyms();
-    List<String> antonymsTranslated = await getVietNameseAtonyms();
-    String exampleTranslated = await getVietnameseExample();
+    var listDef = await Future.wait([
+      getVietnameseDefinition(),
+      getVietnameseSynonyms(),
+      getVietNameseAtonyms(),
+      getVietnameseExample(),
+    ]);
+
+    String definitionTranslated = listDef[0] as String;
+    List<String> synonymsTranslated = listDef[1] as List<String>;
+    List<String> antonymsTranslated = listDef[2] as List<String>;
+    String exampleTranslated = listDef[3] as String;
 
     return Definitions(
       definition: definitionTranslated,

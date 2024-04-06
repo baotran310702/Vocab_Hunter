@@ -1,9 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
+import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
+import 'package:english_learner/services/translate_services.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../models/vocabulary/vocab_dto.dart';
+import '../../../models/vocabulary/vocab_word_similarity.dart';
 
 part 'manage_vocab_event.dart';
 part 'manage_vocab_state.dart';
@@ -11,14 +14,19 @@ part 'manage_vocab_state.dart';
 //Handle event to manage vocab
 
 class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
-  final VocabRepository _vocabRepository;
-  ManageVocabBloc(this._vocabRepository) : super(ManageVocabState.initial()) {
+  final VocabRepository _vocabRepository = VocabRepository();
+  final TranslateServices _translateServices = TranslateServices();
+  ManageVocabBloc() : super(ManageVocabState.initial()) {
     on<AddVocabEvent>(_onAddVocab);
     on<RemoveVocabEvent>(_onRemoveVocab);
+
     on<UpdateVocabEvent>(_onUpdateVocab);
     on<LoadVocabEvent>(_onLoadVocab);
     on<GetSimilarityVocabEvent>(_onGetSimilarityVocab);
+
     on<GetMeaningVocab>(_onGetMeaningVocab);
+    on<GetSimilarityVocabLocalEvent>(_onGetSimilarityVocabLocal,
+        transformer: droppable());
     on<GetSimilarVocabModel>(_onGetSimilarVocabModel);
   }
 
@@ -48,11 +56,47 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
   _onGetSimilarityVocab(
       GetSimilarityVocabEvent event, Emitter<ManageVocabState> emit) async {
     emit(state.copyWith(isLoading: true));
-    List<VocabDTO> similarVocabs =
+    List<VocabWordSimilarity> similarVocabs =
         await _vocabRepository.getSimilarVocab(event.inputVocab);
+
+    List<VocabWordSimilarity> highestSimilarity = List.generate(
+        similarVocabs.length > 10 ? 10 : similarVocabs.length,
+        (index) => similarVocabs[index]);
+
+    var listTranslated = await Future.wait(highestSimilarity
+        .map((e) => _translateServices.translateWordOnline(e.word)));
+
     emit(state.copyWith(
       similarVocabs: similarVocabs,
       isLoading: false,
+      vocabRemoteList: listTranslated.map((e) => e).toList(),
+    ));
+  }
+
+  _onGetSimilarityVocabLocal(GetSimilarityVocabLocalEvent event,
+      Emitter<ManageVocabState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    List<VocabWordSimilarity> similarVocabs =
+        await _vocabRepository.getSimilarVocabLocal(event.inputVocab);
+
+    List<VocabWordSimilarity> highestSimilarity = List.generate(
+        similarVocabs.length > 14 ? 14 : similarVocabs.length,
+        (index) => similarVocabs[index]);
+
+    var listTranslated = await Future.wait(highestSimilarity
+        .map((e) => _translateServices.translateWordOnline(e.word)));
+
+    emit(state.copyWith(
+      similarVocabs: similarVocabs,
+      isLoading: false,
+      vocabRemoteList: listTranslated
+          .where(
+            (e) =>
+                e.$1 != VocabularyRemote.empty() &&
+                e.$2 != VocabularyRemote.empty() &&
+                e.$1.meanings?.isNotEmpty == true,
+          )
+          .toList(),
     ));
   }
 

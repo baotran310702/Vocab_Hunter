@@ -17,7 +17,7 @@ class UserModel {
   @HiveField(4)
   final List<String> learnedWords;
   @HiveField(5)
-  final List<String> learningWors;
+  final List<String> learningWords;
 
   const UserModel({
     required this.uid,
@@ -25,7 +25,7 @@ class UserModel {
     required this.rank,
     required this.learnedWords,
     required this.achievements,
-    required this.learningWors,
+    required this.learningWords,
   });
 
   factory UserModel.initWithId(String uid, String userName) {
@@ -34,7 +34,7 @@ class UserModel {
       userName: userName,
       rank: 0,
       learnedWords: [],
-      learningWors: [],
+      learningWords: [],
       achievements: [],
     );
   }
@@ -56,7 +56,7 @@ class UserModel {
         "9",
         "10",
       ],
-      learningWors: [
+      learningWords: [
         "11",
         "12",
         "13",
@@ -84,16 +84,16 @@ class UserModel {
       userName: "",
       rank: 0,
       learnedWords: [],
-      learningWors: [],
+      learningWords: [],
       achievements: [],
     );
   }
 
   factory UserModel.fromMap(Map<String, dynamic> data, String documentId) {
-    final String userName = data['userName'];
-    final int rank = data['rank'];
-    final List<dynamic> learnedWords = data['learnedWords'];
-    final List<dynamic> learningWors = data['learningWors'];
+    final String userName = data['userName'] ?? "";
+    final int rank = data['rank'] ?? -1;
+    final List<dynamic> learnedWords = data['learnedWords'] ?? [];
+    final List<dynamic> learningWords = data['learningWords'] ?? [];
     final List<Achievement> listAchievement = [];
     for (var item in data['achievements']) {
       listAchievement.add(Achievement.fromJson(item));
@@ -105,7 +105,7 @@ class UserModel {
       rank: rank,
       achievements: listAchievement,
       learnedWords: learnedWords.map((e) => e.toString()).toList(),
-      learningWors: learningWors.map((e) => e.toString()).toList(),
+      learningWords: learningWords.map((e) => e.toString()).toList(),
     );
   }
 
@@ -114,7 +114,7 @@ class UserModel {
     String? userName,
     int? rank,
     List<String>? learnedWords,
-    List<String>? learningWors,
+    List<String>? learningWords,
     List<Achievement>? achievements,
   }) {
     return UserModel(
@@ -122,7 +122,7 @@ class UserModel {
       userName: userName ?? this.userName,
       rank: rank ?? this.rank,
       learnedWords: learnedWords ?? this.learnedWords,
-      learningWors: learningWors ?? this.learningWors,
+      learningWords: learningWords ?? this.learningWords,
       achievements: achievements ?? this.achievements,
     );
   }
@@ -133,7 +133,7 @@ class UserModel {
       'userName': userName,
       'rank': rank,
       'learnedWords': learnedWords,
-      'learningWors': learningWors,
+      'learningWords': learningWords,
       'achievements': achievements.map((e) => e.toJson()).toList(),
     };
   }

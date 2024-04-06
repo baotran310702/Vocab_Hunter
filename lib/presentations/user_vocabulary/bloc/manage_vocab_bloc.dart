@@ -28,6 +28,7 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     on<GetSimilarityVocabLocalEvent>(_onGetSimilarityVocabLocal,
         transformer: droppable());
     on<GetSimilarVocabModel>(_onGetSimilarVocabModel);
+    on<ClearRecommendVocabEvent>(_onClearRecommendVocabEvent);
   }
 
   _onAddVocab(AddVocabEvent event, Emitter<ManageVocabState> emit) {
@@ -110,5 +111,13 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
   _onGetSimilarVocabModel(
       GetSimilarVocabModel event, Emitter<ManageVocabState> emit) async {
     emit(state.copyWith(isLoading: true));
+  }
+
+  _onClearRecommendVocabEvent(
+      ClearRecommendVocabEvent event, Emitter<ManageVocabState> emit) {
+    emit(state.copyWith(
+      vocabRemoteList: List.empty(),
+      similarVocabs: List.empty(),
+    ));
   }
 }

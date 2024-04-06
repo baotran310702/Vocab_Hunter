@@ -41,7 +41,7 @@ class _UserTestState extends State<UserTest> {
   }
 
   handleLocal() async {
-    UserHiveLocal().saveUser(UserModel.initTest());
+    UserHiveLocal().saveUser(UserModel.defaultInit());
   }
 
   getDataLocal() async {

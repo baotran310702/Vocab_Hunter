@@ -22,6 +22,7 @@ class KeyHiveLocal {
   static const int hivePhonestic = 17;
   static const int hiveMeanings = 18;
   static const int hiveDefinitions = 19;
+  static const int hiveUserVocab = 20;
 }
 
 class KeyBoxHiveLocal {

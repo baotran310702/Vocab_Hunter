@@ -46,3 +46,14 @@ class GetSimilarVocabModel extends ManageVocabEvent {
   final String inputVocab;
   GetSimilarVocabModel({required this.inputVocab});
 }
+
+class ClearRecommendVocabEvent extends ManageVocabEvent {}
+
+class AddNewListVocabEvent extends ManageVocabEvent {
+  final String nameList;
+  final List<String> listVocab;
+  AddNewListVocabEvent({
+    required this.listVocab,
+    required this.nameList,
+  });
+}

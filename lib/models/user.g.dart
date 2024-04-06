@@ -20,9 +20,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       uid: fields[0] as String,
       userName: fields[1] as String,
       rank: fields[2] as int,
-      learnedWords: (fields[4] as List).cast<String>(),
+      learnedWords: (fields[4] as List).cast<UserVocab>(),
       achievements: (fields[3] as List).cast<Achievement>(),
-      learningWords: (fields[5] as List).cast<String>(),
+      learningWords: (fields[5] as List).cast<UserVocab>(),
     );
   }
 

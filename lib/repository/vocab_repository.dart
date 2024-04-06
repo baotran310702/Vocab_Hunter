@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocab_word_similarity.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/services/recommend_words.dart';
@@ -40,10 +41,11 @@ class VocabRepository {
   }
 
   Future<List<Vocabulary>> getUserLearningVocabs(UserModel user) async {
-    List<String> usersVocabs = user.learnedWords;
+    List<UserVocab> usersVocabs = user.learnedWords;
     List<Vocabulary> listVocabs = await getVocabularies();
     List<Vocabulary> userLearningVocabs = listVocabs
-        .where((element) => usersVocabs.any((e) => e == element.vocabId))
+        .where(
+            (element) => usersVocabs.any((e) => e.listName == element.vocabId))
         .toList();
     return userLearningVocabs;
   }

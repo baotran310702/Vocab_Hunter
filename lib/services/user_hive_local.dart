@@ -1,6 +1,7 @@
 import 'package:english_learner/models/achievement.dart';
 import 'package:english_learner/models/time_notification.dart';
 import 'package:english_learner/models/user.dart';
+import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/utils/constants.dart';
 import 'package:english_learner/utils/enum.dart';
 import 'package:hive/hive.dart';
@@ -27,6 +28,9 @@ class UserHiveLocal {
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveUserId)) {
       Hive.registerAdapter(UserModelAdapter());
     }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveUserVocab)) {
+      Hive.registerAdapter(UserVocabAdapter());
+    }
     final box = await Hive.openBox<UserModel>(KeyBoxHiveLocal.userKeyBox);
     await box.put(KeyBoxHiveLocal.userKeyBox, user);
   }
@@ -40,6 +44,9 @@ class UserHiveLocal {
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveUserId)) {
       Hive.registerAdapter(UserModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveUserVocab)) {
+      Hive.registerAdapter(UserVocabAdapter());
     }
     final box = await Hive.openBox<UserModel>(KeyBoxHiveLocal.userKeyBox);
     UserModel usermodel =

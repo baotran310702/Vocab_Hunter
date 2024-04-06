@@ -1,4 +1,5 @@
 import 'package:english_learner/models/achievement.dart';
+import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/utils/constants.dart';
 import 'package:hive/hive.dart';
 
@@ -15,9 +16,9 @@ class UserModel {
   @HiveField(3)
   final List<Achievement> achievements;
   @HiveField(4)
-  final List<String> learnedWords;
+  final List<UserVocab> learnedWords;
   @HiveField(5)
-  final List<String> learningWords;
+  final List<UserVocab> learningWords;
 
   const UserModel({
     required this.uid,
@@ -39,34 +40,38 @@ class UserModel {
     );
   }
 
-  factory UserModel.initTest() {
+  factory UserModel.defaultInit() {
     return UserModel(
       uid: "aioximaaaaaa",
       userName: "Bao dep traiii ",
       rank: 0,
       learnedWords: [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
+        UserVocab(
+          listName: "List 1",
+          listVocabulary: ["hello", "world", "goodbye"],
+        ),
+        UserVocab(
+          listName: "List 2",
+          listVocabulary: ["hello", "world", "goodbye"],
+        ),
+        UserVocab(
+          listName: "List 3",
+          listVocabulary: ["hello", "world", "goodbye"],
+        ),
       ],
       learningWords: [
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18",
-        "19",
-        "20",
+        UserVocab(
+          listName: "List 1",
+          listVocabulary: ["hello", "world", "goodbye"],
+        ),
+        UserVocab(
+          listName: "List 2",
+          listVocabulary: ["hello", "world", "goodbye"],
+        ),
+        UserVocab(
+          listName: "List 3",
+          listVocabulary: ["hello", "world", "goodbye"],
+        ),
       ],
       achievements: [
         Achievement.defaultInit(),
@@ -92,8 +97,16 @@ class UserModel {
   factory UserModel.fromMap(Map<String, dynamic> data, String documentId) {
     final String userName = data['userName'] ?? "";
     final int rank = data['rank'] ?? -1;
-    final List<dynamic> learnedWords = data['learnedWords'] ?? [];
-    final List<dynamic> learningWords = data['learningWords'] ?? [];
+    final List<UserVocab> learnedWords = [];
+    for (var item in data['learnedWords']) {
+      learnedWords.add(UserVocab.fromJson(item));
+    }
+
+    final List<UserVocab> learningWords = [];
+    for (var item in data['learningWords']) {
+      learningWords.add(UserVocab.fromJson(item));
+    }
+
     final List<Achievement> listAchievement = [];
     for (var item in data['achievements']) {
       listAchievement.add(Achievement.fromJson(item));
@@ -104,8 +117,8 @@ class UserModel {
       userName: userName,
       rank: rank,
       achievements: listAchievement,
-      learnedWords: learnedWords.map((e) => e.toString()).toList(),
-      learningWords: learningWords.map((e) => e.toString()).toList(),
+      learnedWords: learnedWords,
+      learningWords: learningWords,
     );
   }
 
@@ -113,8 +126,8 @@ class UserModel {
     String? uid,
     String? userName,
     int? rank,
-    List<String>? learnedWords,
-    List<String>? learningWords,
+    List<UserVocab>? learnedWords,
+    List<UserVocab>? learningWords,
     List<Achievement>? achievements,
   }) {
     return UserModel(
@@ -132,8 +145,8 @@ class UserModel {
       'uid': uid,
       'userName': userName,
       'rank': rank,
-      'learnedWords': learnedWords,
-      'learningWords': learningWords,
+      'learnedWords': learnedWords.map((e) => e.toJson()).toList(),
+      'learningWords': learningWords.map((e) => e.toJson()).toList(),
       'achievements': achievements.map((e) => e.toJson()).toList(),
     };
   }

@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 
 class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String text;
-  const MyAppbar({super.key, required this.text});
+  final Function()? onPressed;
+  const MyAppbar({super.key, required this.text, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppColors.backgroundAppbar,
       title: Text(text),
-      leading: const ButtonBack(),
+      leading: ButtonBack(
+        onPress: onPressed,
+      ),
     );
   }
 

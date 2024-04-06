@@ -3,7 +3,7 @@ part of 'global_bloc.dart';
 class GlobalState extends Equatable {
   final bool isFront;
 
-  GlobalState({required this.isFront});
+  const GlobalState({required this.isFront});
 
   GlobalState copyWith({bool? isFront}) {
     return GlobalState(

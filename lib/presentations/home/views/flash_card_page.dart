@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:english_learner/presentations/global_widgets/appbar.dart';
-import 'package:english_learner/presentations/global_widgets/bloc/global_bloc.dart';
+import 'package:english_learner/presentations/global_instance/appbar.dart';
+import 'package:english_learner/presentations/global_instance/bloc/global_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/card.dart';
 import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
 import 'package:english_learner/utils/colors.dart';
@@ -34,7 +34,13 @@ class _FlashCardPageState extends State<FlashCardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: const MyAppbar(text: "Flash Card"),
+      appBar: MyAppbar(
+        text: "Flash Card",
+        onPressed: () {
+          context.read<ManageVocabBloc>().add(ClearRecommendVocabEvent());
+          Navigator.pop(context);
+        },
+      ),
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -135,11 +141,11 @@ class _FlashCardPageState extends State<FlashCardPage> {
                   if (state.isLoading) {
                     return const Flexible(child: CircularProgressIndicator());
                   }
-                  if (state.similarVocabs.isEmpty) {
+                  if (state.vocabRemoteList.isEmpty) {
                     return Flexible(
                       child: Center(
                         child: Text(
-                          "The is no card recommended, please search!",
+                          "The is no card recommended, please search one or another!",
                           style: TextStyle(
                             color: AppColors.textColors,
                             fontSize: 16,

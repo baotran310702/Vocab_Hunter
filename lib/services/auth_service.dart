@@ -44,6 +44,7 @@ class AuthenticationServices {
       UserNormalInformationLocal().saveToken(token);
       return uid;
     } catch (e) {
+      debugPrint("login fail with error: $e");
       throw Exception(e);
     }
   }

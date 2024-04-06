@@ -317,6 +317,8 @@ class _BackWidgetState extends State<BackWidget> {
                                   fontWeight: FontWeight.w400,
                                 ),
                                 textAlign: TextAlign.start,
+                                overflow: TextOverflow.clip,
+                                maxLines: 3,
                               ),
                               widget.vocabularyRemote.meanings![0]
                                           .definitions![index].example !=
@@ -331,6 +333,8 @@ class _BackWidgetState extends State<BackWidget> {
                                         fontStyle: FontStyle.italic,
                                       ),
                                       textAlign: TextAlign.start,
+                                      overflow: TextOverflow.clip,
+                                      maxLines: 3,
                                     )
                                   : const SizedBox(),
                             ],

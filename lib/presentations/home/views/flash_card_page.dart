@@ -17,7 +17,6 @@ class FlashCardPage extends StatefulWidget {
 }
 
 class _FlashCardPageState extends State<FlashCardPage> {
-  final CardSwiperController controller = CardSwiperController();
   final TextEditingController vocabController = TextEditingController();
   List<Widget> cards = [];
   List<int> indexFront = [];
@@ -26,7 +25,6 @@ class _FlashCardPageState extends State<FlashCardPage> {
 
   @override
   void dispose() {
-    controller.dispose();
     vocabController.dispose();
     super.dispose();
     isDispose = true;
@@ -152,66 +150,73 @@ class _FlashCardPageState extends State<FlashCardPage> {
                       ),
                     );
                   } else {
+                    final CardSwiperController controller =
+                        CardSwiperController();
+
                     return Flexible(
-                      child: CardSwiper(
-                        controller: controller,
-                        isDisabled: true,
-                        cardsCount: cards.length,
-                        numberOfCardsDisplayed: 3,
-                        backCardOffset: const Offset(0, 40),
-                        padding: const EdgeInsets.all(12.0),
-                        cardBuilder: (
-                          context,
-                          index,
-                          horizontalThresholdPercentage,
-                          verticalThresholdPercentage,
-                        ) {
-                          return cards[index];
-                        },
+                      child: Column(
+                        children: [
+                          Flexible(
+                            child: CardSwiper(
+                              controller: controller,
+                              isDisabled: true,
+                              cardsCount: cards.length,
+                              numberOfCardsDisplayed: 3,
+                              backCardOffset: const Offset(0, 40),
+                              padding: const EdgeInsets.all(12.0),
+                              cardBuilder: (
+                                context,
+                                index,
+                                horizontalThresholdPercentage,
+                                verticalThresholdPercentage,
+                              ) {
+                                return cards[index];
+                              },
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                      AppColors.backgroundEditButton,
+                                    ),
+                                    fixedSize: MaterialStateProperty.all<Size>(
+                                      Size(
+                                          MediaQuery.of(context).size.width /
+                                              1.2,
+                                          52),
+                                    ),
+                                    side: MaterialStateProperty.all<BorderSide>(
+                                      BorderSide(
+                                        color: AppColors.backgroundEditButton,
+                                        width: 1,
+                                      ), // Adjust color and width as needed
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    _changeNext(controller);
+                                  },
+                                  child: const Text(
+                                    "Next",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
-              BlocBuilder<ManageVocabBloc, ManageVocabState>(
-                builder: (context, state) {
-                  if (state.vocabRemoteList.isEmpty) {
-                    return const SizedBox();
-                  }
-                  return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              AppColors.backgroundEditButton,
-                            ),
-                            fixedSize: MaterialStateProperty.all<Size>(
-                              Size(MediaQuery.of(context).size.width / 1.2, 52),
-                            ),
-                            side: MaterialStateProperty.all<BorderSide>(
-                              BorderSide(
-                                color: AppColors.backgroundEditButton,
-                                width: 1,
-                              ), // Adjust color and width as needed
-                            ),
-                          ),
-                          onPressed: _changeNext,
-                          child: const Text(
-                            "Next",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              )
             ],
           ),
         ),
@@ -234,7 +239,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
 
   void _onSave(int index) {}
 
-  void _changeNext() {
+  void _changeNext(CardSwiperController controller) {
     //random index value
 
     int index = Random().nextInt(10);

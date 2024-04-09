@@ -1,5 +1,7 @@
 import 'package:english_learner/firebase_options.dart';
 import 'package:english_learner/my_app.dart';
+import 'package:english_learner/presentations/authentication/authentication_page.dart';
+import 'package:english_learner/presentations/authentication/views/sign_in_page.dart';
 import 'package:english_learner/presentations/global_instance/bloc/global_bloc.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
@@ -10,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import 'presentations/authentication/sign_in_page.dart';
-import 'presentations/authentication/sign_up_page.dart';
 import 'services/user_hive_local.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -79,9 +79,9 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => const SignInPage(),
-          '/sign-up': (context) => const SignUpPage(),
+          '/': (context) => const AuthenticationPage(),
           '/home': (context) => const MyMainApp(),
+          '/login': (context) => const SignInPage(),
         },
       ),
     );

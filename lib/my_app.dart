@@ -100,7 +100,7 @@ class _MyMainAppState extends State<MyMainApp> {
             _pageController.jumpToPage(value);
           });
         },
-        durationInMilliSeconds: 400,
+        durationInMilliSeconds: 200,
         kIconSize: 25,
         kBottomRadius: 30,
         removeMargins: false,

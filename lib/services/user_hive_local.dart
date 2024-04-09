@@ -18,6 +18,7 @@ class UserHiveLocal {
     }
   }
 
+  /// Save user's information to local storage.
   Future<void> saveUser(UserModel user) async {
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveEnumAchievementTypeId)) {
       Hive.registerAdapter(AchievementTypeAdapter());
@@ -35,6 +36,7 @@ class UserHiveLocal {
     await box.put(KeyBoxHiveLocal.userKeyBox, user);
   }
 
+  /// Get user's information to local storage.
   Future<UserModel> getUser() async {
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveEnumAchievementTypeId)) {
       Hive.registerAdapter(AchievementTypeAdapter());
@@ -54,6 +56,7 @@ class UserHiveLocal {
     return usermodel;
   }
 
+  /// Remove user's information from local storage.
   Future<void> removeUser() async {
     final box = await Hive.openBox<UserModel>(KeyBoxHiveLocal.userKeyBox);
     await box.delete(KeyBoxHiveLocal.userKeyBox);

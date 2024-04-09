@@ -222,16 +222,8 @@ class UserProfile extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    BlocProvider.value(
-                      value: AuthenticationBloc()
-                        ..add(
-                          Logout(),
-                        ),
-                    );
-                    Navigator.pushReplacementNamed(
-                      context,
-                      "/",
-                    );
+                    _onLogout();
+                    Navigator.pushReplacementNamed(context, '/');
                   },
                   child: const Text("Log Out"),
                 ),
@@ -243,6 +235,15 @@ class UserProfile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  _onLogout() {
+    BlocProvider.value(
+      value: AuthenticationBloc()
+        ..add(
+          Logout(),
+        ),
     );
   }
 }

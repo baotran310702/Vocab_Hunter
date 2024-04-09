@@ -61,9 +61,9 @@ class AuthenticationBloc
 
   _onLogout(Logout event, Emitter<AuthenticationState> emit) async {
     emit(state.copyWith(isLoading: true, success: null, error: null));
+    await UserNormalInformationLocal().removeToken();
     await UserHiveLocal().removeUser();
     await UserNormalInformationLocal().removeUserId();
-    await UserNormalInformationLocal().removeToken();
     emit(state.copyWith(isLoading: false, success: null, error: null));
   }
 
@@ -72,15 +72,24 @@ class AuthenticationBloc
     emit(state.copyWith(isLoading: true, success: null, error: null));
     String token = await UserNormalInformationLocal().getToken();
     if (token.isEmpty) {
-      emit(state.copyWith(isLoading: false, error: null, success: null));
+      emit(state.copyWith(
+          isLoading: false,
+          authStatus: AuthStatus.invalidToken,
+          success: null));
       return;
     }
     var result = await _userRepository.signInWithToken(token);
     if (result == true) {
       emit(state.copyWith(
-          isLoading: false, success: "Login success with token"));
+          isLoading: false, error: null, authStatus: AuthStatus.validToken));
     } else {
-      emit(state.copyWith(isLoading: false, error: null, success: null));
+      emit(
+        state.copyWith(
+          isLoading: false,
+          authStatus: AuthStatus.invalidToken,
+          success: null,
+        ),
+      );
     }
   }
 }

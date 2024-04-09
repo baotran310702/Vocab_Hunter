@@ -19,10 +19,14 @@ class UserVocab {
   });
 
   factory UserVocab.fromJson(Map<String, dynamic> json) {
+    List<String> listVocab =
+        json['listVocabulary'] is List && json['listVocabulary'].isEmpty
+            ? <String>[]
+            : json['listVocabulary'].map((e) => e.toString()).toList();
     return UserVocab(
       listId: json['listId'] ?? "",
       listName: json['listName'] ?? "",
-      listVocabulary: json['listVocabulary'] ?? [],
+      listVocabulary: listVocab,
     );
   }
 

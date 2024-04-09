@@ -7,6 +7,7 @@ import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../home/widgets/header_informations.dart';
 
@@ -19,7 +20,7 @@ class UserVocabularyTrain extends StatefulWidget {
 
 class _UserVocabularyTrainState extends State<UserVocabularyTrain> {
   bool isAbleToEdit = false;
-  bool isSync = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,19 +42,30 @@ class _UserVocabularyTrainState extends State<UserVocabularyTrain> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ItemTypeVocab(
-                    text: "Sync",
-                    icon: Image.asset(
-                      AppIcons.sync,
-                      width: 24,
-                      height: 24,
-                    ),
-                    onTap: () {
-                      setState(() {
-                        isSync = !isSync;
-                      });
+                  BlocBuilder<ManageVocabBloc, ManageVocabState>(
+                    builder: (context, state) {
+                      return ItemTypeVocab(
+                        text: "Sync",
+                        icon: Image.asset(
+                          AppIcons.sync,
+                          width: 24,
+                          height: 24,
+                        ),
+                        onTap: () {
+                          context.read<ManageVocabBloc>().add(SyncUserData());
+                          Fluttertoast.showToast(
+                            msg: "Sync successfully!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        },
+                        isSync: state.isSync,
+                      );
                     },
-                    isSync: isSync,
                   ),
                   const SizedBox(
                     width: 10,
@@ -128,7 +140,7 @@ class _UserVocabularyTrainState extends State<UserVocabularyTrain> {
               ),
               const SizedBox(
                 height: 18,
-            ),
+              ),
               BlocBuilder<ManageVocabBloc, ManageVocabState>(
                 builder: (context, state) {
                   if (state.isLoading) {

@@ -1,15 +1,21 @@
+import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class EditListVocabName extends StatelessWidget {
-  const EditListVocabName({super.key});
+  final UserVocab currentVocab;
+  const EditListVocabName({
+    super.key,
+    required this.currentVocab,
+  });
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController textController = TextEditingController();
     return AlertDialog(
-      title: const Text(
-        "Edit List Vocabulary",
-        style: TextStyle(
+      title: Text(
+        "List: ${currentVocab.listName}",
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 16,
           fontWeight: FontWeight.bold,
@@ -23,8 +29,9 @@ class EditListVocabName extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              controller: textController,
+              decoration: const InputDecoration(
                 labelText: "Update New Name Here",
                 hintText: "New name...",
               ),
@@ -60,9 +67,14 @@ class EditListVocabName extends StatelessWidget {
                     fixedSize:
                         Size(MediaQuery.of(context).size.width * 0.33, 54),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(
+                      context,
+                      textController.text.toString(),
+                    );
+                  },
                   child: const Text(
-                    "Save",
+                    "Update",
                     style: TextStyle(
                       color: Colors.white,
                     ),

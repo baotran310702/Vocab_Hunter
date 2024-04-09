@@ -62,8 +62,18 @@ class AuthenticationServices {
           .collection(AppCollections.user)
           .where("uid", isEqualTo: response.docs.first.data()["uid"].toString())
           .get();
-      UserHiveLocal().saveUser(
-          UserModel.fromMap(userRes.docs.first.data(), userRes.docs.first.id));
+      UserModel currentUser = await UserHiveLocal().getUser();
+
+      if (currentUser.uid == userRes.docs.first.data()["uid"].toString()) {
+        return true;
+      }
+
+      await UserHiveLocal().saveUser(
+        UserModel.fromMap(
+          userRes.docs.first.data(),
+          userRes.docs.first.data()['uid'].toString(),
+        ),
+      );
       if (userRes.docs.first.id.isNotEmpty) {
         return true;
       } else {

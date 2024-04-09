@@ -41,189 +41,203 @@ class _FlashCardPageState extends State<FlashCardPage> {
           Navigator.pop(context);
         },
       ),
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 52,
-                    width: MediaQuery.of(context).size.width / 1.8,
-                    child: TextFormField(
-                      controller: vocabController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        labelText: 'Write your vocabulary here',
-                        //border radius
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.primaryBackgroundButton,
-                            width: 1,
+      body: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) {
+          if (didPop) {
+            return;
+          }
+          context.read<ManageVocabBloc>().add(ClearRecommendVocabEvent());
+          Navigator.pop(context);
+        },
+        child: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 52,
+                      width: MediaQuery.of(context).size.width / 1.8,
+                      child: TextFormField(
+                        controller: vocabController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          borderRadius: BorderRadius.circular(30),
+                          labelText: 'Write your vocabulary here',
+                          //border radius
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.primaryBackgroundButton,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: Colors.black,
+                          ),
                         ),
-                        prefixIcon: const Icon(
-                          Icons.search,
-                          color: Colors.black,
-                        ),
-                      ),
-                      onTapOutside: (_) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        AppColors.backgroundEditButton,
-                      ),
-                      fixedSize: MaterialStateProperty.all<Size>(
-                        Size(MediaQuery.of(context).size.width / 3.8, 52),
-                      ),
-                      side: MaterialStateProperty.all<BorderSide>(
-                        BorderSide(
-                          color: AppColors.backgroundEditButton,
-                          width: 1,
-                        ), // Adjust color and width as needed
-                      ),
-                    ),
-                    onPressed: () {
-                      context.read<ManageVocabBloc>().add(
-                            GetSimilarityVocabLocalEvent(
-                                inputVocab: vocabController.text.isEmpty
-                                    ? "hello"
-                                    : vocabController.text),
-                          );
-                    },
-                    child: const Text(
-                      "Search",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              BlocBuilder<ManageVocabBloc, ManageVocabState>(
-                buildWhen: (previous, current) {
-                  return previous.vocabRemoteList != current.vocabRemoteList ||
-                      previous.isLoading != current.isLoading;
-                },
-                builder: (context, state) {
-                  int index = -1;
-                  cards = state.vocabRemoteList.map((e) {
-                    index = index + 1;
-                    return FlashCard(
-                        vocabularyRemote: e,
-                        voidCallback: () {
-                          _onFlip(index);
+                        onTapOutside: (_) {
+                          FocusScope.of(context).requestFocus(FocusNode());
                         },
-                        onSave: () {
-                          _onSave(index);
-                        });
-                  }).toList();
-                  if (state.isLoading) {
-                    return const Flexible(child: CircularProgressIndicator());
-                  }
-                  if (state.vocabRemoteList.isEmpty) {
-                    return Flexible(
-                      child: Center(
-                        child: Text(
-                          "The is no card recommended, please search one or another!",
-                          style: TextStyle(
-                            color: AppColors.textColors,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          AppColors.backgroundEditButton,
+                        ),
+                        fixedSize: MaterialStateProperty.all<Size>(
+                          Size(MediaQuery.of(context).size.width / 3.8, 52),
+                        ),
+                        side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(
+                            color: AppColors.backgroundEditButton,
+                            width: 1,
+                          ), // Adjust color and width as needed
                         ),
                       ),
-                    );
-                  } else {
-                    final CardSwiperController controller =
-                        CardSwiperController();
-
-                    return Flexible(
-                      child: Column(
-                        children: [
-                          Flexible(
-                            child: CardSwiper(
-                              controller: controller,
-                              isDisabled: true,
-                              cardsCount: cards.length,
-                              numberOfCardsDisplayed: 3,
-                              backCardOffset: const Offset(0, 40),
-                              padding: const EdgeInsets.all(12.0),
-                              cardBuilder: (
-                                context,
-                                index,
-                                horizontalThresholdPercentage,
-                                verticalThresholdPercentage,
-                              ) {
-                                return cards[index];
-                              },
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                      AppColors.backgroundEditButton,
-                                    ),
-                                    fixedSize: MaterialStateProperty.all<Size>(
-                                      Size(
-                                          MediaQuery.of(context).size.width /
-                                              1.2,
-                                          52),
-                                    ),
-                                    side: MaterialStateProperty.all<BorderSide>(
-                                      BorderSide(
-                                        color: AppColors.backgroundEditButton,
-                                        width: 1,
-                                      ), // Adjust color and width as needed
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    _changeNext(controller);
-                                  },
-                                  child: const Text(
-                                    "Next",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                      onPressed: () {
+                        context.read<ManageVocabBloc>().add(
+                              GetSimilarityVocabLocalEvent(
+                                  inputVocab: vocabController.text.isEmpty
+                                      ? "hello"
+                                      : vocabController.text),
+                            );
+                      },
+                      child: const Text(
+                        "Search",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
-                    );
-                  }
-                },
-              ),
-            ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                BlocBuilder<ManageVocabBloc, ManageVocabState>(
+                  buildWhen: (previous, current) {
+                    return previous.vocabRemoteList !=
+                            current.vocabRemoteList ||
+                        previous.isLoading != current.isLoading;
+                  },
+                  builder: (context, state) {
+                    int index = -1;
+                    cards = state.vocabRemoteList.map((e) {
+                      index = index + 1;
+                      return FlashCard(
+                          vocabularyRemote: e,
+                          voidCallback: () {
+                            _onFlip(index);
+                          },
+                          onSave: () {
+                            _onSave(index);
+                          });
+                    }).toList();
+                    if (state.isLoading) {
+                      return const Flexible(child: CircularProgressIndicator());
+                    }
+                    if (state.vocabRemoteList.isEmpty) {
+                      return Flexible(
+                        child: Center(
+                          child: Text(
+                            "The is no card recommended, please search one or another!",
+                            style: TextStyle(
+                              color: AppColors.textColors,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    } else {
+                      final CardSwiperController controller =
+                          CardSwiperController();
+
+                      return Flexible(
+                        child: Column(
+                          children: [
+                            Flexible(
+                              child: CardSwiper(
+                                controller: controller,
+                                isDisabled: true,
+                                cardsCount: cards.length,
+                                numberOfCardsDisplayed: 3,
+                                backCardOffset: const Offset(0, 40),
+                                padding: const EdgeInsets.all(12.0),
+                                cardBuilder: (
+                                  context,
+                                  index,
+                                  horizontalThresholdPercentage,
+                                  verticalThresholdPercentage,
+                                ) {
+                                  return cards[index];
+                                },
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        AppColors.backgroundEditButton,
+                                      ),
+                                      fixedSize:
+                                          MaterialStateProperty.all<Size>(
+                                        Size(
+                                            MediaQuery.of(context).size.width /
+                                                1.2,
+                                            52),
+                                      ),
+                                      side:
+                                          MaterialStateProperty.all<BorderSide>(
+                                        BorderSide(
+                                          color: AppColors.backgroundEditButton,
+                                          width: 1,
+                                        ), // Adjust color and width as needed
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      _changeNext(controller);
+                                    },
+                                    child: const Text(
+                                      "Next",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

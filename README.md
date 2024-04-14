@@ -4,8 +4,8 @@ A new Flutter project.
 
 ## Getting Started
 
-- Run this command if you update any attribute in file able to save local.
-<strong>flutter packages pub run build_runner build</strong>
+- Run this command if you update any attribute in file able to save local.</br>
+<strong>flutter packages pub run build_runner build<strong/>
 
 
 This project is a starting point for a Flutter application.

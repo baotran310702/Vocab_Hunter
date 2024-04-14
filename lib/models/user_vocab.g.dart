@@ -17,18 +17,21 @@ class UserVocabAdapter extends TypeAdapter<UserVocab> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserVocab(
-      listName: fields[0] as String,
-      listVocabulary: (fields[1] as List).cast<String>(),
+      listId: fields[0] as String,
+      listName: fields[1] as String,
+      listVocabulary: (fields[2] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, UserVocab obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.listName)
+      ..write(obj.listId)
       ..writeByte(1)
+      ..write(obj.listName)
+      ..writeByte(2)
       ..write(obj.listVocabulary);
   }
 

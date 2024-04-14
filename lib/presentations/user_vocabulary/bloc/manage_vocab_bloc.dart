@@ -1,12 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/repository/user_repository.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:english_learner/services/translate_services.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../models/user_vocab.dart';
 import '../../../models/vocabulary/vocab_word_similarity.dart';
+import '../../../services/user_hive_local.dart';
+import '../../../services/user_pref_local.dart';
 
 part 'manage_vocab_event.dart';
 part 'manage_vocab_state.dart';
@@ -15,8 +20,12 @@ part 'manage_vocab_state.dart';
 
 class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
   final VocabRepository _vocabRepository = VocabRepository();
+  final UserRepository _userRepository = UserRepository();
   final TranslateServices _translateServices = TranslateServices();
+
   ManageVocabBloc() : super(ManageVocabState.initial()) {
+    on<InitUserVocab>(_onInitUserVocab);
+
     on<AddVocabEvent>(_onAddVocab);
     on<RemoveVocabEvent>(_onRemoveVocab);
 
@@ -29,6 +38,35 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
         transformer: droppable());
     on<GetSimilarVocabModel>(_onGetSimilarVocabModel);
     on<ClearRecommendVocabEvent>(_onClearRecommendVocabEvent);
+
+    on<AddNewListLearningVocab>(_onAddNewListLearningVocab);
+    on<RemoveFromListLearning>(_onRemoveFromListLearning);
+    on<DeleteListLearningVocab>(_onDeleteListLearningVocab);
+    on<AddVocabToListLearning>(_onAddVocabToListLearning);
+    on<DeleteVocabFromListLearning>(_onDeleteVocabFromListLearning);
+    on<UpdateListLearningVocab>(_onUpdateListLearningVocab);
+    on<SyncUserData>(_onSyncUserData);
+    on<SetDefaultListLearningVocab>(_onSetDefaultListLearning);
+  }
+
+  _onInitUserVocab(InitUserVocab event, Emitter<ManageVocabState> emit) async {
+    UserModel currentUser = await UserHiveLocal().getUser();
+    String? currentDefaultId =
+        await UserPrefererencesLocal().getDefaultListLearningVocab();
+    if (currentDefaultId == null) {
+      await UserPrefererencesLocal().setDefaultListLearningVocab(
+          currentUser.learningWords.isNotEmpty
+              ? currentUser.learningWords[0].listId
+              : '');
+      emit(state.copyWith(
+          userModel: currentUser,
+          currentDefaultListId: currentUser.learningWords.isNotEmpty
+              ? currentUser.learningWords[0].listId
+              : ''));
+      return;
+    }
+    emit(state.copyWith(
+        userModel: currentUser, currentDefaultListId: currentDefaultId));
   }
 
   _onAddVocab(AddVocabEvent event, Emitter<ManageVocabState> emit) {
@@ -119,5 +157,131 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
       vocabRemoteList: List.empty(),
       similarVocabs: List.empty(),
     ));
+  }
+
+  ///Handle UserVocab
+
+  _onAddNewListLearningVocab(
+      AddNewListLearningVocab event, Emitter emit) async {
+    emit(state.copyWith(isLoading: true));
+    UserModel currentUser = state.userModel;
+    int currentIndex = currentUser.learningWords.length;
+
+    if (currentIndex == 0) {
+      await UserPrefererencesLocal()
+          .setDefaultListLearningVocab(currentIndex.toString());
+    }
+
+    List<UserVocab> currentUserList = currentUser.learningWords;
+    List<UserVocab> newList = List.from(currentUserList);
+    newList.add(UserVocab(
+        listId: currentIndex.toString(),
+        listName: event.name,
+        listVocabulary: const []));
+
+    UserModel newUsers = currentUser.copyWith(learningWords: newList);
+
+    await UserHiveLocal().saveUser(newUsers);
+
+    emit(state.copyWith(
+      isLoading: false,
+      userModel: newUsers,
+    ));
+  }
+
+  _onRemoveFromListLearning(RemoveFromListLearning event, Emitter emit) async {
+    UserModel currentUser = state.userModel;
+
+    String currentListId =
+        await UserPrefererencesLocal().getDefaultListLearningVocab() ?? '';
+
+    List<UserVocab> listUpdated = currentUser.learningWords.map((e) {
+      if (e.listId == currentListId) {
+        return e.copyWith(
+            listVocabulary: e.listVocabulary
+                .where((element) => element != event.vocab)
+                .toList());
+      }
+      return e;
+    }).toList();
+
+    UserModel newUSers = currentUser.copyWith(learningWords: listUpdated);
+
+    UserHiveLocal().saveUser(newUSers);
+
+    emit(state.copyWith(userModel: newUSers));
+  }
+
+  _onDeleteListLearningVocab(
+      DeleteListLearningVocab event, Emitter emit) async {
+    UserModel currentUser = state.userModel;
+
+    List<UserVocab> newList = currentUser.learningWords
+        .where((element) => element.listId != event.listId)
+        .toList();
+    await UserHiveLocal()
+        .saveUser(currentUser.copyWith(learningWords: newList));
+    emit(state.copyWith(
+        userModel: currentUser.copyWith(learningWords: newList)));
+  }
+
+  _onAddVocabToListLearning(AddVocabToListLearning event, Emitter emit) async {
+    String listDefaultId =
+        await UserPrefererencesLocal().getDefaultListLearningVocab() ?? '';
+    UserModel currentUser = state.userModel;
+    List<UserVocab> listUpdated = currentUser.learningWords.map((e) {
+      if (e.listId == listDefaultId) {
+        return e.copyWith(
+            listVocabulary: List.from(e.listVocabulary)..add(event.vocab));
+      }
+      return e;
+    }).toList();
+
+    UserModel newUSers = currentUser.copyWith(learningWords: listUpdated);
+
+    UserHiveLocal().saveUser(newUSers);
+
+    emit(state.copyWith(userModel: newUSers));
+  }
+
+  _onDeleteVocabFromListLearning(
+      DeleteVocabFromListLearning event, Emitter emit) async {
+    UserModel currentUser = state.userModel;
+    List<UserVocab> listDeleted = currentUser.learningWords
+        .where(
+          (element) => element.listId != event.listId,
+        )
+        .toList();
+
+    UserModel newUSers = currentUser.copyWith(learningWords: listDeleted);
+
+    await UserHiveLocal().saveUser(newUSers);
+
+    emit(state.copyWith(userModel: newUSers));
+  }
+
+  _onUpdateListLearningVocab(UpdateListLearningVocab event, Emitter emit) {
+    List<UserVocab> updatedList = state.userModel.learningWords.map((e) {
+      if (e.listId == event.listId) {
+        return e.copyWith(listName: event.listName);
+      }
+      return e;
+    }).toList();
+    UserHiveLocal()
+        .saveUser(state.userModel.copyWith(learningWords: updatedList));
+    emit(state.copyWith(
+        userModel: state.userModel.copyWith(learningWords: updatedList)));
+  }
+
+  _onSetDefaultListLearning(
+      SetDefaultListLearningVocab event, Emitter emit) async {
+    await UserPrefererencesLocal().setDefaultListLearningVocab(event.listId);
+    emit(state.copyWith(currentDefaultListId: event.listId));
+  }
+
+  _onSyncUserData(SyncUserData event, Emitter emit) async {
+    emit(state.copyWith(isSync: true));
+    await _userRepository.syncUserData();
+    emit(state.copyWith(isSync: false));
   }
 }

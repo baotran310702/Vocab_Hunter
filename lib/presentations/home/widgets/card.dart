@@ -11,14 +11,14 @@ import '../../global_instance/bloc/global_bloc.dart';
 class FlashCard extends StatefulWidget {
   final (VocabularyRemote, VocabularyRemote) vocabularyRemote;
 
-  final Function() voidCallback;
   final Function onSave;
+  final bool isSaved;
 
   const FlashCard({
     super.key,
     required this.vocabularyRemote,
-    required this.voidCallback,
     required this.onSave,
+    required this.isSaved,
   });
 
   @override
@@ -60,6 +60,7 @@ class _FlashCardState extends State<FlashCard> {
                   ? widget.vocabularyRemote.$1
                   : widget.vocabularyRemote.$2,
               onSave: widget.onSave,
+              isSaved: widget.isSaved,
             ),
           ),
         );
@@ -71,11 +72,13 @@ class _FlashCardState extends State<FlashCard> {
 class FrontWidget extends StatefulWidget {
   final VocabularyRemote vocabularyRemote;
   final Function onSave;
+  final bool isSaved;
 
   const FrontWidget({
     super.key,
     required this.vocabularyRemote,
     required this.onSave,
+    required this.isSaved,
   });
 
   @override
@@ -83,10 +86,8 @@ class FrontWidget extends StatefulWidget {
 }
 
 class _FrontWidgetState extends State<FrontWidget> {
-  bool isSaved = false;
   @override
   void initState() {
-    // isSaved = false;
     super.initState();
   }
 
@@ -110,6 +111,8 @@ class _FrontWidgetState extends State<FrontWidget> {
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
                     )
                   : const SizedBox(),
               const SizedBox(height: 4),
@@ -194,7 +197,7 @@ class _FrontWidgetState extends State<FrontWidget> {
                                         ),
                                         textAlign: TextAlign.start,
                                         overflow: TextOverflow.clip,
-                                        maxLines: 4,
+                                        maxLines: 3,
                                       ),
                                       widget
                                                   .vocabularyRemote
@@ -216,7 +219,7 @@ class _FrontWidgetState extends State<FrontWidget> {
                                               ),
                                               textAlign: TextAlign.start,
                                               overflow: TextOverflow.ellipsis,
-                                              maxLines: 5,
+                                              maxLines: 4,
                                             )
                                           : const SizedBox(),
                                     ],
@@ -238,14 +241,11 @@ class _FrontWidgetState extends State<FrontWidget> {
           child: InkWell(
             onTap: () {
               widget.onSave();
-              setState(() {
-                isSaved = !isSaved;
-              });
             },
             child: Image.asset(
-              isSaved ? AppIcons.tagSaved : AppIcons.tagSave,
-              width: 32,
-              height: 32,
+              widget.isSaved ? AppIcons.tagSaved : AppIcons.tagSave,
+              width: 48,
+              height: 48,
             ),
           ),
         ),

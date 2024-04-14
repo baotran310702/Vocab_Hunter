@@ -41,7 +41,7 @@ class AuthenticationServices {
           .add({"uid": uid, "token": token});
       UserHiveLocal().saveUser(UserModel.fromMap(
           response.docs.first.data(), response.docs.first.id));
-      UserNormalInformationLocal().saveToken(token);
+      UserPrefererencesLocal().saveToken(token);
       return uid;
     } catch (e) {
       debugPrint("login fail with error: $e");
@@ -62,8 +62,18 @@ class AuthenticationServices {
           .collection(AppCollections.user)
           .where("uid", isEqualTo: response.docs.first.data()["uid"].toString())
           .get();
-      UserHiveLocal().saveUser(
-          UserModel.fromMap(userRes.docs.first.data(), userRes.docs.first.id));
+      UserModel currentUser = await UserHiveLocal().getUser();
+
+      if (currentUser.uid == userRes.docs.first.data()["uid"].toString()) {
+        return true;
+      }
+
+      await UserHiveLocal().saveUser(
+        UserModel.fromMap(
+          userRes.docs.first.data(),
+          userRes.docs.first.data()['uid'].toString(),
+        ),
+      );
       if (userRes.docs.first.id.isNotEmpty) {
         return true;
       } else {
@@ -76,7 +86,9 @@ class AuthenticationServices {
   }
 
   Future<void> signOut() async {
-    UserNormalInformationLocal().removeUserId();
+    UserPrefererencesLocal().removeUserId();
+    await UserPrefererencesLocal().removeToken();
+    await UserHiveLocal().removeUser();
     await FirebaseAuth.instance.signOut();
   }
 }

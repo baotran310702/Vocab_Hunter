@@ -2,6 +2,8 @@ part of 'manage_vocab_bloc.dart';
 
 abstract class ManageVocabEvent {}
 
+class InitUserVocab extends ManageVocabEvent {}
+
 class AddVocabEvent extends ManageVocabEvent {
   final Vocabulary word;
 
@@ -57,3 +59,42 @@ class AddNewListVocabEvent extends ManageVocabEvent {
     required this.nameList,
   });
 }
+
+class AddNewListLearningVocab extends ManageVocabEvent {
+  final String name;
+  AddNewListLearningVocab({required this.name});
+}
+
+class DeleteListLearningVocab extends ManageVocabEvent {
+  final String listId;
+  DeleteListLearningVocab({required this.listId});
+}
+
+class AddVocabToListLearning extends ManageVocabEvent {
+  final String vocab;
+  AddVocabToListLearning({required this.vocab});
+}
+
+class RemoveFromListLearning extends ManageVocabEvent {
+  final String vocab;
+
+  RemoveFromListLearning({required this.vocab});
+}
+
+class DeleteVocabFromListLearning extends ManageVocabEvent {
+  final String listId;
+  DeleteVocabFromListLearning({required this.listId});
+}
+
+class UpdateListLearningVocab extends ManageVocabEvent {
+  final String listId;
+  final String listName;
+  UpdateListLearningVocab({required this.listId, required this.listName});
+}
+
+class SetDefaultListLearningVocab extends ManageVocabEvent {
+  final String listId;
+  SetDefaultListLearningVocab({required this.listId});
+}
+
+class SyncUserData extends ManageVocabEvent {}

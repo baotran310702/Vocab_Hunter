@@ -1,14 +1,25 @@
 part of 'authentication_bloc.dart';
 
+enum AuthStatus {
+  invalidToken,
+  invalidUser,
+  invalidPassword,
+  validToken,
+  validUser,
+  validPassword
+}
+
 class AuthenticationState extends Equatable {
   final bool isLoading;
   final String? error;
   final String? success;
+  final AuthStatus? authStatus;
 
   const AuthenticationState({
     this.isLoading = false,
     this.error,
     this.success,
+    this.authStatus,
   });
 
   factory AuthenticationState.initial() {
@@ -19,30 +30,18 @@ class AuthenticationState extends Equatable {
     bool? isLoading,
     String? error,
     String? success,
+    AuthStatus? authStatus,
   }) {
     return AuthenticationState(
       isLoading: isLoading ?? this.isLoading,
       error: error,
       success: success,
+      authStatus: authStatus,
     );
   }
 
   @override
-  List<Object> get props => [isLoading];
+  List<Object> get props => [
+        isLoading,
+      ];
 }
-
-// class AuthenticationSuccess extends AuthenticationState {
-//   @override
-//   final String success;
-//   const AuthenticationSuccess(this.success) : super(success: success);
-// }
-
-// class AuthenticationFailure extends AuthenticationState {
-//   @override
-//   final String error;
-
-//   const AuthenticationFailure(this.error) : super(error: error);
-
-//   @override
-//   List<Object> get props => [error];
-// }

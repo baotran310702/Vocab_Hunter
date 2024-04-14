@@ -1,10 +1,13 @@
 import 'package:english_learner/services/auth_service.dart';
+import 'package:english_learner/services/user_service.dart';
 
 class UserRepository {
   late AuthenticationServices authenServices;
+  late UserServices userServices;
 
   UserRepository() {
     authenServices = AuthenticationServices();
+    userServices = UserServices();
   }
 
   Future<(bool, String)> signUp(
@@ -22,5 +25,9 @@ class UserRepository {
 
   Future<void> signOut() async {
     await authenServices.signOut();
+  }
+
+  Future<void> syncUserData() async {
+    await userServices.syncUserData();
   }
 }

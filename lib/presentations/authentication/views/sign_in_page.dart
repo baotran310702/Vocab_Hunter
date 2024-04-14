@@ -1,12 +1,12 @@
-import 'package:english_learner/presentations/login_page/bloc/authentication_bloc.dart';
-import 'package:english_learner/presentations/login_page/widgets/custom_button.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../utils/icons.dart';
-import 'widgets/input_text_field.dart';
+import '../../../utils/icons.dart';
+import '../bloc/authentication_bloc.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/input_text_field.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -16,15 +16,13 @@ class SignInPage extends StatelessWidget {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     return BlocProvider(
-      create: (context) => AuthenticationBloc()..add(AuthWithToken()),
+      create: (context) => AuthenticationBloc(),
       child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
-          if (state.isLoading) {
-            return;
-          }
           if (state.success != null && state.error == null) {
             Navigator.pushReplacementNamed(context, "/home");
           }
+
           if (state.error != null &&
               state.success == null &&
               state.isLoading == false) {
@@ -38,6 +36,9 @@ class SignInPage extends StatelessWidget {
               fontSize: 16.0,
             );
           }
+        },
+        buildWhen: (previous, current) {
+          return current.isLoading != false;
         },
         builder: (context, state) {
           return Scaffold(

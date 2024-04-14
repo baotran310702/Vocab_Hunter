@@ -8,6 +8,9 @@ import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../../models/user_vocab.dart';
 
 class FlashCardPage extends StatefulWidget {
   const FlashCardPage({super.key});
@@ -18,7 +21,6 @@ class FlashCardPage extends StatefulWidget {
 
 class _FlashCardPageState extends State<FlashCardPage> {
   final TextEditingController vocabController = TextEditingController();
-  List<Widget> cards = [];
   List<int> indexFront = [];
 
   bool isDispose = false;
@@ -32,6 +34,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final CardSwiperController cardController = CardSwiperController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: MyAppbar(
@@ -41,213 +44,259 @@ class _FlashCardPageState extends State<FlashCardPage> {
           Navigator.pop(context);
         },
       ),
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 52,
-                    width: MediaQuery.of(context).size.width / 1.8,
-                    child: TextFormField(
-                      controller: vocabController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        labelText: 'Write your vocabulary here',
-                        //border radius
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.primaryBackgroundButton,
-                            width: 1,
+      body: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) {
+          if (didPop) {
+            return;
+          }
+          context.read<ManageVocabBloc>().add(ClearRecommendVocabEvent());
+          Navigator.pop(context);
+        },
+        child: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 52,
+                      width: MediaQuery.of(context).size.width / 1.8,
+                      child: TextFormField(
+                        controller: vocabController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          borderRadius: BorderRadius.circular(30),
+                          labelText: 'Write your vocabulary here',
+                          //border radius
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.primaryBackgroundButton,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: Colors.black,
+                          ),
                         ),
-                        prefixIcon: const Icon(
-                          Icons.search,
-                          color: Colors.black,
-                        ),
-                      ),
-                      onTapOutside: (_) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        AppColors.backgroundEditButton,
-                      ),
-                      fixedSize: MaterialStateProperty.all<Size>(
-                        Size(MediaQuery.of(context).size.width / 3.8, 52),
-                      ),
-                      side: MaterialStateProperty.all<BorderSide>(
-                        BorderSide(
-                          color: AppColors.backgroundEditButton,
-                          width: 1,
-                        ), // Adjust color and width as needed
-                      ),
-                    ),
-                    onPressed: () {
-                      context.read<ManageVocabBloc>().add(
-                            GetSimilarityVocabLocalEvent(
-                                inputVocab: vocabController.text.isEmpty
-                                    ? "hello"
-                                    : vocabController.text),
-                          );
-                    },
-                    child: const Text(
-                      "Search",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              BlocBuilder<ManageVocabBloc, ManageVocabState>(
-                buildWhen: (previous, current) {
-                  return previous.vocabRemoteList != current.vocabRemoteList ||
-                      previous.isLoading != current.isLoading;
-                },
-                builder: (context, state) {
-                  int index = -1;
-                  cards = state.vocabRemoteList.map((e) {
-                    index = index + 1;
-                    return FlashCard(
-                        vocabularyRemote: e,
-                        voidCallback: () {
-                          _onFlip(index);
+                        onTapOutside: (_) {
+                          FocusScope.of(context).requestFocus(FocusNode());
                         },
-                        onSave: () {
-                          _onSave(index);
-                        });
-                  }).toList();
-                  if (state.isLoading) {
-                    return const Flexible(child: CircularProgressIndicator());
-                  }
-                  if (state.vocabRemoteList.isEmpty) {
-                    return Flexible(
-                      child: Center(
-                        child: Text(
-                          "The is no card recommended, please search one or another!",
-                          style: TextStyle(
-                            color: AppColors.textColors,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          AppColors.backgroundEditButton,
+                        ),
+                        fixedSize: MaterialStateProperty.all<Size>(
+                          Size(MediaQuery.of(context).size.width / 3.8, 52),
+                        ),
+                        side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(
+                            color: AppColors.backgroundEditButton,
+                            width: 1,
+                          ), // Adjust color and width as needed
                         ),
                       ),
-                    );
-                  } else {
-                    final CardSwiperController controller =
-                        CardSwiperController();
-
-                    return Flexible(
-                      child: Column(
-                        children: [
-                          Flexible(
-                            child: CardSwiper(
-                              controller: controller,
-                              isDisabled: true,
-                              cardsCount: cards.length,
-                              numberOfCardsDisplayed: 3,
-                              backCardOffset: const Offset(0, 40),
-                              padding: const EdgeInsets.all(12.0),
-                              cardBuilder: (
-                                context,
-                                index,
-                                horizontalThresholdPercentage,
-                                verticalThresholdPercentage,
-                              ) {
-                                return cards[index];
-                              },
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                      AppColors.backgroundEditButton,
-                                    ),
-                                    fixedSize: MaterialStateProperty.all<Size>(
-                                      Size(
-                                          MediaQuery.of(context).size.width /
-                                              1.2,
-                                          52),
-                                    ),
-                                    side: MaterialStateProperty.all<BorderSide>(
-                                      BorderSide(
-                                        color: AppColors.backgroundEditButton,
-                                        width: 1,
-                                      ), // Adjust color and width as needed
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    _changeNext(controller);
-                                  },
-                                  child: const Text(
-                                    "Next",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                      onPressed: () {
+                        context.read<ManageVocabBloc>().add(
+                              GetSimilarityVocabLocalEvent(
+                                  inputVocab: vocabController.text.isEmpty
+                                      ? "hello"
+                                      : vocabController.text),
+                            );
+                      },
+                      child: const Text(
+                        "Search",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
-                    );
-                  }
-                },
-              ),
-            ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                BlocBuilder<ManageVocabBloc, ManageVocabState>(
+                  builder: (context, state) {
+                    if (state.isLoading) {
+                      return const Flexible(child: CircularProgressIndicator());
+                    }
+                    if (state.vocabRemoteList.isEmpty) {
+                      return Flexible(
+                        child: Center(
+                          child: Text(
+                            "The is no card recommended, please search one or another!",
+                            style: TextStyle(
+                              color: AppColors.textColors,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    } else {
+                      int index = -1;
+                      List<Widget> cards = state.vocabRemoteList.map((e) {
+                        bool isSaved = state.userModel.learningWords.indexWhere(
+                                (element) =>
+                                    element.listVocabulary
+                                        .contains(e.$1.word?.toLowerCase()) &&
+                                    element.listId ==
+                                        state.currentDefaultListId) !=
+                            -1;
+                        index = index + 1;
+                        return FlashCard(
+                            isSaved: isSaved,
+                            vocabularyRemote: e,
+                            onSave: () {
+                              _onSave(
+                                e.$1.word?.toLowerCase() ?? "",
+                                state.userModel.learningWords,
+                                state.currentDefaultListId,
+                              );
+                            });
+                      }).toList();
+                      return Flexible(
+                        child: Column(
+                          children: [
+                            Flexible(
+                              child: CardSwiper(
+                                controller: cardController,
+                                isDisabled: true,
+                                cardsCount: cards.length,
+                                numberOfCardsDisplayed: 3,
+                                backCardOffset: const Offset(0, 40),
+                                padding: const EdgeInsets.all(12.0),
+                                cardBuilder: (
+                                  context,
+                                  index,
+                                  horizontalThresholdPercentage,
+                                  verticalThresholdPercentage,
+                                ) {
+                                  return cards[index];
+                                },
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        AppColors.backgroundEditButton,
+                                      ),
+                                      fixedSize:
+                                          MaterialStateProperty.all<Size>(
+                                        Size(
+                                            MediaQuery.of(context).size.width /
+                                                1.2,
+                                            52),
+                                      ),
+                                      side:
+                                          MaterialStateProperty.all<BorderSide>(
+                                        BorderSide(
+                                          color: AppColors.backgroundEditButton,
+                                          width: 1,
+                                        ), // Adjust color and width as needed
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      // _changeNext(controller);
+
+                                      //random index value
+                                      int index = Random().nextInt(10);
+
+                                      context
+                                          .read<GlobalBloc>()
+                                          .add(ResetFlashCardSide());
+
+                                      if (index % 2 == 0) {
+                                        cardController
+                                            .swipe(CardSwiperDirection.left);
+                                      } else {
+                                        cardController
+                                            .swipe(CardSwiperDirection.right);
+                                      }
+                                    },
+                                    child: const Text(
+                                      "Next",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  void _onFlip(int index) {
-    if (indexFront.contains(index)) {
-      setState(() {
-        indexFront.clear();
-      });
+  void _onSave(String word, List<UserVocab> listLearningWords, String listId) {
+    bool isSaved = listLearningWords.indexWhere((element) =>
+            element.listId == listId &&
+            element.listVocabulary.contains(word)) !=
+        -1;
+    if (isSaved) {
+      context.read<ManageVocabBloc>().add(RemoveFromListLearning(
+            vocab: word,
+          ));
+      Fluttertoast.showToast(
+        msg: "Removed from list",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     } else {
-      setState(() {
-        indexFront.clear();
-        indexFront.add(index);
-      });
+      context.read<ManageVocabBloc>().add(AddVocabToListLearning(vocab: word));
+      Fluttertoast.showToast(
+        msg: "Saved to your list",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
-  void _onSave(int index) {}
-
   void _changeNext(CardSwiperController controller) {
     //random index value
-
     int index = Random().nextInt(10);
     context.read<GlobalBloc>().add(ResetFlashCardSide());
 

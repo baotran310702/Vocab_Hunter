@@ -1,8 +1,9 @@
 import 'package:english_learner/firebase_options.dart';
 import 'package:english_learner/my_app.dart';
+import 'package:english_learner/presentations/authentication/authentication_page.dart';
+import 'package:english_learner/presentations/authentication/views/sign_in_page.dart';
 import 'package:english_learner/presentations/global_instance/bloc/global_bloc.dart';
-import 'package:english_learner/presentations/login_page/sign_in_page.dart';
-import 'package:english_learner/presentations/login_page/sign_up_page.dart';
+import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
 import 'package:english_learner/utils/notifications/notifications_services.dart';
 import 'package:english_learner/utils/notifications/word_manager_service.dart';
@@ -66,18 +67,21 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ManageVocabBloc(),
+          create: (context) => ManageVocabBloc()..add(InitUserVocab()),
         ),
         BlocProvider(
           create: (context) => GlobalBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ManageUserProfileBloc()..add(InitUserEvent()),
         ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => const SignInPage(),
-          '/sign-up': (context) => const SignUpPage(),
+          '/': (context) => const AuthenticationPage(),
           '/home': (context) => const MyMainApp(),
+          '/login': (context) => const SignInPage(),
         },
       ),
     );

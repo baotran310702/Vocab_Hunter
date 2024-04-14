@@ -1,4 +1,3 @@
-import 'package:english_learner/presentations/login_page/bloc/authentication_bloc.dart';
 import 'package:english_learner/presentations/test/user_test.dart';
 import 'package:english_learner/presentations/user_profile/views/achievement_page.dart';
 import 'package:english_learner/presentations/user_profile/views/change_password_page.dart';
@@ -8,6 +7,7 @@ import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../authentication/bloc/authentication_bloc.dart';
 import '../home/widgets/header_informations.dart';
 import 'views/setting_nofitications.dart';
 
@@ -222,16 +222,8 @@ class UserProfile extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    BlocProvider.value(
-                      value: AuthenticationBloc()
-                        ..add(
-                          Logout(),
-                        ),
-                    );
-                    Navigator.pushReplacementNamed(
-                      context,
-                      "/",
-                    );
+                    _onLogout();
+                    Navigator.pushReplacementNamed(context, '/');
                   },
                   child: const Text("Log Out"),
                 ),
@@ -243,6 +235,15 @@ class UserProfile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  _onLogout() {
+    BlocProvider.value(
+      value: AuthenticationBloc()
+        ..add(
+          Logout(),
+        ),
     );
   }
 }

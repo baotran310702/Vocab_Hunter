@@ -1,12 +1,12 @@
-import 'package:english_learner/presentations/login_page/bloc/authentication_bloc.dart';
-import 'package:english_learner/presentations/login_page/widgets/custom_button.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../utils/icons.dart';
-import 'widgets/input_text_field.dart';
+import '../../../utils/icons.dart';
+import '../bloc/authentication_bloc.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/input_text_field.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);

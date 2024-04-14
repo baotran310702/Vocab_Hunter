@@ -1,37 +1,30 @@
-import 'package:english_learner/models/user_vocab.dart';
+import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DeleteListVocab extends StatelessWidget {
-  final UserVocab userVocab;
-  const DeleteListVocab({super.key, required this.userVocab});
+class OptionListDialog extends StatelessWidget {
+  final String listId;
+  const OptionListDialog({super.key, required this.listId});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        "List ${userVocab.listName} will be removed!",
-        style: const TextStyle(
+      title: const Text(
+        "Set default or View list",
+        style: TextStyle(
           color: Colors.black,
-          fontSize: 16,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
         textAlign: TextAlign.center,
       ),
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.9,
-        height: 120,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              "You want to delete this list? All data will be cleared!",
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -42,10 +35,13 @@ class DeleteListVocab extends StatelessWidget {
                         Size(MediaQuery.of(context).size.width * 0.33, 54),
                   ),
                   onPressed: () {
-                    Navigator.pop(context);
+                    context
+                        .read<ManageVocabBloc>()
+                        .add(SetDefaultListLearningVocab(listId: listId));
+                    Navigator.pop(context, false);
                   },
                   child: Text(
-                    "Cancel",
+                    "Set Default",
                     style: TextStyle(
                       color: AppColors.titleHeaderColor,
                     ),
@@ -61,10 +57,10 @@ class DeleteListVocab extends StatelessWidget {
                         Size(MediaQuery.of(context).size.width * 0.33, 54),
                   ),
                   onPressed: () {
-                    Navigator.pop(context, userVocab.listId);
+                    Navigator.of(context).pop(true);
                   },
                   child: const Text(
-                    "Delete",
+                    "View all",
                     style: TextStyle(
                       color: Colors.white,
                     ),

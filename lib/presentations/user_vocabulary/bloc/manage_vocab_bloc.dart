@@ -11,6 +11,7 @@ import 'package:equatable/equatable.dart';
 import '../../../models/user_vocab.dart';
 import '../../../models/vocabulary/vocab_word_similarity.dart';
 import '../../../services/user_hive_local.dart';
+import '../../../services/user_pref_local.dart';
 
 part 'manage_vocab_event.dart';
 part 'manage_vocab_state.dart';
@@ -39,16 +40,33 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     on<ClearRecommendVocabEvent>(_onClearRecommendVocabEvent);
 
     on<AddNewListLearningVocab>(_onAddNewListLearningVocab);
+    on<RemoveFromListLearning>(_onRemoveFromListLearning);
     on<DeleteListLearningVocab>(_onDeleteListLearningVocab);
     on<AddVocabToListLearning>(_onAddVocabToListLearning);
     on<DeleteVocabFromListLearning>(_onDeleteVocabFromListLearning);
     on<UpdateListLearningVocab>(_onUpdateListLearningVocab);
     on<SyncUserData>(_onSyncUserData);
+    on<SetDefaultListLearningVocab>(_onSetDefaultListLearning);
   }
 
   _onInitUserVocab(InitUserVocab event, Emitter<ManageVocabState> emit) async {
     UserModel currentUser = await UserHiveLocal().getUser();
-    emit(state.copyWith(userModel: currentUser));
+    String? currentDefaultId =
+        await UserPrefererencesLocal().getDefaultListLearningVocab();
+    if (currentDefaultId == null) {
+      await UserPrefererencesLocal().setDefaultListLearningVocab(
+          currentUser.learningWords.isNotEmpty
+              ? currentUser.learningWords[0].listId
+              : '');
+      emit(state.copyWith(
+          userModel: currentUser,
+          currentDefaultListId: currentUser.learningWords.isNotEmpty
+              ? currentUser.learningWords[0].listId
+              : ''));
+      return;
+    }
+    emit(state.copyWith(
+        userModel: currentUser, currentDefaultListId: currentDefaultId));
   }
 
   _onAddVocab(AddVocabEvent event, Emitter<ManageVocabState> emit) {
@@ -148,12 +166,18 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     emit(state.copyWith(isLoading: true));
     UserModel currentUser = state.userModel;
     int currentIndex = currentUser.learningWords.length;
+
+    if (currentIndex == 0) {
+      await UserPrefererencesLocal()
+          .setDefaultListLearningVocab(currentIndex.toString());
+    }
+
     List<UserVocab> currentUserList = currentUser.learningWords;
     List<UserVocab> newList = List.from(currentUserList);
     newList.add(UserVocab(
         listId: currentIndex.toString(),
         listName: event.name,
-        listVocabulary: []));
+        listVocabulary: const []));
 
     UserModel newUsers = currentUser.copyWith(learningWords: newList);
 
@@ -163,6 +187,29 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
       isLoading: false,
       userModel: newUsers,
     ));
+  }
+
+  _onRemoveFromListLearning(RemoveFromListLearning event, Emitter emit) async {
+    UserModel currentUser = state.userModel;
+
+    String currentListId =
+        await UserPrefererencesLocal().getDefaultListLearningVocab() ?? '';
+
+    List<UserVocab> listUpdated = currentUser.learningWords.map((e) {
+      if (e.listId == currentListId) {
+        return e.copyWith(
+            listVocabulary: e.listVocabulary
+                .where((element) => element != event.vocab)
+                .toList());
+      }
+      return e;
+    }).toList();
+
+    UserModel newUSers = currentUser.copyWith(learningWords: listUpdated);
+
+    UserHiveLocal().saveUser(newUSers);
+
+    emit(state.copyWith(userModel: newUSers));
   }
 
   _onDeleteListLearningVocab(
@@ -178,14 +225,23 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
         userModel: currentUser.copyWith(learningWords: newList)));
   }
 
-  _onAddVocabToListLearning(AddVocabToListLearning event, Emitter emit) {
+  _onAddVocabToListLearning(AddVocabToListLearning event, Emitter emit) async {
+    String listDefaultId =
+        await UserPrefererencesLocal().getDefaultListLearningVocab() ?? '';
     UserModel currentUser = state.userModel;
-    currentUser.learnedWords
-        .firstWhere((element) => element.listName == event.name)
-        .listVocabulary
-        .add(event.vocab);
-    UserHiveLocal().saveUser(currentUser);
-    emit(state.copyWith(userModel: currentUser));
+    List<UserVocab> listUpdated = currentUser.learningWords.map((e) {
+      if (e.listId == listDefaultId) {
+        return e.copyWith(
+            listVocabulary: List.from(e.listVocabulary)..add(event.vocab));
+      }
+      return e;
+    }).toList();
+
+    UserModel newUSers = currentUser.copyWith(learningWords: listUpdated);
+
+    UserHiveLocal().saveUser(newUSers);
+
+    emit(state.copyWith(userModel: newUSers));
   }
 
   _onDeleteVocabFromListLearning(
@@ -215,6 +271,12 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
         .saveUser(state.userModel.copyWith(learningWords: updatedList));
     emit(state.copyWith(
         userModel: state.userModel.copyWith(learningWords: updatedList)));
+  }
+
+  _onSetDefaultListLearning(
+      SetDefaultListLearningVocab event, Emitter emit) async {
+    await UserPrefererencesLocal().setDefaultListLearningVocab(event.listId);
+    emit(state.copyWith(currentDefaultListId: event.listId));
   }
 
   _onSyncUserData(SyncUserData event, Emitter emit) async {

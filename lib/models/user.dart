@@ -1,12 +1,13 @@
 import 'package:english_learner/models/achievement.dart';
 import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/utils/constants.dart';
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
 part 'user.g.dart';
 
 @HiveType(typeId: KeyHiveLocal.hiveUserId)
-class UserModel {
+class UserModel extends Equatable {
   @HiveField(0)
   final String uid;
   @HiveField(1)
@@ -34,9 +35,9 @@ class UserModel {
       uid: uid,
       userName: userName,
       rank: 0,
-      learnedWords: [],
-      learningWords: [],
-      achievements: [],
+      learnedWords: const [],
+      learningWords: const [],
+      achievements: const [],
     );
   }
 
@@ -45,7 +46,7 @@ class UserModel {
       uid: "aioximaaaaaa",
       userName: "Bao dep traiii ",
       rank: 0,
-      learnedWords: [
+      learnedWords: const [
         UserVocab(
           listId: "0",
           listName: "List 1",
@@ -62,7 +63,7 @@ class UserModel {
           listVocabulary: ["hello", "world", "goodbye"],
         ),
       ],
-      learningWords: [
+      learningWords: const [
         UserVocab(
           listId: "0",
           listName: "List 1",
@@ -156,4 +157,8 @@ class UserModel {
       'achievements': achievements.map((e) => e.toJson()).toList(),
     };
   }
+
+  @override
+  List<Object?> get props =>
+      [uid, userName, rank, learnedWords, learningWords, achievements];
 }

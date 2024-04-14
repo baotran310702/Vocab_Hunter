@@ -3,12 +3,13 @@ class APIPath {
   static const String dictionaryDev =
       "https://api.dictionaryapi.dev/api/v2/entries/en/";
   static const String wordSimilarityLocalhost =
-      "http://192.168.2.34:5000/api/recommend-similar-words/";
+      "http://192.168.2.40:5000/api/recommend-similar-words/";
 }
 
 class KeyLocalPreferences {
   static const String userId = 'userId';
   static const String token = 'token';
+  static const String defaultListLearningVocab = 'defaultIdListLearningVocab';
 }
 
 class KeyHiveLocal {

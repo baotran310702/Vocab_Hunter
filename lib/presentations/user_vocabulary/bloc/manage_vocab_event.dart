@@ -71,9 +71,14 @@ class DeleteListLearningVocab extends ManageVocabEvent {
 }
 
 class AddVocabToListLearning extends ManageVocabEvent {
-  final String name;
   final String vocab;
-  AddVocabToListLearning({required this.name, required this.vocab});
+  AddVocabToListLearning({required this.vocab});
+}
+
+class RemoveFromListLearning extends ManageVocabEvent {
+  final String vocab;
+
+  RemoveFromListLearning({required this.vocab});
 }
 
 class DeleteVocabFromListLearning extends ManageVocabEvent {
@@ -85,6 +90,11 @@ class UpdateListLearningVocab extends ManageVocabEvent {
   final String listId;
   final String listName;
   UpdateListLearningVocab({required this.listId, required this.listName});
+}
+
+class SetDefaultListLearningVocab extends ManageVocabEvent {
+  final String listId;
+  SetDefaultListLearningVocab({required this.listId});
 }
 
 class SyncUserData extends ManageVocabEvent {}

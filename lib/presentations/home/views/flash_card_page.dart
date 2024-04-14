@@ -8,6 +8,9 @@ import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../../models/user_vocab.dart';
 
 class FlashCardPage extends StatefulWidget {
   const FlashCardPage({super.key});
@@ -18,7 +21,6 @@ class FlashCardPage extends StatefulWidget {
 
 class _FlashCardPageState extends State<FlashCardPage> {
   final TextEditingController vocabController = TextEditingController();
-  List<Widget> cards = [];
   List<int> indexFront = [];
 
   bool isDispose = false;
@@ -32,6 +34,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final CardSwiperController cardController = CardSwiperController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: MyAppbar(
@@ -130,24 +133,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
                   height: 16,
                 ),
                 BlocBuilder<ManageVocabBloc, ManageVocabState>(
-                  buildWhen: (previous, current) {
-                    return previous.vocabRemoteList !=
-                            current.vocabRemoteList ||
-                        previous.isLoading != current.isLoading;
-                  },
                   builder: (context, state) {
-                    int index = -1;
-                    cards = state.vocabRemoteList.map((e) {
-                      index = index + 1;
-                      return FlashCard(
-                          vocabularyRemote: e,
-                          voidCallback: () {
-                            _onFlip(index);
-                          },
-                          onSave: () {
-                            _onSave(index);
-                          });
-                    }).toList();
                     if (state.isLoading) {
                       return const Flexible(child: CircularProgressIndicator());
                     }
@@ -166,15 +152,33 @@ class _FlashCardPageState extends State<FlashCardPage> {
                         ),
                       );
                     } else {
-                      final CardSwiperController controller =
-                          CardSwiperController();
-
+                      int index = -1;
+                      List<Widget> cards = state.vocabRemoteList.map((e) {
+                        bool isSaved = state.userModel.learningWords.indexWhere(
+                                (element) =>
+                                    element.listVocabulary
+                                        .contains(e.$1.word?.toLowerCase()) &&
+                                    element.listId ==
+                                        state.currentDefaultListId) !=
+                            -1;
+                        index = index + 1;
+                        return FlashCard(
+                            isSaved: isSaved,
+                            vocabularyRemote: e,
+                            onSave: () {
+                              _onSave(
+                                e.$1.word?.toLowerCase() ?? "",
+                                state.userModel.learningWords,
+                                state.currentDefaultListId,
+                              );
+                            });
+                      }).toList();
                       return Flexible(
                         child: Column(
                           children: [
                             Flexible(
                               child: CardSwiper(
-                                controller: controller,
+                                controller: cardController,
                                 isDisabled: true,
                                 cardsCount: cards.length,
                                 numberOfCardsDisplayed: 3,
@@ -217,7 +221,22 @@ class _FlashCardPageState extends State<FlashCardPage> {
                                       ),
                                     ),
                                     onPressed: () {
-                                      _changeNext(controller);
+                                      // _changeNext(controller);
+
+                                      //random index value
+                                      int index = Random().nextInt(10);
+
+                                      context
+                                          .read<GlobalBloc>()
+                                          .add(ResetFlashCardSide());
+
+                                      if (index % 2 == 0) {
+                                        cardController
+                                            .swipe(CardSwiperDirection.left);
+                                      } else {
+                                        cardController
+                                            .swipe(CardSwiperDirection.right);
+                                      }
                                     },
                                     child: const Text(
                                       "Next",
@@ -244,24 +263,40 @@ class _FlashCardPageState extends State<FlashCardPage> {
     );
   }
 
-  void _onFlip(int index) {
-    if (indexFront.contains(index)) {
-      setState(() {
-        indexFront.clear();
-      });
+  void _onSave(String word, List<UserVocab> listLearningWords, String listId) {
+    bool isSaved = listLearningWords.indexWhere((element) =>
+            element.listId == listId &&
+            element.listVocabulary.contains(word)) !=
+        -1;
+    if (isSaved) {
+      context.read<ManageVocabBloc>().add(RemoveFromListLearning(
+            vocab: word,
+          ));
+      Fluttertoast.showToast(
+        msg: "Removed from list",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     } else {
-      setState(() {
-        indexFront.clear();
-        indexFront.add(index);
-      });
+      context.read<ManageVocabBloc>().add(AddVocabToListLearning(vocab: word));
+      Fluttertoast.showToast(
+        msg: "Saved to your list",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
-  void _onSave(int index) {}
-
   void _changeNext(CardSwiperController controller) {
     //random index value
-
     int index = Random().nextInt(10);
     context.read<GlobalBloc>().add(ResetFlashCardSide());
 

@@ -163,6 +163,9 @@ class _UserVocabularyTrainState extends State<UserVocabularyTrain> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return UserListVocab(
+                            isDefault:
+                                state.userModel.learningWords[index].listId ==
+                                    state.currentDefaultListId,
                             ableToEdit: isAbleToEdit,
                             currentVocabList:
                                 state.userModel.learningWords[index],

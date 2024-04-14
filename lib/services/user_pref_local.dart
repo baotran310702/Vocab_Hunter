@@ -1,7 +1,7 @@
 import 'package:english_learner/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserNormalInformationLocal {
+class UserPrefererencesLocal {
   /// The  [saveUserId]  method retrieves the user ID from the local storage.
   /// Create a new file named  user_service.dart  in the  lib/services  directory.
   Future<void> saveUserId(String userId) async {
@@ -38,5 +38,17 @@ class UserNormalInformationLocal {
   Future<void> removeToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(KeyLocalPreferences.token);
+  }
+
+  /// Set default id for list learning vocabulary
+  Future<void> setDefaultListLearningVocab(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(KeyLocalPreferences.defaultListLearningVocab, id);
+  }
+
+  /// Get default id for list learning vocabulary
+  Future<String?> getDefaultListLearningVocab() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(KeyLocalPreferences.defaultListLearningVocab);
   }
 }

@@ -10,6 +10,7 @@ class ManageVocabState extends Equatable {
   final bool isLoading;
   final bool isSync;
   final String error;
+  final String currentDefaultListId;
 
   const ManageVocabState({
     required this.userModel,
@@ -20,6 +21,7 @@ class ManageVocabState extends Equatable {
     required this.similarVocabsLocal,
     required this.vocabRemoteList,
     required this.isSync,
+    required this.currentDefaultListId,
     this.meaningRecommendVocabs = "",
   });
 
@@ -30,6 +32,7 @@ class ManageVocabState extends Equatable {
       similarVocabs: const [],
       vocabRemoteList: const [],
       similarVocabsLocal: const [],
+      currentDefaultListId: "",
       meaningRecommendVocabs: "",
       isLoading: false,
       isSync: false,
@@ -43,6 +46,7 @@ class ManageVocabState extends Equatable {
     List<VocabWordSimilarity>? similarVocabs,
     List<VocabWordSimilarity>? similarVocabsLocal,
     List<(VocabularyRemote, VocabularyRemote)>? vocabRemoteList,
+    String? currentDefaultListId,
     String? meaningRecommendVocabs,
     bool? isLoading,
     bool? isSync,
@@ -53,6 +57,7 @@ class ManageVocabState extends Equatable {
       vocabList: vocabList ?? this.vocabList,
       similarVocabs: similarVocabs ?? this.similarVocabs,
       similarVocabsLocal: similarVocabsLocal ?? this.similarVocabsLocal,
+      currentDefaultListId: currentDefaultListId ?? this.currentDefaultListId,
       meaningRecommendVocabs:
           meaningRecommendVocabs ?? this.meaningRecommendVocabs,
       vocabRemoteList: vocabRemoteList ?? this.vocabRemoteList,
@@ -66,6 +71,7 @@ class ManageVocabState extends Equatable {
   List<Object?> get props => [
         userModel,
         vocabList,
+        currentDefaultListId,
         meaningRecommendVocabs,
         vocabRemoteList,
         similarVocabsLocal,

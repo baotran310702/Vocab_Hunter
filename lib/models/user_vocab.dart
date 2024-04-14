@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import '../utils/constants.dart';
 
 part 'user_vocab.g.dart';
 
 @HiveType(typeId: KeyHiveLocal.hiveUserVocab)
-class UserVocab {
+class UserVocab extends Equatable {
   @HiveField(0)
   final String listId;
   @HiveField(1)
@@ -12,7 +13,7 @@ class UserVocab {
   @HiveField(2)
   final List<String> listVocabulary;
 
-  UserVocab({
+  const UserVocab({
     required this.listId,
     required this.listName,
     required this.listVocabulary,
@@ -49,4 +50,7 @@ class UserVocab {
       listVocabulary: listVocabulary ?? this.listVocabulary,
     );
   }
+
+  @override
+  List<Object?> get props => [listId, listName, listVocabulary];
 }

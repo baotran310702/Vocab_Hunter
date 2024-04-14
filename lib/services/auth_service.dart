@@ -41,7 +41,7 @@ class AuthenticationServices {
           .add({"uid": uid, "token": token});
       UserHiveLocal().saveUser(UserModel.fromMap(
           response.docs.first.data(), response.docs.first.id));
-      UserNormalInformationLocal().saveToken(token);
+      UserPrefererencesLocal().saveToken(token);
       return uid;
     } catch (e) {
       debugPrint("login fail with error: $e");
@@ -86,7 +86,9 @@ class AuthenticationServices {
   }
 
   Future<void> signOut() async {
-    UserNormalInformationLocal().removeUserId();
+    UserPrefererencesLocal().removeUserId();
+    await UserPrefererencesLocal().removeToken();
+    await UserHiveLocal().removeUser();
     await FirebaseAuth.instance.signOut();
   }
 }

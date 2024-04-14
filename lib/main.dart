@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'services/user_hive_local.dart';
 
@@ -67,7 +68,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ManageVocabBloc()..add(InitUserVocab()),
+          create: (context) => ManageVocabBloc()..add(InitUserVocabEvent()),
         ),
         BlocProvider(
           create: (context) => GlobalBloc(),
@@ -77,6 +78,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp(
+        builder: FToastBuilder(),
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (context) => const AuthenticationPage(),

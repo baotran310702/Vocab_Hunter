@@ -2,7 +2,7 @@ part of 'manage_vocab_bloc.dart';
 
 abstract class ManageVocabEvent {}
 
-class InitUserVocab extends ManageVocabEvent {}
+class InitUserVocabEvent extends ManageVocabEvent {}
 
 class AddVocabEvent extends ManageVocabEvent {
   final Vocabulary word;
@@ -71,12 +71,12 @@ class DeleteListLearningVocab extends ManageVocabEvent {
 }
 
 class AddVocabToListLearning extends ManageVocabEvent {
-  final String vocab;
+  final VocabularyRemote vocab;
   AddVocabToListLearning({required this.vocab});
 }
 
 class RemoveFromListLearning extends ManageVocabEvent {
-  final String vocab;
+  final VocabularyRemote vocab;
 
   RemoveFromListLearning({required this.vocab});
 }

@@ -7,6 +7,8 @@ import 'package:english_learner/utils/enum.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../models/vocabulary/vocabulary_remote.dart';
+
 class UserHiveLocal {
   Future<void> init() async {
     final dir = await getApplicationDocumentsDirectory();
@@ -20,6 +22,22 @@ class UserHiveLocal {
 
   /// Save user's information to local storage.
   Future<void> saveUser(UserModel user) async {
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabRemote)) {
+      Hive.registerAdapter(VocabularyRemoteAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hivePhonestic)) {
+      Hive.registerAdapter(PhoneticsAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveMeanings)) {
+      Hive.registerAdapter(MeaningsAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveDefinitions)) {
+      Hive.registerAdapter(DefinitionsAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveLiences)) {
+      Hive.registerAdapter(LicenseAdapter());
+    }
+
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveEnumAchievementTypeId)) {
       Hive.registerAdapter(AchievementTypeAdapter());
     }
@@ -38,6 +56,21 @@ class UserHiveLocal {
 
   /// Get user's information to local storage.
   Future<UserModel> getUser() async {
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabRemote)) {
+      Hive.registerAdapter(VocabularyRemoteAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hivePhonestic)) {
+      Hive.registerAdapter(PhoneticsAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveMeanings)) {
+      Hive.registerAdapter(MeaningsAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveDefinitions)) {
+      Hive.registerAdapter(DefinitionsAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveLiences)) {
+      Hive.registerAdapter(LicenseAdapter());
+    }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveEnumAchievementTypeId)) {
       Hive.registerAdapter(AchievementTypeAdapter());
     }

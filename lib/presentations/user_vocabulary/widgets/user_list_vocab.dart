@@ -36,6 +36,15 @@ class _UserListVocabState extends State<UserListVocab> {
         children: [
           InkWell(
             onTap: () {
+              if (widget.isDefault != null && widget.isDefault == true) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ListVocabularyItem(),
+                  ),
+                );
+                return;
+              }
               showDialog(
                   context: context,
                   builder: (builder) {
@@ -45,11 +54,24 @@ class _UserListVocabState extends State<UserListVocab> {
                   }).then((value) {
                 if (value != null) {
                   if (value) {
+                    if (widget.currentVocabList.listVocabulary.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: "List is empty.",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
+                      );
+                      return;
+                    }
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ListVocabularyItem()));
-                  } else {}
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ListVocabularyItem(),
+                      ),
+                    );
+                  }
                 }
               });
             },

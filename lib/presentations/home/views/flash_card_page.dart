@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/global_instance/bloc/global_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/card.dart';
 import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
 import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/toasty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -156,8 +158,14 @@ class _FlashCardPageState extends State<FlashCardPage> {
                       List<Widget> cards = state.vocabRemoteList.map((e) {
                         bool isSaved = state.userModel.learningWords.indexWhere(
                                 (element) =>
-                                    element.listVocabulary
-                                        .contains(e.$1.word?.toLowerCase()) &&
+                                    state.userModel.learningWords.indexWhere(
+                                            (element) =>
+                                                element.listVocabulary
+                                                    .indexWhere((element) =>
+                                                        element.word ==
+                                                        e.$2.word) !=
+                                                -1) !=
+                                        -1 &&
                                     element.listId ==
                                         state.currentDefaultListId) !=
                             -1;
@@ -167,7 +175,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
                             vocabularyRemote: e,
                             onSave: () {
                               _onSave(
-                                e.$1.word?.toLowerCase() ?? "",
+                                e.$2,
                                 state.userModel.learningWords,
                                 state.currentDefaultListId,
                               );
@@ -263,7 +271,8 @@ class _FlashCardPageState extends State<FlashCardPage> {
     );
   }
 
-  void _onSave(String word, List<UserVocab> listLearningWords, String listId) {
+  void _onSave(
+      VocabularyRemote word, List<UserVocab> listLearningWords, String listId) {
     bool isSaved = listLearningWords.indexWhere((element) =>
             element.listId == listId &&
             element.listVocabulary.contains(word)) !=
@@ -272,38 +281,11 @@ class _FlashCardPageState extends State<FlashCardPage> {
       context.read<ManageVocabBloc>().add(RemoveFromListLearning(
             vocab: word,
           ));
-      Fluttertoast.showToast(
-        msg: "Removed from list",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+
+      Toasty().showToast("Removed from list", context);
     } else {
       context.read<ManageVocabBloc>().add(AddVocabToListLearning(vocab: word));
-      Fluttertoast.showToast(
-        msg: "Saved to your list",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
-  }
-
-  void _changeNext(CardSwiperController controller) {
-    //random index value
-    int index = Random().nextInt(10);
-    context.read<GlobalBloc>().add(ResetFlashCardSide());
-
-    if (index % 2 == 0) {
-      controller.swipe(CardSwiperDirection.left);
-    } else {
-      controller.swipe(CardSwiperDirection.right);
+      Toasty().showToast("Added to list", context);
     }
   }
 }

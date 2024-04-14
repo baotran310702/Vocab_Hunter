@@ -2,9 +2,14 @@ import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/home/widgets/vocabulary_item.dart';
 import 'package:flutter/material.dart';
 
-class ListVocabularyItem extends StatelessWidget {
+class ListVocabularyItem extends StatefulWidget {
   const ListVocabularyItem({super.key});
 
+  @override
+  State<ListVocabularyItem> createState() => _ListVocabularyItemState();
+}
+
+class _ListVocabularyItemState extends State<ListVocabularyItem> {
   @override
   Widget build(BuildContext context) {
     List<int> list = [
@@ -17,17 +22,6 @@ class ListVocabularyItem extends StatelessWidget {
       7,
       8,
       9,
-      10,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10
     ];
     return Scaffold(
       appBar: const MyAppbar(

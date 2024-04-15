@@ -162,7 +162,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
                                                 element.listVocabulary
                                                     .indexWhere((element) =>
                                                         element.word ==
-                                                        e.$2.word) !=
+                                                        e.$1.word) !=
                                                 -1) !=
                                         -1 &&
                                     element.listId ==

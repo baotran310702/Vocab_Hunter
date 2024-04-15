@@ -1,12 +1,12 @@
-import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/back_button.dart';
 import 'package:english_learner/presentations/home/widgets/box_vocab_item.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class DetailVocabulary extends StatefulWidget {
-  final VocabularyRemote vocabularyRemote;
-  const DetailVocabulary({super.key, required this.vocabularyRemote});
+  final TranslatePageBloc? translatePageBloc;
+  const DetailVocabulary({super.key, this.translatePageBloc});
 
   @override
   State<DetailVocabulary> createState() => _DetailVocabularyState();

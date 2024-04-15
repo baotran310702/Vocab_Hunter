@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Toasty {
-  showToast(String msg, BuildContext context) {
+  static showToast({required String msg, required BuildContext context}) {
     FToast toasty = FToast();
     toasty.init(context);
     toasty.showToast(

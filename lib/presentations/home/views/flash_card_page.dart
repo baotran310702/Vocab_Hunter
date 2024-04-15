@@ -10,7 +10,6 @@ import 'package:english_learner/utils/toasty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../models/user_vocab.dart';
 
@@ -175,7 +174,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
                             vocabularyRemote: e,
                             onSave: () {
                               _onSave(
-                                e.$2,
+                                e.$1,
                                 state.userModel.learningWords,
                                 state.currentDefaultListId,
                               );
@@ -282,10 +281,16 @@ class _FlashCardPageState extends State<FlashCardPage> {
             vocab: word,
           ));
 
-      Toasty().showToast("Removed from list", context);
+      Toasty.showToast(
+        msg: "Removed from list!",
+        context: context,
+      );
     } else {
       context.read<ManageVocabBloc>().add(AddVocabToListLearning(vocab: word));
-      Toasty().showToast("Added to list", context);
+      Toasty.showToast(
+        msg: "Added to list!",
+        context: context,
+      );
     }
   }
 }

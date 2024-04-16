@@ -20,6 +20,14 @@ class UserVocab extends Equatable {
     required this.listVocabulary,
   });
 
+  factory UserVocab.empty() {
+    return const UserVocab(
+      listId: "",
+      listName: "",
+      listVocabulary: <VocabularyRemote>[],
+    );
+  }
+
   factory UserVocab.fromJson(Map<String, dynamic> json) {
     List<dynamic> listVocab =
         json['listVocabulary'] is List && json['listVocabulary'].isEmpty

@@ -40,7 +40,9 @@ class _UserListVocabState extends State<UserListVocab> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ListVocabularyItem(),
+                    builder: (context) => ListVocabularyItem(
+                      currentVocabList: widget.currentVocabList,
+                    ),
                   ),
                 );
                 return;
@@ -64,7 +66,9 @@ class _UserListVocabState extends State<UserListVocab> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ListVocabularyItem(),
+                        builder: (context) => ListVocabularyItem(
+                          currentVocabList: widget.currentVocabList,
+                        ),
                       ),
                     );
                   }

@@ -3,6 +3,7 @@ import 'package:english_learner/presentations/home/widgets/back_button.dart';
 import 'package:english_learner/presentations/home/widgets/box_vocab_item.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DetailVocabulary extends StatefulWidget {
   final TranslatePageBloc? translatePageBloc;
@@ -35,29 +36,32 @@ class _DetailVocabularyState extends State<DetailVocabulary>
   Widget build(BuildContext context) {
     List<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Default vocab"),
-        leading: const ButtonBack(),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(
-              text: "Vietnamese - English",
-            ),
-            Tab(
-              text: "English - English",
-            ),
-          ],
+    return BlocProvider(
+      create: (context) => TranslatePageBloc(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Default vocab"),
+          leading: const ButtonBack(),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(
+                text: "Vietnamese - English",
+              ),
+              Tab(
+                text: "English - English",
+              ),
+            ],
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: TabBarView(
-          controller: _tabController,
-          children: [
-            DetailVocabularyPage(list: list),
-            DetailVocabularyPage(list: list),
-          ],
+        body: SafeArea(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              DetailVocabularyPage(list: list),
+              DetailVocabularyPage(list: list),
+            ],
+          ),
         ),
       ),
     );

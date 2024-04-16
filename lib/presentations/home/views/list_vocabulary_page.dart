@@ -31,28 +31,32 @@ class _ListVocabularyItemState extends State<ListVocabularyItem> {
           ),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: listVocab[0].listVocabulary.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          VocabularyItem(
-                            vocab: listVocab[0].listVocabulary[index],
-                          ),
-                          Container(
-                            color: Colors.black,
-                            height: 1,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                          )
-                        ],
-                      );
-                    },
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: listVocab[0].listVocabulary.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            VocabularyItem(
+                              vocab: listVocab[0].listVocabulary[index],
+                            ),
+                            Container(
+                              color: Colors.black,
+                              height: 1,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                            )
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

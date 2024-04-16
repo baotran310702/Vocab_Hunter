@@ -21,14 +21,16 @@ class UserVocab extends Equatable {
   });
 
   factory UserVocab.fromJson(Map<String, dynamic> json) {
-    List<VocabularyRemote> listVocab =
+    List<dynamic> listVocab =
         json['listVocabulary'] is List && json['listVocabulary'].isEmpty
             ? <VocabularyRemote>[]
-            : json['listVocabulary'].map((e) => e.fromJson()).toList();
+            : json['listVocabulary']
+                .map((e) => VocabularyRemote.fromJson(e))
+                .toList();
     return UserVocab(
       listId: json['listId'] ?? "",
       listName: json['listName'] ?? "",
-      listVocabulary: listVocab,
+      listVocabulary: listVocab.map((e) => e as VocabularyRemote).toList(),
     );
   }
 

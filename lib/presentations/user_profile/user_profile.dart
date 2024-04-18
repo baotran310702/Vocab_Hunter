@@ -19,7 +19,7 @@ class UserProfile extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      backgroundColor: AppColors.backgroundAppbar,
+      backgroundColor: AppColors.backgroundHeader,
       body: SafeArea(
         child: Container(
           color: AppColors.backgroundHeader,

@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     return BlocProvider(
       create: (context) => HomePageBloc()..add(HomePageInitialEvent()),
       child: Scaffold(
-        backgroundColor: AppColors.backgroundAppbar,
+        backgroundColor: AppColors.backgroundHeader,
         extendBody: true,
         body: SafeArea(
           child: Container(

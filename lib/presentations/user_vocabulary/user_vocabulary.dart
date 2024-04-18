@@ -25,7 +25,7 @@ class _UserVocabularyTrainState extends State<UserVocabularyTrain> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.backgroundAppbar,
+      backgroundColor: AppColors.backgroundHeader,
       body: SafeArea(
         child: Container(
           color: AppColors.backgroundHeader,

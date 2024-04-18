@@ -42,7 +42,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
       child: BlocBuilder<TranslatePageBloc, TranslatePageState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: AppColors.backgroundAppbar,
+            backgroundColor: AppColors.backgroundHeader,
             resizeToAvoidBottomInset: false,
             extendBody: true,
             extendBodyBehindAppBar: true,

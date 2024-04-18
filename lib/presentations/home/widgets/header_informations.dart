@@ -33,7 +33,7 @@ class _HeaderInformationsState extends State<HeaderInformations> {
           color: AppColors.backgroundHeader,
           border: Border.all(
             color: AppColors.textInputs,
-            width: 2,
+            width: 1,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(16))),
       child: Column(

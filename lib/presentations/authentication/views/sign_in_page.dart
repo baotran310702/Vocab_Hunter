@@ -27,7 +27,7 @@ class SignInPage extends StatelessWidget {
               state.success == null &&
               state.isLoading == false) {
             Fluttertoast.showToast(
-              msg: state.success ?? "Đăng nhập thất bại!",
+              msg: state.error ?? "Đăng nhập thất bại!",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,

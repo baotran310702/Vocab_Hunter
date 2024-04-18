@@ -1,3 +1,4 @@
+import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/presentations/home/views/flash_card_page.dart';
 import 'package:english_learner/presentations/home/views/list_vocabulary_page.dart';
 import 'package:english_learner/utils/colors.dart';
@@ -172,7 +173,9 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return const ListVocabularyItem();
+                                  return ListVocabularyItem(
+                                    currentVocabList: UserVocab.empty(),
+                                  );
                                 },
                               ),
                             );

@@ -11,7 +11,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+import 'presentations/dictionary_page/bloc/translate_page_bloc.dart';
 import 'services/user_hive_local.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -67,7 +69,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ManageVocabBloc()..add(InitUserVocab()),
+          create: (context) => ManageVocabBloc()..add(InitUserVocabEvent()),
         ),
         BlocProvider(
           create: (context) => GlobalBloc(),
@@ -75,8 +77,12 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => ManageUserProfileBloc()..add(InitUserEvent()),
         ),
+        BlocProvider(
+          create: (context) => TranslatePageBloc(),
+        ),
       ],
       child: MaterialApp(
+        builder: FToastBuilder(),
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (context) => const AuthenticationPage(),

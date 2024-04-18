@@ -1,3 +1,4 @@
+import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -56,15 +57,14 @@ class _PronounceWordState extends State<PronounceWord> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        _speak();
-      },
-      child: Icon(
-        Icons.volume_up_rounded,
-        size: widget.size ?? 20,
-        color: widget.color ?? Colors.black54,
-      ),
-    );
+        onTap: () {
+          _speak();
+        },
+        child: Image.asset(
+          AppIcons.speaker,
+          width: 28,
+          height: 28,
+        ));
   }
 
   @override

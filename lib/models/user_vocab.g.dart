@@ -19,7 +19,7 @@ class UserVocabAdapter extends TypeAdapter<UserVocab> {
     return UserVocab(
       listId: fields[0] as String,
       listName: fields[1] as String,
-      listVocabulary: (fields[2] as List).cast<String>(),
+      listVocabulary: (fields[2] as List).cast<VocabularyRemote>(),
     );
   }
 

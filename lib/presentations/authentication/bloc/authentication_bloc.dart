@@ -34,6 +34,7 @@ class AuthenticationBloc
           isLoading: false,
           error: "Something went wrong, please try again.",
           success: null,
+          
         ),
       );
       return;

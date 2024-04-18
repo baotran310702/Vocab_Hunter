@@ -24,7 +24,7 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
   final TranslateServices _translateServices = TranslateServices();
 
   ManageVocabBloc() : super(ManageVocabState.initial()) {
-    on<InitUserVocab>(_onInitUserVocab);
+    on<InitUserVocabEvent>(_onInitUserVocabEvent);
 
     on<AddVocabEvent>(_onAddVocab);
     on<RemoveVocabEvent>(_onRemoveVocab);
@@ -49,7 +49,8 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     on<SetDefaultListLearningVocab>(_onSetDefaultListLearning);
   }
 
-  _onInitUserVocab(InitUserVocab event, Emitter<ManageVocabState> emit) async {
+  _onInitUserVocabEvent(
+      InitUserVocabEvent event, Emitter<ManageVocabState> emit) async {
     UserModel currentUser = await UserHiveLocal().getUser();
     String? currentDefaultId =
         await UserPrefererencesLocal().getDefaultListLearningVocab();
@@ -156,6 +157,7 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     emit(state.copyWith(
       vocabRemoteList: List.empty(),
       similarVocabs: List.empty(),
+      isLoading: false,
     ));
   }
 

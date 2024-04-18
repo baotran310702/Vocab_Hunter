@@ -50,34 +50,34 @@ class UserModel extends Equatable {
         UserVocab(
           listId: "0",
           listName: "List 1",
-          listVocabulary: ["hello", "world", "goodbye"],
+          listVocabulary: [],
         ),
         UserVocab(
           listId: "1",
           listName: "List 2",
-          listVocabulary: ["hello", "world", "goodbye"],
+          listVocabulary: [],
         ),
         UserVocab(
           listId: "2",
           listName: "List 3",
-          listVocabulary: ["hello", "world", "goodbye"],
+          listVocabulary: [],
         ),
       ],
       learningWords: const [
         UserVocab(
           listId: "0",
           listName: "List 1",
-          listVocabulary: ["hello", "world", "goodbye"],
+          listVocabulary: [],
         ),
         UserVocab(
           listId: "1",
           listName: "List 2",
-          listVocabulary: ["hello", "world", "goodbye"],
+          listVocabulary: [],
         ),
         UserVocab(
           listId: "2",
           listName: "List 3",
-          listVocabulary: ["hello", "world", "goodbye"],
+          listVocabulary: [],
         ),
       ],
       achievements: [

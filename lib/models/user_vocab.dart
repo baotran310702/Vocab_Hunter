@@ -1,3 +1,4 @@
+import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import '../utils/constants.dart';
@@ -11,7 +12,7 @@ class UserVocab extends Equatable {
   @HiveField(1)
   final String listName;
   @HiveField(2)
-  final List<String> listVocabulary;
+  final List<VocabularyRemote> listVocabulary;
 
   const UserVocab({
     required this.listId,
@@ -19,15 +20,25 @@ class UserVocab extends Equatable {
     required this.listVocabulary,
   });
 
+  factory UserVocab.empty() {
+    return const UserVocab(
+      listId: "",
+      listName: "",
+      listVocabulary: <VocabularyRemote>[],
+    );
+  }
+
   factory UserVocab.fromJson(Map<String, dynamic> json) {
-    List<String> listVocab =
+    List<dynamic> listVocab =
         json['listVocabulary'] is List && json['listVocabulary'].isEmpty
-            ? <String>[]
-            : json['listVocabulary'].map((e) => e.toString()).toList();
+            ? <VocabularyRemote>[]
+            : json['listVocabulary']
+                .map((e) => VocabularyRemote.fromJson(e))
+                .toList();
     return UserVocab(
       listId: json['listId'] ?? "",
       listName: json['listName'] ?? "",
-      listVocabulary: listVocab,
+      listVocabulary: listVocab.map((e) => e as VocabularyRemote).toList(),
     );
   }
 
@@ -35,14 +46,14 @@ class UserVocab extends Equatable {
     return {
       'listId': listId,
       'listName': listName,
-      'listVocabulary': listVocabulary,
+      'listVocabulary': listVocabulary.map((e) => e.toJson()).toList(),
     };
   }
 
   UserVocab copyWith({
     String? listId,
     String? listName,
-    List<String>? listVocabulary,
+    List<VocabularyRemote>? listVocabulary,
   }) {
     return UserVocab(
       listId: listId ?? this.listId,

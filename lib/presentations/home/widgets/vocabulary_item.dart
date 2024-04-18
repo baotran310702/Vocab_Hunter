@@ -1,68 +1,95 @@
-import 'package:flutter/cupertino.dart';
+import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/presentations/dictionary_page/widgets/pronounce_word.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-import '../../../utils/icons.dart';
-
-class VocabularyItem extends StatelessWidget {
-  const VocabularyItem({super.key});
+class VocabularyItem extends StatefulWidget {
+  final VocabularyRemote vocab;
+  const VocabularyItem({super.key, required this.vocab});
 
   @override
+  State<VocabularyItem> createState() => _VocabularyItemState();
+}
+
+class _VocabularyItemState extends State<VocabularyItem> {
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              const SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Word",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: const Text(
-                      "Meaining, meaning, what do u mean?",
-                      style: TextStyle(
-                        fontSize: 14,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  const Text(
-                    "Động từ, tính từ??",
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w200),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  Image.asset(
-                    AppIcons.speaker,
-                    width: 24,
-                    height: 24,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                const SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildWord(),
+                    buildPhonetics(),
+                    buildMeanings(context),
+                  ],
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Row(
+                  children: [PronounceWord(word: widget.vocab.word ?? "")],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Text buildWord() {
+    return Text(
+      widget.vocab.word ?? "",
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget buildMeanings(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.7,
+      child: Text(
+        widget.vocab.meanings != null &&
+                widget.vocab.meanings!.isNotEmpty &&
+                widget.vocab.meanings![0].definitions != null &&
+                widget.vocab.meanings![0].definitions!.isNotEmpty
+            ? widget.vocab.meanings![0].definitions![0].definition ?? ""
+            : "",
+        style: const TextStyle(
+          fontSize: 14,
+        ),
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+
+  Widget buildPhonetics() {
+    if (widget.vocab.phonetics == null ||
+        widget.vocab.phonetics!.isEmpty ||
+        widget.vocab.phonetics![0].text == null) {
+      return const SizedBox();
+    } else {
+      return Text(
+        widget.vocab.phonetics![0].text!,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w300,
+        ),
+      );
+    }
   }
 }

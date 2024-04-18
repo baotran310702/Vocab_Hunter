@@ -3,7 +3,7 @@ import 'package:english_learner/utils/icons.dart';
 import 'package:english_learner/utils/word_type.dart';
 
 class CustomConverter {
-  // convert anytype to string
+  /// Convert to String with dynamic type
   static String convertToString(dynamic value) {
     if (value is String) {
       return value;
@@ -20,6 +20,7 @@ class CustomConverter {
     }
   }
 
+  /// Convert to word type in firebase
   static convertToMeaningsFirebase(Map<String, List<String>> json) {
     return {
       'adj': json['adj'],
@@ -30,7 +31,7 @@ class CustomConverter {
     };
   }
 
-  //write a function that convert anytype to double
+  /// Convert to double with dynamic type
   static double convertToDouble(dynamic value) {
     if (value is String) {
       return double.parse(value);
@@ -81,6 +82,22 @@ class CustomConverter {
         return AppIcons.writingBoi;
       default:
         return "";
+    }
+  }
+
+  static String convertVietnameseWordType(String wordType) {
+    String currentWords = wordType.toLowerCase();
+    switch (currentWords) {
+      case "noun":
+        return "Danh từ";
+      case "verb":
+        return "Động từ";
+      case "adj":
+        return "Tính từ";
+      case "adv":
+        return "Trạng từ";
+      default:
+        return "Chưa phân loại";
     }
   }
 }

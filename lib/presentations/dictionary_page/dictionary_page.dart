@@ -99,7 +99,10 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                                       state.searchedVocabulary[
                                                           index]);
                                                 },
-                                                child: const VocabularyItem()),
+                                                child: VocabularyItem(
+                                                  vocab:
+                                                      VocabularyRemote.empty(),
+                                                )),
                                           ),
                                         ),
                                       ),
@@ -259,11 +262,14 @@ class _DictionaryPageState extends State<DictionaryPage> {
   }
 
   void _onTapDetailVocabulary(BuildContext context, Vocabulary vocabulary) {
+    context
+        .read<TranslatePageBloc>()
+        .add(TranslateWordRemote(word: vocabulary.vocabId));
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailVocabulary(
-          vocabularyRemote: VocabularyRemote.empty(),
+          word: vocabulary.vocabId,
         ),
       ),
     );

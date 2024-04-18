@@ -1,60 +1,45 @@
+import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/home/widgets/vocabulary_item.dart';
 import 'package:flutter/material.dart';
 
-class ListVocabularyItem extends StatelessWidget {
-  const ListVocabularyItem({super.key});
+class ListVocabularyItem extends StatefulWidget {
+  final UserVocab currentVocabList;
+
+  const ListVocabularyItem({super.key, required this.currentVocabList});
 
   @override
+  State<ListVocabularyItem> createState() => _ListVocabularyItemState();
+}
+
+class _ListVocabularyItemState extends State<ListVocabularyItem> {
+  @override
   Widget build(BuildContext context) {
-    List<int> list = [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10
-    ];
     return Scaffold(
-      appBar: const MyAppbar(
-        text: "Topic A",
+      appBar: MyAppbar(
+        text: widget.currentVocabList.listName.toUpperCase(),
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      const VocabularyItem(),
-                      Container(
-                        color: Colors.black,
-                        height: 1,
-                        width: MediaQuery.of(context).size.width * 0.9,
-                      )
-                    ],
-                  );
-                },
-              ),
-            ),
-          ],
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: widget.currentVocabList.listVocabulary
+                .map((e) => Column(
+                      children: [
+                        VocabularyItem(
+                          vocab: e,
+                        ),
+                        Container(
+                          color: Colors.black,
+                          height: 1,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                        )
+                      ],
+                    ))
+                .toList(),
+          ),
         ),
       ),
     );

@@ -19,7 +19,7 @@ class TranslateWordLocal extends TranslateEvent {
 
 class TranslateWordRemote extends TranslateEvent {
   final String word;
-  TranslateWordRemote(this.word);
+  TranslateWordRemote({required this.word});
 }
 
 class LoadingSearch extends TranslateEvent {}

@@ -1,12 +1,17 @@
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
+import 'package:english_learner/presentations/dictionary_page/widgets/pronounce_word.dart';
 import 'package:english_learner/presentations/home/widgets/back_button.dart';
-import 'package:english_learner/presentations/home/widgets/box_vocab_item.dart';
-import 'package:english_learner/utils/icons.dart';
+import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/converter.dart';
+import 'package:english_learner/utils/extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DetailVocabulary extends StatefulWidget {
-  final VocabularyRemote vocabularyRemote;
-  const DetailVocabulary({super.key, required this.vocabularyRemote});
+  final VocabularyRemote? vocabularyRemote;
+  final String? word;
+  const DetailVocabulary({super.key, this.word, this.vocabularyRemote});
 
   @override
   State<DetailVocabulary> createState() => _DetailVocabularyState();
@@ -33,128 +38,35 @@ class _DetailVocabularyState extends State<DetailVocabulary>
 
   @override
   Widget build(BuildContext context) {
-    List<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Default vocab"),
-        leading: const ButtonBack(),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(
-              text: "Vietnamese - English",
-            ),
-            Tab(
-              text: "English - English",
-            ),
-          ],
+    return BlocProvider(
+      create: (context) => TranslatePageBloc()
+        ..add(TranslateWordRemote(word: widget.word ?? "")),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.word != null ? widget.word!.capitalize() : ""),
+          leading: const ButtonBack(),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(
+                text: "Vietnamese - English",
+              ),
+              Tab(
+                text: "English - English",
+              ),
+            ],
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: TabBarView(
-          controller: _tabController,
-          children: [
-            DetailVocabularyPage(list: list),
-            DetailVocabularyPage(list: list),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class DetailVocabularyPage extends StatelessWidget {
-  const DetailVocabularyPage({
-    super.key,
-    required this.list,
-  });
-
-  final List<int> list;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Default Vocabulary",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "/default phonetic/",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Image.asset(AppIcons.speaker, width: 28, height: 28),
-                ],
+        body: SafeArea(
+          child: TabBarView(
+            controller: _tabController,
+            children: const [
+              DetailVocabularyPage(
+                isVietnamese: false,
               ),
-              const Devider(),
-              const BoxMeaning(),
-              const SizedBox(height: 40),
-              const BoxMeaning(),
-              const SizedBox(height: 40),
-              const BoxMeaning(),
-              const SizedBox(height: 40),
-              const Text(
-                "Synonyms",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              DetailVocabularyPage(
+                isVietnamese: true,
               ),
-              const SizedBox(height: 20),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    for (int i in list)
-                      BoxVocab(
-                        key: Key(
-                          i.toString(),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              const Text(
-                "Atonyms",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    for (int i in list)
-                      BoxVocab(
-                        key: Key(
-                          i.toString(),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
             ],
           ),
         ),
@@ -163,8 +75,171 @@ class DetailVocabularyPage extends StatelessWidget {
   }
 }
 
+class DetailVocabularyPage extends StatefulWidget {
+  final bool isVietnamese;
+
+  const DetailVocabularyPage({
+    super.key,
+    required this.isVietnamese,
+  });
+
+  @override
+  State<DetailVocabularyPage> createState() => _DetailVocabularyPageState();
+}
+
+class _DetailVocabularyPageState extends State<DetailVocabularyPage> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: BlocBuilder<TranslatePageBloc, TranslatePageState>(
+        buildWhen: (previous, current) {
+          return previous.currentVocabularyRemote !=
+              current.currentVocabularyRemote;
+        },
+        builder: (context, state) {
+          if (state.currentVocabularyRemote == null || state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          VocabularyRemote currentVocabularyRemote = widget.isVietnamese
+              ? state.currentVocabularyRemote!.$1
+              : state.currentVocabularyRemote!.$2;
+
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${currentVocabularyRemote.word}",
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          widget.isVietnamese
+                              ? Text(
+                                  "${currentVocabularyRemote.phonetic}",
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ],
+                      ),
+                      widget.isVietnamese
+                          ? PronounceWord(
+                              word: currentVocabularyRemote.word ?? "",
+                            )
+                          : const SizedBox()
+                    ],
+                  ),
+                  const Devider(),
+                  state.currentVocabularyRemote != null
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            for (Meanings meanings
+                                in currentVocabularyRemote.meanings!)
+                              BoxMeaning(
+                                meanings: meanings,
+                                isVietnamese: !widget.isVietnamese,
+                              ),
+                            const SizedBox(height: 20),
+                          ],
+                        )
+                      : const SizedBox(),
+                  Column(
+                    children: [
+                      const Devider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: Text(
+                              widget.isVietnamese ? "Atonymns" : "Đồng nghĩa",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 5,
+                            child: Text(
+                              widget.isVietnamese ? "Synonyms" : "Trái nghĩa",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Devider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: Column(
+                              children: [
+                                for (Meanings synonym
+                                    in currentVocabularyRemote.meanings ?? [])
+                                  for (String word in synonym.synonyms ?? [])
+                                    Text(word)
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                for (Meanings antonym
+                                    in currentVocabularyRemote.meanings ?? [])
+                                  for (String word in antonym.antonyms ?? [])
+                                    Text(word)
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 40),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
 class BoxMeaning extends StatelessWidget {
+  final Meanings meanings;
+  final bool? isVietnamese;
   const BoxMeaning({
+    this.isVietnamese,
+    required this.meanings,
     super.key,
   });
 
@@ -174,49 +249,68 @@ class BoxMeaning extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        const SizedBox(height: 12),
         Container(
           width: 160,
           height: 52,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: Colors.grey,
+              color: AppColors.textInputs,
+              width: 2,
             ),
           ),
-          child: const Center(child: Text("Noun")),
-        ),
-        const SizedBox(height: 10),
-        const Text(
-          "Meaning: default meaning",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            const SizedBox(
-              width: 12,
-            ),
-            Image.asset(
-              AppIcons.bell,
-              width: 16,
-              height: 16,
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            const Text(
-              "default example",
+          child: Center(
+            child: Text(
+              isVietnamese != null && isVietnamese == true
+                  ? CustomConverter.convertVietnameseWordType(
+                      meanings.partOfSpeech?.capitalize() ?? "")
+                  : meanings.partOfSpeech?.capitalize() ?? "",
               style: TextStyle(
                 fontSize: 16,
-                fontStyle: FontStyle.italic,
-                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textInputs,
               ),
             ),
-          ],
+          ),
         ),
+        const SizedBox(height: 20),
+        meanings.definitions != null
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (Definitions definition in meanings.definitions!)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        definition.definition?.trim() != "" &&
+                                definition.definition?.trim() != "."
+                            ? Text(
+                                "- ${definition.definition}",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )
+                            : const SizedBox(),
+                        definition.example != null
+                            ? Text(
+                                definition.example ?? "",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.grey,
+                                ),
+                              )
+                            : const SizedBox(
+                                height: 6,
+                              ),
+                      ],
+                    ),
+                ],
+              )
+            : const SizedBox(),
+        const SizedBox(height: 10),
       ],
     );
   }

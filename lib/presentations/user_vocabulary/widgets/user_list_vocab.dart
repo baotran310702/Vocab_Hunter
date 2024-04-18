@@ -5,9 +5,9 @@ import 'package:english_learner/presentations/user_vocabulary/widgets/delete_lis
 import 'package:english_learner/presentations/user_vocabulary/widgets/edit_list_vocab_dialog.dart';
 import 'package:english_learner/presentations/user_vocabulary/widgets/options_list_dialog.dart';
 import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/toasty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class UserListVocab extends StatefulWidget {
   final bool? ableToEdit;
@@ -36,6 +36,17 @@ class _UserListVocabState extends State<UserListVocab> {
         children: [
           InkWell(
             onTap: () {
+              if (widget.isDefault != null && widget.isDefault == true) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ListVocabularyItem(
+                      currentVocabList: widget.currentVocabList,
+                    ),
+                  ),
+                );
+                return;
+              }
               showDialog(
                   context: context,
                   builder: (builder) {
@@ -45,11 +56,22 @@ class _UserListVocabState extends State<UserListVocab> {
                   }).then((value) {
                 if (value != null) {
                   if (value) {
+                    if (widget.currentVocabList.listVocabulary.isEmpty) {
+                      Toasty.showToast(
+                        msg: "List is empty.",
+                        context: context,
+                      );
+                      return;
+                    }
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ListVocabularyItem()));
-                  } else {}
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ListVocabularyItem(
+                          currentVocabList: widget.currentVocabList,
+                        ),
+                      ),
+                    );
+                  }
                 }
               });
             },
@@ -109,22 +131,15 @@ class _UserListVocabState extends State<UserListVocab> {
                                       listName: value.toString(),
                                     ),
                                   );
-                              Fluttertoast.showToast(
+
+                              Toasty.showToast(
                                 msg: "List name updated successfully.",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                textColor: Colors.white,
-                                fontSize: 16.0,
+                                context: context,
                               );
                             } else {
-                              Fluttertoast.showToast(
+                              Toasty.showToast(
                                 msg: "New name can't be empty.",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                textColor: Colors.white,
-                                fontSize: 16.0,
+                                context: context,
                               );
                             }
                           }
@@ -165,13 +180,10 @@ class _UserListVocabState extends State<UserListVocab> {
                                     listId: widget.currentVocabList.listId,
                                   ),
                                 );
-                            Fluttertoast.showToast(
-                              msg: "List deleted successfully.",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              textColor: Colors.white,
-                              fontSize: 16.0,
+
+                            Toasty.showToast(
+                              msg: "List deleted successfully..",
+                              context: context,
                             );
                           }
                         });

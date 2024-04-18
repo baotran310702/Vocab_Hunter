@@ -61,10 +61,10 @@ class _DetailVocabularyState extends State<DetailVocabulary>
             controller: _tabController,
             children: const [
               DetailVocabularyPage(
-                isVietnamese: true,
+                isVietnamese: false,
               ),
               DetailVocabularyPage(
-                isVietnamese: false,
+                isVietnamese: true,
               ),
             ],
           ),
@@ -125,20 +125,24 @@ class _DetailVocabularyPageState extends State<DetailVocabularyPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            "${currentVocabularyRemote.phonetic}",
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
+                          widget.isVietnamese
+                              ? Text(
+                                  "${currentVocabularyRemote.phonetic}",
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )
+                              : const SizedBox(),
                         ],
                       ),
-                      PronounceWord(
-                        word: currentVocabularyRemote.word ?? "",
-                      )
+                      widget.isVietnamese
+                          ? PronounceWord(
+                              word: currentVocabularyRemote.word ?? "",
+                            )
+                          : const SizedBox()
                     ],
                   ),
                   const Devider(),

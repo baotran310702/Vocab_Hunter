@@ -1,6 +1,7 @@
 import 'package:english_learner/presentations/home/views/topic_vocabs_page.dart';
 import 'package:english_learner/presentations/home/widgets/divider.dart';
 import 'package:english_learner/presentations/home/widgets/item_type_vocab.dart';
+import 'package:english_learner/presentations/practise_vocab/practise_vocab.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
@@ -77,9 +78,9 @@ class ListVocabType extends StatelessWidget {
                 ),
                 const DeviderVerticle(),
                 ItemTypeVocab(
-                  text: "Ielts - Toeic",
+                  text: "Practise",
                   icon: Image.asset(
-                    AppIcons.ieltsToeic,
+                    AppIcons.train,
                     width: sizeIcon,
                     height: sizeIcon,
                   ),
@@ -87,7 +88,7 @@ class ListVocabType extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (builder) => const TopicVocab(),
+                        builder: (builder) => const PractiseVocab(),
                       ),
                     );
                   },

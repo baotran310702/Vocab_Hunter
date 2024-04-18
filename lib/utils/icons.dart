@@ -40,4 +40,6 @@ class AppIcons {
   static const String phone = "assets/icons/phone.png";
   static const String mail = "assets/icons/mail.png";
   static const String bin = "assets/icons/bin.png";
+  static const String train = "assets/icons/train.png";
+  static const String animation = "assets/icons/animation.gif";
 }

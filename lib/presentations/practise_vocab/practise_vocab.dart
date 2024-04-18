@@ -21,6 +21,7 @@ class _PractiseVocabState extends State<PractiseVocab> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              
               MultiChoiceVocab(),
               ProgressBar(),
             ],

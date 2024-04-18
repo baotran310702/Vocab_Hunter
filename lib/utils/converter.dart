@@ -84,4 +84,20 @@ class CustomConverter {
         return "";
     }
   }
+
+  static String convertVietnameseWordType(String wordType) {
+    String currentWords = wordType.toLowerCase();
+    switch (currentWords) {
+      case "noun":
+        return "Danh từ";
+      case "verb":
+        return "Động từ";
+      case "adj":
+        return "Tính từ";
+      case "adv":
+        return "Trạng từ";
+      default:
+        return "Chưa phân loại";
+    }
+  }
 }

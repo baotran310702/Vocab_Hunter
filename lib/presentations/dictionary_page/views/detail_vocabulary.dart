@@ -3,6 +3,7 @@ import 'package:english_learner/presentations/dictionary_page/bloc/translate_pag
 import 'package:english_learner/presentations/dictionary_page/widgets/pronounce_word.dart';
 import 'package:english_learner/presentations/home/widgets/back_button.dart';
 import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/converter.dart';
 import 'package:english_learner/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -234,7 +235,9 @@ class _DetailVocabularyPageState extends State<DetailVocabularyPage> {
 
 class BoxMeaning extends StatelessWidget {
   final Meanings meanings;
+  final bool? isVietnamese;
   const BoxMeaning({
+    this.isVietnamese,
     required this.meanings,
     super.key,
   });
@@ -257,14 +260,18 @@ class BoxMeaning extends StatelessWidget {
             ),
           ),
           child: Center(
-              child: Text(
-            meanings.partOfSpeech?.capitalize() ?? "",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textInputs,
+            child: Text(
+              isVietnamese != null && isVietnamese == true
+                  ? CustomConverter.convertVietnameseWordType(
+                      meanings.partOfSpeech?.capitalize() ?? "")
+                  : meanings.partOfSpeech?.capitalize() ?? "",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textInputs,
+              ),
             ),
-          )),
+          ),
         ),
         const SizedBox(height: 20),
         meanings.definitions != null

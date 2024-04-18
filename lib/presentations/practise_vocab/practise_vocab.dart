@@ -1,4 +1,5 @@
 import 'package:english_learner/presentations/global_instance/appbar.dart';
+import 'package:english_learner/presentations/practise_vocab/widgets/custom_drop_down.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/multi_choice.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/progress.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _PractiseVocabState extends State<PractiseVocab> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              
+              CustomDropDown(),
               MultiChoiceVocab(),
               ProgressBar(),
             ],

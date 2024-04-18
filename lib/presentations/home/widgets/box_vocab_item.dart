@@ -3,6 +3,7 @@ import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class BoxVocab extends StatefulWidget {
+  
   const BoxVocab({super.key});
 
   @override

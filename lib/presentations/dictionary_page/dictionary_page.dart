@@ -268,7 +268,9 @@ class _DictionaryPageState extends State<DictionaryPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const DetailVocabulary(),
+        builder: (context) => DetailVocabulary(
+          word: vocabulary.vocabId,
+        ),
       ),
     );
   }

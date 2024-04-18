@@ -155,6 +155,7 @@ class _DetailVocabularyPageState extends State<DetailVocabularyPage> {
                                 in currentVocabularyRemote.meanings!)
                               BoxMeaning(
                                 meanings: meanings,
+                                isVietnamese: !widget.isVietnamese,
                               ),
                             const SizedBox(height: 20),
                           ],
@@ -282,14 +283,16 @@ class BoxMeaning extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "- ${definition.definition}",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
+                        definition.definition?.trim() != "" &&
+                                definition.definition?.trim() != "."
+                            ? Text(
+                                "- ${definition.definition}",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )
+                            : const SizedBox(),
                         definition.example != null
                             ? Text(
                                 definition.example ?? "",

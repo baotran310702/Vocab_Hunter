@@ -24,13 +24,10 @@ class _FlashCardPageState extends State<FlashCardPage> {
   final TextEditingController vocabController = TextEditingController();
   List<int> indexFront = [];
 
-  bool isDispose = false;
-
   @override
   void dispose() {
     vocabController.dispose();
     super.dispose();
-    isDispose = true;
   }
 
   @override
@@ -159,7 +156,8 @@ class _FlashCardPageState extends State<FlashCardPage> {
                                 (element) =>
                                     state.userModel.learningWords.indexWhere(
                                             (element) =>
-                                                element.listVocabulary
+                                                element.listVocabulary.entries
+                                                    .first.value
                                                     .indexWhere((element) =>
                                                         element.word ==
                                                         e.$1.word) !=
@@ -174,7 +172,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
                             vocabularyRemote: e,
                             onSave: () {
                               _onSave(
-                                e.$1,
+                                e,
                                 state.userModel.learningWords,
                                 state.currentDefaultListId,
                               );
@@ -270,15 +268,15 @@ class _FlashCardPageState extends State<FlashCardPage> {
     );
   }
 
-  void _onSave(
-      VocabularyRemote word, List<UserVocab> listLearningWords, String listId) {
+  void _onSave((VocabularyRemote, VocabularyRemote) word,
+      List<UserVocab> listLearningWords, String listId) {
     bool isSaved = listLearningWords.indexWhere((element) =>
             element.listId == listId &&
-            element.listVocabulary.contains(word)) !=
+            element.listVocabulary.entries.first.value.contains(word.$1)) !=
         -1;
     if (isSaved) {
       context.read<ManageVocabBloc>().add(RemoveFromListLearning(
-            vocab: word,
+            vocab: word.$1,
           ));
 
       Toasty.showToast(
@@ -286,7 +284,9 @@ class _FlashCardPageState extends State<FlashCardPage> {
         context: context,
       );
     } else {
-      context.read<ManageVocabBloc>().add(AddVocabToListLearning(vocab: word));
+      context
+          .read<ManageVocabBloc>()
+          .add(AddVocabToListLearning(vocabEng: word.$1, vocabViet: word.$2));
       Toasty.showToast(
         msg: "Added to list!",
         context: context,

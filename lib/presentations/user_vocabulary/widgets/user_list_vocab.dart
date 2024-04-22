@@ -93,7 +93,7 @@ class _UserListVocabState extends State<UserListVocab> {
               ),
               child: Center(
                   child: Text(
-                "${widget.currentVocabList.listName} - ${widget.currentVocabList.listVocabulary.isEmpty ? "empty." : "${widget.currentVocabList.listVocabulary.length} words."}",
+                "${widget.currentVocabList.listName} - ${widget.currentVocabList.listVocabulary.isEmpty ? "empty." : "${widget.currentVocabList.listVocabulary.entries.first.value.length} words."}",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: widget.isDefault != null && widget.isDefault == true

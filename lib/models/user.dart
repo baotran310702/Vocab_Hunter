@@ -47,38 +47,12 @@ class UserModel extends Equatable {
       userName: "Bao dep traiii ",
       rank: 0,
       learnedWords: const [
-        UserVocab(
-          listId: "0",
-          listName: "List 1",
-          listVocabulary: [],
-        ),
-        UserVocab(
-          listId: "1",
-          listName: "List 2",
-          listVocabulary: [],
-        ),
-        UserVocab(
-          listId: "2",
-          listName: "List 3",
-          listVocabulary: [],
-        ),
+        UserVocab(listId: "0", listName: "List 1", listVocabulary: {}),
+        UserVocab(listId: "1", listName: "List 2", listVocabulary: {}),
       ],
       learningWords: const [
-        UserVocab(
-          listId: "0",
-          listName: "List 1",
-          listVocabulary: [],
-        ),
-        UserVocab(
-          listId: "1",
-          listName: "List 2",
-          listVocabulary: [],
-        ),
-        UserVocab(
-          listId: "2",
-          listName: "List 3",
-          listVocabulary: [],
-        ),
+        UserVocab(listId: "0", listName: "List 1", listVocabulary: {}),
+        UserVocab(listId: "1", listName: "List 2", listVocabulary: {}),
       ],
       achievements: [
         Achievement.defaultInit(),

@@ -19,7 +19,8 @@ class UserVocabAdapter extends TypeAdapter<UserVocab> {
     return UserVocab(
       listId: fields[0] as String,
       listName: fields[1] as String,
-      listVocabulary: (fields[2] as List).cast<VocabularyRemote>(),
+      listVocabulary: (fields[2] as Map).map((dynamic k, dynamic v) =>
+          MapEntry(k as String, (v as List).cast<VocabularyRemote>())),
     );
   }
 

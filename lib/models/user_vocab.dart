@@ -12,7 +12,7 @@ class UserVocab extends Equatable {
   @HiveField(1)
   final String listName;
   @HiveField(2)
-  final List<VocabularyRemote> listVocabulary;
+  final Map<String, List<VocabularyRemote>> listVocabulary;
 
   const UserVocab({
     required this.listId,
@@ -24,21 +24,32 @@ class UserVocab extends Equatable {
     return const UserVocab(
       listId: "",
       listName: "",
-      listVocabulary: <VocabularyRemote>[],
+      listVocabulary: {},
     );
   }
 
   factory UserVocab.fromJson(Map<String, dynamic> json) {
-    List<dynamic> listVocab =
-        json['listVocabulary'] is List && json['listVocabulary'].isEmpty
+    List<dynamic> listVocab = json['listVocabulary']['english'] is List &&
+            json['listVocabulary']['english'].isEmpty
+        ? <VocabularyRemote>[]
+        : json['listVocabulary']
+            .map((e) => VocabularyRemote.fromJson(e))
+            .toList();
+    List<dynamic> listTranslatedVocabulary =
+        json['listVocabulary']['translated'] is List &&
+                json['listVocabulary']['translated'].isEmpty
             ? <VocabularyRemote>[]
-            : json['listVocabulary']
+            : json['listVocabulary']['translated']
                 .map((e) => VocabularyRemote.fromJson(e))
                 .toList();
     return UserVocab(
       listId: json['listId'] ?? "",
       listName: json['listName'] ?? "",
-      listVocabulary: listVocab.map((e) => e as VocabularyRemote).toList(),
+      listVocabulary: {
+        'english': listVocab.map((e) => e as VocabularyRemote).toList(),
+        'translated':
+            listTranslatedVocabulary.map((e) => e as VocabularyRemote).toList(),
+      },
     );
   }
 
@@ -46,14 +57,14 @@ class UserVocab extends Equatable {
     return {
       'listId': listId,
       'listName': listName,
-      'listVocabulary': listVocabulary.map((e) => e.toJson()).toList(),
+      'listVocabulary': listVocabulary,
     };
   }
 
   UserVocab copyWith({
     String? listId,
     String? listName,
-    List<VocabularyRemote>? listVocabulary,
+    Map<String, List<VocabularyRemote>>? listVocabulary,
   }) {
     return UserVocab(
       listId: listId ?? this.listId,
@@ -63,5 +74,9 @@ class UserVocab extends Equatable {
   }
 
   @override
-  List<Object?> get props => [listId, listName, listVocabulary];
+  List<Object?> get props => [
+        listId,
+        listName,
+        listVocabulary,
+      ];
 }

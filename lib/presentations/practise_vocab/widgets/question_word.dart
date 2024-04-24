@@ -1,5 +1,6 @@
 import 'package:english_learner/presentations/practise_vocab/bloc/practise_vocab_bloc.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/multi_choice.dart';
+import 'package:english_learner/utils/toasty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,10 +24,21 @@ class _QuestionVocabState extends State<QuestionVocab> {
           return MultiChoiceVocab(
             currentQuestion: state.questionList[state.currentQuestionIndex],
             questionList: state.questionList,
+            onChangeNextQuestion: _onChangeNextQuestion,
           );
         }
         return const SizedBox();
       },
     );
+  }
+
+  _onChangeNextQuestion(bool isTrue) {
+    if (isTrue) {
+      Toasty.showToastCorner(msg: "Correct!", context: context);
+    } else {
+      Toasty.showToastCorner(msg: "Incorrect!", context: context);
+    }
+
+    context.read<PractiseVocabBloc>().add(ChangeNextQuestion(isTrue: isTrue));
   }
 }

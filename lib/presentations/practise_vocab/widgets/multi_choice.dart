@@ -2,15 +2,18 @@ import 'dart:math';
 
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/extension.dart';
 import 'package:flutter/material.dart';
 
 class MultiChoiceVocab extends StatefulWidget {
-  final List<VocabularyRemote> questionList;
-  final VocabularyRemote currentQuestion;
+  final List<(VocabularyRemote, VocabularyRemote)> questionList;
+  final (VocabularyRemote, VocabularyRemote) currentQuestion;
+  final Function(bool) onChangeNextQuestion;
   const MultiChoiceVocab({
     super.key,
     required this.questionList,
     required this.currentQuestion,
+    required this.onChangeNextQuestion,
   });
 
   @override
@@ -20,7 +23,7 @@ class MultiChoiceVocab extends StatefulWidget {
 class _MultiChoiceVocabState extends State<MultiChoiceVocab> {
   @override
   Widget build(BuildContext context) {
-    List<(VocabularyRemote, bool)> listAnswer =
+    List<((VocabularyRemote, VocabularyRemote), bool)> listAnswer =
         _createResultList(widget.questionList, widget.currentQuestion);
     return Column(
       children: [
@@ -46,7 +49,7 @@ class _MultiChoiceVocabState extends State<MultiChoiceVocab> {
                   ),
                 ),
                 TextSpan(
-                  text: "${widget.currentQuestion.word ?? ""}?",
+                  text: "${widget.currentQuestion.$1.word ?? ""}?",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -70,17 +73,11 @@ class _MultiChoiceVocabState extends State<MultiChoiceVocab> {
                 ),
               ),
               onPressed: () {
-                debugPrint(listAnswer[i].$2.toString());
+                widget.onChangeNextQuestion(
+                    listAnswer[i].$1.$1.word == widget.currentQuestion.$1.word);
               },
               child: Text(
-                listAnswer[i]
-                        .$1
-                        .meanings
-                        ?.first
-                        .definitions
-                        ?.first
-                        .definition ??
-                    "",
+                listAnswer[i].$1.$2.word?.capitalize() ?? "",
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.black,
@@ -94,13 +91,28 @@ class _MultiChoiceVocabState extends State<MultiChoiceVocab> {
     );
   }
 
-  _createResultList(
-      List<VocabularyRemote> vocabList, VocabularyRemote currentQuestion) {
-    List<(VocabularyRemote, bool)> listAnswer = [];
+  _createResultList(List<(VocabularyRemote, VocabularyRemote)> vocabList,
+      (VocabularyRemote, VocabularyRemote) currentQuestion) {
+    List<((VocabularyRemote, VocabularyRemote), bool)> listAnswer = [];
+    List<int> listIndex = [];
     while (listAnswer.length < 3) {
       int randomIndex = Random().nextInt(vocabList.length);
-      if (vocabList[randomIndex].word != currentQuestion.word) {
-        listAnswer.add((vocabList[randomIndex], false));
+      String currentWords = vocabList[randomIndex].$2.word ?? "";
+
+      if (listIndex.contains(randomIndex)) {
+        continue;
+      }
+
+      for (var item in listAnswer) {
+        if (item.$1.$2.word?.toLowerCase() == currentWords.toLowerCase()) {
+          continue;
+        }
+      }
+
+      if (vocabList[randomIndex].$1.word != currentQuestion.$1.word) {
+        listAnswer.add(
+            ((vocabList[randomIndex].$1, vocabList[randomIndex].$2), false));
+        listIndex.add(randomIndex);
       }
     }
     listAnswer.add((currentQuestion, true));

@@ -5,8 +5,9 @@ class PractiseVocabState extends Equatable {
   final UserModel currentUser;
   final String currentListId;
   final int currentQuestionIndex;
-  final List<VocabularyRemote> questionList;
-  final List<VocabularyRemote> answeredList;
+  final List<(VocabularyRemote, VocabularyRemote)> questionList;
+  final List<(VocabularyRemote, VocabularyRemote)> correctAnswerList;
+  final List<(VocabularyRemote, VocabularyRemote)> failedAnswerList;
 
   const PractiseVocabState({
     required this.isLoading,
@@ -14,7 +15,8 @@ class PractiseVocabState extends Equatable {
     required this.currentQuestionIndex,
     required this.currentListId,
     required this.questionList,
-    required this.answeredList,
+    required this.correctAnswerList,
+    required this.failedAnswerList,
   });
 
   factory PractiseVocabState.initial() {
@@ -24,7 +26,8 @@ class PractiseVocabState extends Equatable {
       currentQuestionIndex: 0,
       currentListId: "",
       questionList: const [],
-      answeredList: const [],
+      correctAnswerList: const [],
+      failedAnswerList: const [],
     );
   }
 
@@ -34,8 +37,9 @@ class PractiseVocabState extends Equatable {
     UserModel? currentUser,
     String? currentListId,
     int? currentQuestionIndex,
-    List<VocabularyRemote>? questionList,
-    List<VocabularyRemote>? answeredList,
+    List<(VocabularyRemote, VocabularyRemote)>? questionList,
+    List<(VocabularyRemote, VocabularyRemote)>? correctAnswerList,
+    List<(VocabularyRemote, VocabularyRemote)>? failedAnswerList,
   }) {
     return PractiseVocabState(
       isLoading: isLoading ?? this.isLoading,
@@ -43,7 +47,8 @@ class PractiseVocabState extends Equatable {
       currentQuestionIndex: currentQuestionIndex ?? this.currentQuestionIndex,
       currentListId: currentListId ?? this.currentListId,
       questionList: questionList ?? this.questionList,
-      answeredList: answeredList ?? this.answeredList,
+      correctAnswerList: correctAnswerList ?? this.correctAnswerList,
+      failedAnswerList: failedAnswerList ?? this.failedAnswerList,
     );
   }
 
@@ -54,7 +59,8 @@ class PractiseVocabState extends Equatable {
         currentQuestionIndex,
         currentListId,
         questionList,
-        answeredList,
+        correctAnswerList,
+        failedAnswerList,
       ];
 }
 
@@ -66,14 +72,16 @@ class AnswerResult extends PractiseVocabState {
     required int currentQuestionIndex,
     required UserModel currentUser,
     required String currentListId,
-    required List<VocabularyRemote> questionList,
-    required List<VocabularyRemote> answeredList,
+    required List<(VocabularyRemote, VocabularyRemote)> questionList,
+    required List<(VocabularyRemote, VocabularyRemote)> correctAnswerList,
+    required List<(VocabularyRemote, VocabularyRemote)> failedAnswerList,
   }) : super(
           isLoading: isLoading,
           currentUser: currentUser,
           currentQuestionIndex: currentQuestionIndex,
           currentListId: currentListId,
           questionList: questionList,
-          answeredList: answeredList,
+          correctAnswerList: correctAnswerList,
+          failedAnswerList: failedAnswerList,
         );
 }

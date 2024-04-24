@@ -17,5 +17,7 @@ class SubmitAnswer extends PractiseVocabEvent {
 }
 
 class ChangeNextQuestion extends PractiseVocabEvent {
-  ChangeNextQuestion();
+  final bool isTrue;
+
+  ChangeNextQuestion({required this.isTrue});
 }

@@ -25,11 +25,15 @@ class KeyHiveLocal {
   static const int hiveDefinitions = 19;
   static const int hiveUserVocab = 20;
   static const int hiveLiences = 21;
+  static const int hiveEnumWordNoti = 22;
+  static const int hiveWordNoti = 23;
+  static const int hiveListTimeNotificationId = 24;
 }
 
 class KeyBoxHiveLocal {
   static const String userKeyBox = 'userKeyBox';
   static const String achievementKeyBox = 'achievementKeyBox';
   static const String timeNotificationKeyBox = 'timeNotificationKeyBox';
+  static const String listTimeNotificationKeyBox = 'listTimeNotificationKeyBox';
   static const String vocabKeyBox = 'vocabKeyBox';
 }

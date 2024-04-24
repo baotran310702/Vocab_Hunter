@@ -12,7 +12,7 @@ class ListVocabType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double sizeIcon = 30;
+    double sizeIcon = 36;
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 4,

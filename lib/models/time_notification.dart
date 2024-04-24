@@ -62,3 +62,15 @@ class TimeNotification {
     );
   }
 }
+
+@HiveType(typeId: KeyHiveLocal.hiveListTimeNotificationId)
+class ListTimeNotification {
+  @HiveField(0)
+  final List<TimeNotification> listTimeNotification;
+
+  factory ListTimeNotification.initial() {
+    return ListTimeNotification(listTimeNotification: []);
+  }
+
+  ListTimeNotification({required this.listTimeNotification});
+}

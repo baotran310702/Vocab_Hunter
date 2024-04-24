@@ -52,6 +52,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
               setState(() {
                 item = newValue!;
               });
+              widget.onChanged(newValue ?? "");
             },
             items: <String>[
               ...widget.listItem,
@@ -73,7 +74,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
         Positioned(
           top: 40,
           right: 16,
-          child: Transform.rotate( 
+          child: Transform.rotate(
             angle: pi * 1.5,
             child: Image.asset(
               AppIcons.arrow,

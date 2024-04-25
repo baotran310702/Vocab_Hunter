@@ -1,4 +1,5 @@
 import 'package:english_learner/models/user_vocab.dart';
+import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/home/widgets/vocabulary_item.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,9 @@ class ListVocabularyItem extends StatefulWidget {
 class _ListVocabularyItemState extends State<ListVocabularyItem> {
   @override
   Widget build(BuildContext context) {
+    List<VocabularyRemote> currentVocabList =
+        widget.currentVocabList.listVocabulary.entries.first.value;
+
     return Scaffold(
       appBar: MyAppbar(
         text: widget.currentVocabList.listName.toUpperCase(),
@@ -25,7 +29,7 @@ class _ListVocabularyItemState extends State<ListVocabularyItem> {
           scrollDirection: Axis.vertical,
           physics: const BouncingScrollPhysics(),
           child: Column(
-            children: widget.currentVocabList.listVocabulary
+            children: currentVocabList
                 .map((e) => Column(
                       children: [
                         VocabularyItem(

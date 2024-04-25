@@ -71,8 +71,9 @@ class DeleteListLearningVocab extends ManageVocabEvent {
 }
 
 class AddVocabToListLearning extends ManageVocabEvent {
-  final VocabularyRemote vocab;
-  AddVocabToListLearning({required this.vocab});
+  final VocabularyRemote vocabEng;
+  final VocabularyRemote vocabViet;
+  AddVocabToListLearning({required this.vocabEng, required this.vocabViet});
 }
 
 class RemoveFromListLearning extends ManageVocabEvent {

@@ -179,7 +179,10 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     newList.add(UserVocab(
         listId: currentIndex.toString(),
         listName: event.name,
-        listVocabulary: const []));
+        listVocabulary: const {
+          'english': [],
+          'translated': [],
+        }));
 
     UserModel newUsers = currentUser.copyWith(learningWords: newList);
 
@@ -199,10 +202,12 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
 
     List<UserVocab> listUpdated = currentUser.learningWords.map((e) {
       if (e.listId == currentListId) {
+        List<VocabularyRemote> currentRemoveList = e
+            .listVocabulary.entries.first.value
+            .where((element) => element.word != event.vocab.word)
+            .toList();
         return e.copyWith(
-            listVocabulary: e.listVocabulary
-                .where((element) => element != event.vocab)
-                .toList());
+            listVocabulary: {e.listVocabulary.keys.first: currentRemoveList});
       }
       return e;
     }).toList();
@@ -233,8 +238,17 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     UserModel currentUser = state.userModel;
     List<UserVocab> listUpdated = currentUser.learningWords.map((e) {
       if (e.listId == listDefaultId) {
-        return e.copyWith(
-            listVocabulary: List.from(e.listVocabulary)..add(event.vocab));
+        Map<String, List<VocabularyRemote>> currentList = {};
+        String key1 = e.listVocabulary.keys.first;
+        String key2 = e.listVocabulary.keys.last;
+        List<VocabularyRemote> currentListEnglish =
+            List.from(e.listVocabulary[key1]!);
+        List<VocabularyRemote> currentListTranslated =
+            List.from(e.listVocabulary[key2]!);
+        currentList.addAll({key1: currentListEnglish..add(event.vocabEng)});
+        currentList.addAll({key2: currentListTranslated..add(event.vocabViet)});
+
+        return e.copyWith(listVocabulary: currentList);
       }
       return e;
     }).toList();

@@ -36,49 +36,58 @@ class _HeaderInformationsState extends State<HeaderInformations> {
             width: 1,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(16))),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.asset(
-                AppIcons.logoText,
-                width: 156,
-                height: 60,
-              ),
-              Stack(
+      child: Stack(children: [
+        Row(
+          children: [
+            Expanded(
+              flex: 10,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Image.asset(
-                    AppIcons.bell,
-                    width: 24,
-                    height: 24,
+                    AppIcons.logoText,
+                    width: 156,
+                    height: 60,
                   ),
-                  const Positioned(
-                    top: -0.5,
-                    right: 6.5,
-                    child: Text(
-                      "6",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
+                  informationHeader(),
                 ],
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: Image.asset(
+                AppIcons.animation,
+              ),
+            ),
+          ],
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: Stack(
+            children: [
+              Image.asset(
+                AppIcons.bell,
+                width: 24,
+                height: 24,
+              ),
+              const Positioned(
+                top: -0.5,
+                right: 6.5,
+                child: Text(
+                  "6",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               )
             ],
           ),
-          Row(
-            children: [
-              Expanded(flex: 8, child: informationHeader()),
-              Expanded(flex: 2, child: Image.asset(AppIcons.animation)),
-            ],
-          ),
-        ],
-      ),
+        )
+      ]),
     );
   }
 
@@ -92,7 +101,7 @@ class _HeaderInformationsState extends State<HeaderInformations> {
                   widget.title,
                   style: TextStyle(
                     color: AppColors.titleHeaderColor,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -101,7 +110,7 @@ class _HeaderInformationsState extends State<HeaderInformations> {
                   widget.description,
                   style: TextStyle(
                     color: AppColors.descriptionHeaderColor,
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),
                 ),

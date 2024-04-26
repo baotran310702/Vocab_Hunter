@@ -28,6 +28,8 @@ class KeyHiveLocal {
   static const int hiveEnumWordNoti = 22;
   static const int hiveWordNoti = 23;
   static const int hiveListTimeNotificationId = 24;
+  static const int hiveListwordNotificationId = 25;
+  static const int hiveTimeOfDay = 26;
 }
 
 class KeyBoxHiveLocal {
@@ -36,4 +38,5 @@ class KeyBoxHiveLocal {
   static const String timeNotificationKeyBox = 'timeNotificationKeyBox';
   static const String listTimeNotificationKeyBox = 'listTimeNotificationKeyBox';
   static const String vocabKeyBox = 'vocabKeyBox';
+  static const String listWordNotificationKeyBox = 'listWordNotificationKeyBox';
 }

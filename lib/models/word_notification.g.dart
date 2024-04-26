@@ -49,6 +49,40 @@ class WordNotificationAdapter extends TypeAdapter<WordNotification> {
           typeId == other.typeId;
 }
 
+class ListWordNotificationAdapter extends TypeAdapter<ListWordNotification> {
+  @override
+  final int typeId = 25;
+
+  @override
+  ListWordNotification read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return ListWordNotification(
+      listWordNotification: (fields[0] as List).cast<WordNotification>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, ListWordNotification obj) {
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.listWordNotification);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ListWordNotificationAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class ThresholdWordsAdapter extends TypeAdapter<ThresholdWords> {
   @override
   final int typeId = 22;

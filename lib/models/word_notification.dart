@@ -38,4 +38,40 @@ class WordNotification {
     required this.successCount,
     required this.thresholdWords,
   });
+
+  factory WordNotification.empty() {
+    return WordNotification(
+      words: (VocabularyRemote.empty(), VocabularyRemote.empty()),
+      failureCount: 0,
+      successCount: 0,
+      thresholdWords: ThresholdWords.lowFailure,
+    );
+  }
+
+  WordNotification copyWith({
+    (VocabularyRemote, VocabularyRemote)? words,
+    int? failureCount,
+    int? successCount,
+    ThresholdWords? thresholdWords,
+  }) {
+    return WordNotification(
+      words: words ?? this.words,
+      failureCount: failureCount ?? this.failureCount,
+      successCount: successCount ?? this.successCount,
+      thresholdWords: thresholdWords ?? this.thresholdWords,
+    );
+  }
+}
+
+@HiveType(typeId: KeyHiveLocal.hiveListwordNotificationId)
+class ListWordNotification {
+  @HiveField(0)
+  final List<WordNotification> listWordNotification;
+  ListWordNotification({
+    required this.listWordNotification,
+  });
+
+  factory ListWordNotification.empty() {
+    return ListWordNotification(listWordNotification: []);
+  }
 }

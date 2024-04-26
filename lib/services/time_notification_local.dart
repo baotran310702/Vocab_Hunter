@@ -1,3 +1,4 @@
+import 'package:english_learner/models/timeofday.g.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -19,6 +20,10 @@ class TimeNotificationLocal {
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTimeNotificationId)) {
       Hive.registerAdapter(ListTimeNotificationAdapter());
     }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeOfDay)) {
+      Hive.registerAdapter(TimeOfDayAdapter());
+    }
+
     final box = await Hive.openBox<ListTimeNotification>(
         KeyBoxHiveLocal.listTimeNotificationKeyBox);
     await box.put(KeyBoxHiveLocal.listTimeNotificationKeyBox, timeNotification);
@@ -31,6 +36,9 @@ class TimeNotificationLocal {
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTimeNotificationId)) {
       Hive.registerAdapter(ListTimeNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeOfDay)) {
+      Hive.registerAdapter(TimeOfDayAdapter());
     }
 
     final box = await Hive.openBox<ListTimeNotification>(
@@ -55,6 +63,9 @@ class TimeNotificationLocal {
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTimeNotificationId)) {
       Hive.registerAdapter(ListTimeNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeOfDay)) {
+      Hive.registerAdapter(TimeOfDayAdapter());
     }
 
     final box = await Hive.openBox<ListTimeNotification>(
@@ -81,6 +92,9 @@ class TimeNotificationLocal {
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTimeNotificationId)) {
       Hive.registerAdapter(ListTimeNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeOfDay)) {
+      Hive.registerAdapter(TimeOfDayAdapter());
     }
 
     final box = await Hive.openBox<ListTimeNotification>(

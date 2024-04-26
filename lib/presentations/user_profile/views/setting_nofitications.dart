@@ -73,7 +73,7 @@ class _SettingNotificationsState extends State<SettingNotifications> {
                                         .time
                                         .toHourMinute()),
                                     const SizedBox(
-                                      width: 8,
+                                      width: 20,
                                     ),
                                     InkWell(
                                       onTap: () {

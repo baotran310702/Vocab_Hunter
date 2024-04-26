@@ -21,3 +21,7 @@ class RemoveTimeNotificationEvent extends ManageUserEvents {
   RemoveTimeNotificationEvent({required this.timeNotification});
 }
 
+class UpdateTimeNotification extends ManageUserEvents {
+  final TimeNotification timeNotification;
+  UpdateTimeNotification({required this.timeNotification});
+}

@@ -150,6 +150,8 @@ class WordNotificationServices {
         }
       }
 
+      await updatePriorityWordNotification(wordNotification[index]);
+
       return wordNotification[index];
     }
 

@@ -11,7 +11,7 @@ class TimeNotificationLocal {
     Hive.init(dir.path);
   }
 
-  Future<void> addTimeNotification(
+  Future<void> updateListNotification(
       ListTimeNotification timeNotification) async {
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeNotificationId)) {
       Hive.registerAdapter(TimeNotificationAdapter());
@@ -22,6 +22,31 @@ class TimeNotificationLocal {
     final box = await Hive.openBox<ListTimeNotification>(
         KeyBoxHiveLocal.listTimeNotificationKeyBox);
     await box.put(KeyBoxHiveLocal.listTimeNotificationKeyBox, timeNotification);
+  }
+
+  Future<void> addTimeNotificationToList(
+      TimeNotification timeNotification) async {
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeNotificationId)) {
+      Hive.registerAdapter(TimeNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTimeNotificationId)) {
+      Hive.registerAdapter(ListTimeNotificationAdapter());
+    }
+
+    final box = await Hive.openBox<ListTimeNotification>(
+        KeyBoxHiveLocal.listTimeNotificationKeyBox);
+    ListTimeNotification currentListTimeNotification =
+        await getListTimeNotification();
+    List<TimeNotification> currentListTimeNotificationList =
+        List.from(currentListTimeNotification.listTimeNotification);
+
+    currentListTimeNotificationList.add(timeNotification);
+
+    ListTimeNotification newListTimeNotification = ListTimeNotification(
+        listTimeNotification: currentListTimeNotificationList);
+
+    await box.put(
+        KeyBoxHiveLocal.listTimeNotificationKeyBox, newListTimeNotification);
   }
 
   Future<void> removeTimeNotifcation(TimeNotification timeNotification) async {

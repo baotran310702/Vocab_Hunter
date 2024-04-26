@@ -7,21 +7,21 @@ part 'time_notification.g.dart';
 @HiveType(typeId: KeyHiveLocal.hiveTimeNotificationId)
 class TimeNotification {
   @HiveField(0)
-  final String title;
+  final int id;
   @HiveField(1)
   final TimeOfDay time;
   @HiveField(2)
   final bool isActive;
 
   TimeNotification({
-    required this.title,
+    required this.id,
     required this.time,
     required this.isActive,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'title': title,
+      'id': id,
       'time': {
         'hour': time.hour,
         'minute': time.minute,
@@ -32,7 +32,7 @@ class TimeNotification {
 
   factory TimeNotification.fromJson(Map<String, dynamic> json) {
     return TimeNotification(
-      title: json['title'],
+      id: json['id'],
       time: TimeOfDay(
         hour: json['time']['hour'],
         minute: json['time']['minute'],
@@ -43,7 +43,7 @@ class TimeNotification {
 
   factory TimeNotification.initial() {
     return TimeNotification(
-      title: "Default init",
+      id: -1,
       time: TimeOfDay.now(),
       isActive: false,
     );
@@ -51,12 +51,12 @@ class TimeNotification {
 
   //copy with
   TimeNotification copyWith({
-    String? title,
+    int? id,
     TimeOfDay? time,
     bool? isActive,
   }) {
     return TimeNotification(
-      title: title ?? this.title,
+      id: id ?? this.id,
       time: time ?? this.time,
       isActive: isActive ?? this.isActive,
     );
@@ -69,6 +69,10 @@ class ListTimeNotification {
   final List<TimeNotification> listTimeNotification;
 
   factory ListTimeNotification.initial() {
+    return ListTimeNotification(listTimeNotification: []);
+  }
+
+  factory ListTimeNotification.empty() {
     return ListTimeNotification(listTimeNotification: []);
   }
 

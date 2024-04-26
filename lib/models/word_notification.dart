@@ -39,3 +39,16 @@ class WordNotification {
     required this.thresholdWords,
   });
 }
+
+@HiveType(typeId: KeyHiveLocal.hiveListwordNotificationId)
+class ListWordNotification {
+  @HiveField(0)
+  final List<WordNotification> listWordNotification;
+  ListWordNotification({
+    required this.listWordNotification,
+  });
+
+  factory ListWordNotification.empty() {
+    return ListWordNotification(listWordNotification: []);
+  }
+}

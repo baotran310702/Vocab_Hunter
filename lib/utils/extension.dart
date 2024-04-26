@@ -1,5 +1,7 @@
 //declare extension extends from String
 
+import 'package:flutter/material.dart';
+
 extension StringExtension on String {
   String capitalize() {
     if (isEmpty) return "";
@@ -20,5 +22,11 @@ extension StringExtension on String {
         substring(0, value.length < length ? value.length : length);
 
     return thisString.toLowerCase().contains(value.toLowerCase());
+  }
+}
+
+extension TimeOfDayExtension on TimeOfDay {
+  String toHourMinute() {
+    return "${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}";
   }
 }

@@ -17,7 +17,7 @@ class TimeNotificationAdapter extends TypeAdapter<TimeNotification> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TimeNotification(
-      title: fields[0] as String,
+      id: fields[0] as int,
       time: fields[1] as TimeOfDay,
       isActive: fields[2] as bool,
     );
@@ -28,7 +28,7 @@ class TimeNotificationAdapter extends TypeAdapter<TimeNotification> {
     writer
       ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.title)
+      ..write(obj.id)
       ..writeByte(1)
       ..write(obj.time)
       ..writeByte(2)

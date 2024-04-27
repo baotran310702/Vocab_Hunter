@@ -87,6 +87,9 @@ class TimeNotificationLocal {
   }
 
   Future<ListTimeNotification> getListTimeNotification() async {
+    final dir = await getApplicationDocumentsDirectory();
+
+    Hive.init(dir.path);
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeNotificationId)) {
       Hive.registerAdapter(TimeNotificationAdapter());
     }

@@ -5,6 +5,7 @@ import 'package:english_learner/presentations/authentication/views/sign_in_page.
 import 'package:english_learner/presentations/global_instance/bloc/global_bloc.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
+import 'package:english_learner/services/time_notification_local.dart';
 import 'package:english_learner/utils/notifications/notifications_services.dart';
 import 'package:english_learner/utils/notifications/word_manager_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +16,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'presentations/dictionary_page/bloc/translate_page_bloc.dart';
 import 'services/user_hive_local.dart';
+import 'services/word_notification_local.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -28,6 +30,8 @@ void main() async {
 
   await Future.wait([
     UserHiveLocal().init(),
+    WordNotificationServices().init(),
+    TimeNotificationLocal().init(),
     LocalNotifications().init(),
     WorkManagerService().init(),
   ]);

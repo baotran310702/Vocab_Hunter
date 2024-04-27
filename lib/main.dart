@@ -27,9 +27,9 @@ void main() async {
   );
 
   await Future.wait([
+    UserHiveLocal().init(),
     LocalNotifications().init(),
     WorkManagerService().init(),
-    UserHiveLocal().init(),
   ]);
 
   //  handle in terminated state

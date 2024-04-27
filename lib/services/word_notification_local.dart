@@ -157,4 +157,13 @@ class WordNotificationServices {
 
     return WordNotification.empty();
   }
+
+  Future<ListWordNotification> getNWordNotificationLocal(int n) async {
+    List<WordNotification> listWordNotification = [];
+    for (int i = 0; i < n; i++) {
+      WordNotification wordResult = await getWordNotificationsLocal();
+      listWordNotification.add(wordResult);
+    }
+    return ListWordNotification(listWordNotification: listWordNotification);
+  }
 }

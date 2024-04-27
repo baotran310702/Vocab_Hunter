@@ -2,6 +2,10 @@
 
 import 'dart:async';
 
+import 'package:english_learner/models/time_notification.dart';
+import 'package:english_learner/models/word_notification.dart';
+import 'package:english_learner/services/time_notification_local.dart';
+import 'package:english_learner/services/word_notification_local.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
@@ -92,8 +96,12 @@ class LocalNotifications {
   }
 
   //showDailySchduledNotification
-  static Future<void> showDailySchduledNotification(
-      {required int hour, required int minutes, required int id}) async {
+  static Future<void> showDailySchduledNotification({
+    required int hour,
+    required int minutes,
+    required int id,
+    required WordNotification word,
+  }) async {
     AndroidNotificationDetails android = AndroidNotificationDetails(
       id.toString(),
       'daily schduled notification',
@@ -107,9 +115,9 @@ class LocalNotifications {
     );
 
     await _flutterLocalNotificationsPlugin.zonedSchedule(
-      id, // Unique ID based on index
-      'Daily Schduled Notification',
-      'Ôn tập từ vựng thôi nào!',
+      id, // Unique ID based on index"
+      "Daily vocab: ${word.words.$1.word ?? ''}",
+      "${word.words.$1.word ?? ''} - ${word.words.$2.word ?? ''}",
       _convertTime(hour, minutes),
       details,
       // ignore: deprecated_member_use
@@ -141,18 +149,37 @@ class LocalNotifications {
   }
 
   static Future<void> showMultiNotificationsSchedule() async {
+    ListTimeNotification listTimeNotification =
+        await TimeNotificationLocal().getListTimeNotification();
 
-    
+    List<TimeNotification> listTimeNotificationList =
+        listTimeNotification.listTimeNotification;
+    List<TimeNotification> listActiveNotification = listTimeNotificationList
+        .where((element) => element.isActive == true)
+        .toList();
 
-    final listTimeSchedule = [
-      _convertTime(9, 9),
-      _convertTime(9, 10),
-      _convertTime(9, 11),
-    ];
+    final listTimeSchedule = listActiveNotification
+        .map((e) => _convertTime(e.time.hour, e.time.minute))
+        .toList();
 
-    for (var item in listTimeSchedule) {
+    final listWordNotification = await WordNotificationServices()
+        .getNWordNotificationLocal(listTimeSchedule.length);
+
+    int lenListWord = listWordNotification.listWordNotification.length;
+
+    if (lenListWord == 0) return;
+
+    for (int i = 0; i < listTimeSchedule.length; i++) {
+      WordNotification currentWord = i > lenListWord
+          ? listWordNotification.listWordNotification[i - lenListWord]
+          : listWordNotification.listWordNotification[i];
       showDailySchduledNotification(
-          hour: item.hour, minutes: item.minute, id: item.hour * item.minute);
+        hour: listTimeNotificationList[i].time.hour,
+        minutes: listTimeNotificationList[i].time.minute,
+        id: listTimeNotificationList[i].time.hour *
+            listTimeNotificationList[i].time.minute,
+        word: currentWord,
+      );
     }
   }
 

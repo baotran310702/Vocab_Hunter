@@ -149,7 +149,7 @@ class LocalNotifications {
   }
 
   static Future<void> showMultiNotificationsSchedule() async {
-    Future.wait([
+    await Future.wait([
       WordNotificationServices().init(),
       TimeNotificationLocal().init(),
     ]);

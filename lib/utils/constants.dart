@@ -3,7 +3,7 @@ class APIPath {
   static const String dictionaryDev =
       "https://api.dictionaryapi.dev/api/v2/entries/en/";
   static const String wordSimilarityLocalhost =
-      "http://192.168.39.36:5000/api/recommend-similar-words/";
+      "http://192.168.2.126:5000/api/recommend-similar-words/";
 }
 
 class KeyLocalPreferences {

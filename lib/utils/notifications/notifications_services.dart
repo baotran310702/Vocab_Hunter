@@ -178,7 +178,7 @@ class LocalNotifications {
       WordNotification currentWord = i > lenListWord
           ? listWordNotification.listWordNotification[i - lenListWord]
           : listWordNotification.listWordNotification[i];
-      showDailySchduledNotification(
+      await showDailySchduledNotification(
         hour: listTimeNotificationList[i].time.hour,
         minutes: listTimeNotificationList[i].time.minute,
         id: listTimeNotificationList[i].time.hour *

@@ -32,7 +32,7 @@ class UserVocab extends Equatable {
     List<dynamic> listVocab = json['listVocabulary']['english'] is List &&
             json['listVocabulary']['english'].isEmpty
         ? <VocabularyRemote>[]
-        : json['listVocabulary']
+        : json['listVocabulary']['english']
             .map((e) => VocabularyRemote.fromJson(e))
             .toList();
     List<dynamic> listTranslatedVocabulary =
@@ -53,11 +53,16 @@ class UserVocab extends Equatable {
     );
   }
 
+  //toJson
   Map<String, dynamic> toJson() {
     return {
       'listId': listId,
       'listName': listName,
-      'listVocabulary': listVocabulary,
+      'listVocabulary': {
+        'english': listVocabulary['english']?.map((e) => e.toJson()).toList(),
+        'translated':
+            listVocabulary['translated']?.map((e) => e.toJson()).toList(),
+      },
     };
   }
 

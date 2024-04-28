@@ -18,6 +18,7 @@ class _SettingNotificationsState extends State<SettingNotifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: const MyAppbar(text: "Notifications"),
       body: SafeArea(
         child: Stack(

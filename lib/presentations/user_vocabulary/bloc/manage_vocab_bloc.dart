@@ -253,11 +253,11 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
       return e;
     }).toList();
 
-    UserModel newUSers = currentUser.copyWith(learningWords: listUpdated);
+    UserModel newUsers = currentUser.copyWith(learningWords: listUpdated);
 
-    UserHiveLocal().saveUser(newUSers);
+    await UserHiveLocal().saveUser(newUsers);
 
-    emit(state.copyWith(userModel: newUSers));
+    emit(state.copyWith(userModel: newUsers));
   }
 
   _onDeleteVocabFromListLearning(

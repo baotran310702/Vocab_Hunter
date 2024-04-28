@@ -159,8 +159,6 @@ class WordNotificationServices {
   }
 
   Future<ListWordNotification> getNWordNotificationLocal(int n) async {
-    final dir = await getApplicationDocumentsDirectory();
-    Hive.init(dir.path);
     List<WordNotification> listWordNotification = [];
     for (int i = 0; i < n; i++) {
       WordNotification wordResult = await getWordNotificationsLocal();

@@ -8,7 +8,7 @@ part of 'time_notification.dart';
 
 class TimeNotificationAdapter extends TypeAdapter<TimeNotification> {
   @override
-  final int typeId = 15;
+  final int typeId = 36;
 
   @override
   TimeNotification read(BinaryReader reader) {
@@ -48,7 +48,7 @@ class TimeNotificationAdapter extends TypeAdapter<TimeNotification> {
 
 class ListTimeNotificationAdapter extends TypeAdapter<ListTimeNotification> {
   @override
-  final int typeId = 24;
+  final int typeId = 45;
 
   @override
   ListTimeNotification read(BinaryReader reader) {

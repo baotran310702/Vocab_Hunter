@@ -8,7 +8,7 @@ part of 'user_vocab.dart';
 
 class UserVocabAdapter extends TypeAdapter<UserVocab> {
   @override
-  final int typeId = 20;
+  final int typeId = 41;
 
   @override
   UserVocab read(BinaryReader reader) {

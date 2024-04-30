@@ -54,93 +54,99 @@ class _SettingNotificationsState extends State<SettingNotifications> {
                     color: AppColors.backgroundHeader,
                     child: Column(
                       children: [
-                        ListView.builder(
-                          itemBuilder: (context, index) {
-                            return Dismissible(
-                              key: Key(index.toString()),
-                              onDismissed: (direction) {
-                                final removedItem = switchValues[index];
-                                switchValues.removeAt(index);
-                                context.read<ManageUserProfileBloc>().add(
-                                      RemoveTimeNotificationEvent(
-                                        timeNotification: removedItem,
-                                      ),
-                                    );
-                              },
-                              child: ListTile(
-                                title: Row(
-                                  children: [
-                                    Text(switchValues[index]
-                                        .time
-                                        .toHourMinute()),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (builder) {
-                                            return TimePickerDialog(
-                                              initialTime: TimeOfDay.now(),
-                                            );
-                                          },
-                                        ).then((value) {
-                                          setState(() {
-                                            switchValues[index] =
-                                                switchValues[index]
-                                                    .copyWith(time: value);
-                                          });
-
-                                          context
-                                              .read<ManageUserProfileBloc>()
-                                              .add(
-                                                UpdateTimeNotification(
-                                                  timeNotification:
-                                                      switchValues[index]
-                                                          .copyWith(
-                                                              time: value),
-                                                ),
-                                              );
-                                        });
-                                      },
-                                      child: Image.asset(
-                                        AppIcons.edit,
+                        Expanded(
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: switchValues.length,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return Dismissible(
+                                key: Key(index.toString()),
+                                onDismissed: (direction) {
+                                  final removedItem = switchValues[index];
+                                  switchValues.removeAt(index);
+                                  context.read<ManageUserProfileBloc>().add(
+                                        RemoveTimeNotificationEvent(
+                                          timeNotification: removedItem,
+                                        ),
+                                      );
+                                },
+                                child: ListTile(
+                                  title: Row(
+                                    children: [
+                                      Text(switchValues[index]
+                                          .time
+                                          .toHourMinute()),
+                                      const SizedBox(
                                         width: 20,
-                                        height: 20,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                trailing: Switch(
-                                  activeTrackColor: AppColors.titleHeaderColor,
-                                  trackOutlineColor: MaterialStateProperty.all(
-                                      AppColors.titleHeaderColor),
-                                  inactiveThumbColor:
-                                      AppColors.titleHeaderColor,
-                                  inactiveTrackColor: Colors.white,
-                                  value: switchValues[index].isActive,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      switchValues[index] = switchValues[index]
-                                          .copyWith(isActive: value);
-                                    });
+                                      InkWell(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (builder) {
+                                              return TimePickerDialog(
+                                                initialTime: TimeOfDay.now(),
+                                              );
+                                            },
+                                          ).then((value) {
+                                            setState(() {
+                                              switchValues[index] =
+                                                  switchValues[index]
+                                                      .copyWith(time: value);
+                                            });
 
-                                    context.read<ManageUserProfileBloc>().add(
-                                          UpdateTimeNotification(
-                                            timeNotification:
-                                                switchValues[index]
-                                                    .copyWith(isActive: value),
-                                          ),
-                                        );
-                                  },
+                                            context
+                                                .read<ManageUserProfileBloc>()
+                                                .add(
+                                                  UpdateTimeNotification(
+                                                    timeNotification:
+                                                        switchValues[index]
+                                                            .copyWith(
+                                                                time: value),
+                                                  ),
+                                                );
+                                          });
+                                        },
+                                        child: Image.asset(
+                                          AppIcons.edit,
+                                          width: 20,
+                                          height: 20,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: Switch(
+                                    activeTrackColor:
+                                        AppColors.titleHeaderColor,
+                                    trackOutlineColor:
+                                        MaterialStateProperty.all(
+                                            AppColors.titleHeaderColor),
+                                    inactiveThumbColor:
+                                        AppColors.titleHeaderColor,
+                                    inactiveTrackColor: Colors.white,
+                                    value: switchValues[index].isActive,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        switchValues[index] =
+                                            switchValues[index]
+                                                .copyWith(isActive: value);
+                                      });
+
+                                      context.read<ManageUserProfileBloc>().add(
+                                            UpdateTimeNotification(
+                                              timeNotification:
+                                                  switchValues[index].copyWith(
+                                                      isActive: value),
+                                            ),
+                                          );
+                                    },
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          itemCount: switchValues.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
+                              );
+                            },
+                          ),
                         ),
                       ],
                     ),

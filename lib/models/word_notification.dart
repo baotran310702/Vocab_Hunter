@@ -24,16 +24,19 @@ enum ThresholdWords {
 @HiveType(typeId: KeyHiveLocal.hiveWordNoti)
 class WordNotification {
   @HiveField(0)
-  final (VocabularyRemote, VocabularyRemote) words;
+  final VocabularyRemote englishWords;
   @HiveField(1)
-  final int failureCount;
+  final VocabularyRemote vietnameseWords;
   @HiveField(2)
-  final int successCount;
+  final int failureCount;
   @HiveField(3)
+  final int successCount;
+  @HiveField(4)
   final ThresholdWords thresholdWords;
 
   WordNotification({
-    required this.words,
+    required this.englishWords,
+    required this.vietnameseWords,
     required this.failureCount,
     required this.successCount,
     required this.thresholdWords,
@@ -41,7 +44,8 @@ class WordNotification {
 
   factory WordNotification.empty() {
     return WordNotification(
-      words: (VocabularyRemote.empty(), VocabularyRemote.empty()),
+      englishWords: VocabularyRemote.empty(),
+      vietnameseWords: VocabularyRemote.empty(),
       failureCount: 0,
       successCount: 0,
       thresholdWords: ThresholdWords.lowFailure,
@@ -49,13 +53,15 @@ class WordNotification {
   }
 
   WordNotification copyWith({
-    (VocabularyRemote, VocabularyRemote)? words,
+    VocabularyRemote? englishWords,
+    VocabularyRemote? vietnameseWords,
     int? failureCount,
     int? successCount,
     ThresholdWords? thresholdWords,
   }) {
     return WordNotification(
-      words: words ?? this.words,
+      englishWords: englishWords ?? this.englishWords,
+      vietnameseWords: vietnameseWords ?? this.vietnameseWords,
       failureCount: failureCount ?? this.failureCount,
       successCount: successCount ?? this.successCount,
       thresholdWords: thresholdWords ?? this.thresholdWords,

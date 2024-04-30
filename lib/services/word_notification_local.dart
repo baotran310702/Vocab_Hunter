@@ -1,3 +1,4 @@
+import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/models/word_notification.dart';
 import 'package:english_learner/utils/constants.dart';
 import 'package:hive/hive.dart';
@@ -9,6 +10,19 @@ class WordNotificationServices {
     final dir = await getApplicationDocumentsDirectory();
 
     Hive.init(dir.path);
+
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveEnumWordNoti)) {
+      Hive.registerAdapter(ThresholdWordsAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveWordNoti)) {
+      Hive.registerAdapter(WordNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListwordNotificationId)) {
+      Hive.registerAdapter(ListWordNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabRemote)) {
+      Hive.registerAdapter(VocabularyRemoteAdapter());
+    }
   }
 
   Future<void> updateListWordNotification(
@@ -21,6 +35,9 @@ class WordNotificationServices {
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListwordNotificationId)) {
       Hive.registerAdapter(ListWordNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabRemote)) {
+      Hive.registerAdapter(VocabularyRemoteAdapter());
     }
     final box = await Hive.openBox<ListWordNotification>(
         KeyBoxHiveLocal.listWordNotificationKeyBox);
@@ -35,13 +52,33 @@ class WordNotificationServices {
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveWordNoti)) {
       Hive.registerAdapter(WordNotificationAdapter());
     }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabRemote)) {
+      Hive.registerAdapter(VocabularyRemoteAdapter());
+    }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListwordNotificationId)) {
       Hive.registerAdapter(ListWordNotificationAdapter());
     }
+
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hivePhonestic)) {
+      Hive.registerAdapter(PhoneticsAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveMeanings)) {
+      Hive.registerAdapter(MeaningsAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveDefinitions)) {
+      Hive.registerAdapter(DefinitionsAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveLiences)) {
+      Hive.registerAdapter(LicenseAdapter());
+    }
+
     final box = await Hive.openBox<ListWordNotification>(
         KeyBoxHiveLocal.listWordNotificationKeyBox);
-    return box.get(KeyBoxHiveLocal.listWordNotificationKeyBox) ??
-        ListWordNotification.empty();
+    ListWordNotification result =
+        box.get(KeyBoxHiveLocal.listWordNotificationKeyBox) ??
+            ListWordNotification.empty();
+
+    return result;
   }
 
   Future<void> updateWordNotification(WordNotification wordNotification) async {
@@ -53,6 +90,9 @@ class WordNotificationServices {
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListwordNotificationId)) {
       Hive.registerAdapter(ListWordNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabRemote)) {
+      Hive.registerAdapter(VocabularyRemoteAdapter());
     }
     final box = await Hive.openBox<ListWordNotification>(
         KeyBoxHiveLocal.listWordNotificationKeyBox);
@@ -73,6 +113,9 @@ class WordNotificationServices {
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListwordNotificationId)) {
       Hive.registerAdapter(ListWordNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabRemote)) {
+      Hive.registerAdapter(VocabularyRemoteAdapter());
     }
     final box = await Hive.openBox<ListWordNotification>(
         KeyBoxHiveLocal.listWordNotificationKeyBox);
@@ -95,13 +138,16 @@ class WordNotificationServices {
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListwordNotificationId)) {
       Hive.registerAdapter(ListWordNotificationAdapter());
     }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabRemote)) {
+      Hive.registerAdapter(VocabularyRemoteAdapter());
+    }
     final box = await Hive.openBox<ListWordNotification>(
         KeyBoxHiveLocal.listWordNotificationKeyBox);
     ListWordNotification listWordNotification =
         box.get(KeyBoxHiveLocal.listWordNotificationKeyBox) ??
             ListWordNotification.empty();
-    listWordNotification.listWordNotification
-        .removeWhere((element) => element.words == wordNotification.words);
+    listWordNotification.listWordNotification.removeWhere((element) =>
+        element.englishWords.word == wordNotification.englishWords.word);
     listWordNotification.listWordNotification.add(wordNotification);
     await box.put(
         KeyBoxHiveLocal.listWordNotificationKeyBox, listWordNotification);
@@ -114,13 +160,14 @@ class WordNotificationServices {
         listWordNotification.listWordNotification;
 
     for (var item in currentListNotification) {
-      if (item.words == word.words) {
+      if (item.englishWords.word == word.englishWords.word) {
         WordNotification newWord = item.copyWith(
           failureCount: word.failureCount - 1,
         );
 
         List<WordNotification> newList = currentListNotification
-            .map((e) => e.words == word.words ? newWord : e)
+            .map((e) =>
+                e.englishWords.word == word.englishWords.word ? newWord : e)
             .toList();
 
         await updateListWordNotification(

@@ -5,6 +5,7 @@ import 'package:english_learner/presentations/authentication/views/sign_in_page.
 import 'package:english_learner/presentations/global_instance/bloc/global_bloc.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
+import 'package:english_learner/services/word_notification_local.dart';
 import 'package:english_learner/utils/notifications/notifications_services.dart';
 import 'package:english_learner/utils/notifications/word_manager_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
+
 import 'package:path_provider/path_provider.dart';
 
 import 'presentations/dictionary_page/bloc/translate_page_bloc.dart';
@@ -34,6 +36,7 @@ void main() async {
 
   await Future.wait([
     UserHiveLocal().init(),
+    WordNotificationServices().init(),
     LocalNotifications().init(),
     WorkManagerService().init(),
   ]);

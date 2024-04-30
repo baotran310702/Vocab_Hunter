@@ -10,6 +10,16 @@ class TimeNotificationLocal {
     final dir = await getApplicationDocumentsDirectory();
 
     Hive.init(dir.path);
+
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeNotificationId)) {
+      Hive.registerAdapter(TimeNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTimeNotificationId)) {
+      Hive.registerAdapter(ListTimeNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeOfDay)) {
+      Hive.registerAdapter(TimeOfDayAdapter());
+    }
   }
 
   Future<void> updateListNotification(
@@ -105,5 +115,22 @@ class TimeNotificationLocal {
       return ListTimeNotification.initial();
     }
     return listTimeNotification;
+  }
+
+  //clear notification
+  Future<void> clearListNotification() async {
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeNotificationId)) {
+      Hive.registerAdapter(TimeNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTimeNotificationId)) {
+      Hive.registerAdapter(ListTimeNotificationAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTimeOfDay)) {
+      Hive.registerAdapter(TimeOfDayAdapter());
+    }
+
+    final box = await Hive.openBox<ListTimeNotification>(
+        KeyBoxHiveLocal.listTimeNotificationKeyBox);
+    await box.clear();
   }
 }

@@ -79,9 +79,9 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                       textAlign: TextAlign.center,
                                     ),
                                     const SizedBox(height: 10),
-                                    Expanded(
+                                    Flexible(
                                       child: state.isLoading
-                                          ? const CircularProgressIndicator()
+                                          ? const SizedBox()
                                           : SingleChildScrollView(
                                               scrollDirection: Axis.vertical,
                                               child: Column(

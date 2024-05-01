@@ -169,7 +169,7 @@ class LocalNotifications {
 
     List<TimeNotification> filteredListTime = listActiveNotification
         .where((element) =>
-            element.isActive == true &&
+            element.isActive == true &&            
                 element.time.hour > DateTime.now().hour ||
             (element.time.minute > DateTime.now().minute &&
                 element.time.hour == DateTime.now().hour))

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 extension StringExtension on String {
   String capitalize() {
     if (isEmpty) return "";
-    return "${this[0].toUpperCase()}${substring(1)}";
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 
   String startWithDot() {

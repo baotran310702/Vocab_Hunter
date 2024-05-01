@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class VocabularyItem extends StatefulWidget {
   final VocabularyRemote vocab;
-  const VocabularyItem({super.key, required this.vocab});
+  final Function onTap;
+  const VocabularyItem({super.key, required this.vocab, required this.onTap});
 
   @override
   State<VocabularyItem> createState() => _VocabularyItemState();
@@ -14,7 +15,9 @@ class _VocabularyItemState extends State<VocabularyItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        widget.onTap();
+      },
       child: Container(
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(vertical: 8),

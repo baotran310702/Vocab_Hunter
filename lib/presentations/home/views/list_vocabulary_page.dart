@@ -34,6 +34,7 @@ class _ListVocabularyItemState extends State<ListVocabularyItem> {
                       children: [
                         VocabularyItem(
                           vocab: e,
+                          onTap: () {},
                         ),
                         Container(
                           color: Colors.black,

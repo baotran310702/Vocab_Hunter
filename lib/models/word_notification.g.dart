@@ -8,7 +8,7 @@ part of 'word_notification.dart';
 
 class WordNotificationAdapter extends TypeAdapter<WordNotification> {
   @override
-  final int typeId = 23;
+  final int typeId = 44;
 
   @override
   WordNotification read(BinaryReader reader) {
@@ -17,24 +17,27 @@ class WordNotificationAdapter extends TypeAdapter<WordNotification> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return WordNotification(
-      words: fields[0] as (VocabularyRemote, VocabularyRemote),
-      failureCount: fields[1] as int,
-      successCount: fields[2] as int,
-      thresholdWords: fields[3] as ThresholdWords,
+      englishWords: fields[0] as VocabularyRemote,
+      vietnameseWords: fields[1] as VocabularyRemote,
+      failureCount: fields[2] as int,
+      successCount: fields[3] as int,
+      thresholdWords: fields[4] as ThresholdWords,
     );
   }
 
   @override
   void write(BinaryWriter writer, WordNotification obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.words)
+      ..write(obj.englishWords)
       ..writeByte(1)
-      ..write(obj.failureCount)
+      ..write(obj.vietnameseWords)
       ..writeByte(2)
-      ..write(obj.successCount)
+      ..write(obj.failureCount)
       ..writeByte(3)
+      ..write(obj.successCount)
+      ..writeByte(4)
       ..write(obj.thresholdWords);
   }
 
@@ -51,7 +54,7 @@ class WordNotificationAdapter extends TypeAdapter<WordNotification> {
 
 class ListWordNotificationAdapter extends TypeAdapter<ListWordNotification> {
   @override
-  final int typeId = 25;
+  final int typeId = 46;
 
   @override
   ListWordNotification read(BinaryReader reader) {
@@ -85,7 +88,7 @@ class ListWordNotificationAdapter extends TypeAdapter<ListWordNotification> {
 
 class ThresholdWordsAdapter extends TypeAdapter<ThresholdWords> {
   @override
-  final int typeId = 22;
+  final int typeId = 43;
 
   @override
   ThresholdWords read(BinaryReader reader) {

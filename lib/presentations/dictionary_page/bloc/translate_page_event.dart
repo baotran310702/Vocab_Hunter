@@ -2,6 +2,8 @@ part of 'translate_page_bloc.dart';
 
 abstract class TranslateEvent {}
 
+class TranslateEventInitial extends TranslateEvent {}
+
 class TranslateWordEvent extends TranslateEvent {
   final String word;
   TranslateWordEvent(this.word);

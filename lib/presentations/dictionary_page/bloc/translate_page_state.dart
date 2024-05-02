@@ -6,6 +6,7 @@ class TranslatePageState extends Equatable {
   final Vocabulary currentVocabulary;
   final List<Vocabulary> searchedVocabulary;
   final (VocabularyRemote, VocabularyRemote)? currentVocabularyRemote;
+  final ListVocabTranslated listVocabTranslated;
 
   //required params
   const TranslatePageState({
@@ -14,6 +15,7 @@ class TranslatePageState extends Equatable {
     required this.searchedVocabulary,
     this.isLocal,
     this.currentVocabularyRemote,
+    required this.listVocabTranslated,
   });
 
   //initial state
@@ -23,6 +25,7 @@ class TranslatePageState extends Equatable {
         searchedVocabulary: const [],
         isLocal: false,
         currentVocabularyRemote: null,
+        listVocabTranslated: ListVocabTranslated.empty(),
       );
 
   //copyWith method
@@ -33,6 +36,7 @@ class TranslatePageState extends Equatable {
     List<Vocabulary>? searchedVocabulary,
     bool? isLocal,
     (VocabularyRemote, VocabularyRemote)? currentVocabularyRemote,
+    ListVocabTranslated? listVocabTranslated,
   }) {
     return TranslatePageState(
       isLoading: isLoading ?? this.isLoading,
@@ -41,6 +45,7 @@ class TranslatePageState extends Equatable {
       isLocal: isLocal ?? this.isLocal,
       currentVocabularyRemote:
           currentVocabularyRemote ?? this.currentVocabularyRemote,
+      listVocabTranslated: listVocabTranslated ?? this.listVocabTranslated,
     );
   }
 
@@ -50,6 +55,7 @@ class TranslatePageState extends Equatable {
         currentVocabulary,
         searchedVocabulary,
         isLocal,
-        currentVocabularyRemote
+        currentVocabularyRemote,
+        listVocabTranslated,
       ];
 }

@@ -39,8 +39,8 @@ class AuthenticationServices {
       await _firestore
           .collection(AppCollections.userAuth)
           .add({"uid": uid, "token": token});
-      await UserHiveLocal().saveUser(UserModel.fromMap(
-          response.docs.first.data(), response.docs.first.id));
+      await UserHiveLocal()
+          .saveUser(UserModel.fromMap(response.docs.first.data(), uid));
       await UserPrefererencesLocal().saveToken(token);
       return uid;
     } catch (e) {

@@ -1,38 +1,36 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'time_notification.dart';
+part of 'vocab_translated_local.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TimeNotificationAdapter extends TypeAdapter<TimeNotification> {
+class VocabTranslatedLocalModelAdapter
+    extends TypeAdapter<VocabTranslatedLocalModel> {
   @override
-  final int typeId = 36;
+  final int typeId = 48;
 
   @override
-  TimeNotification read(BinaryReader reader) {
+  VocabTranslatedLocalModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return TimeNotification(
-      id: fields[0] as int,
-      time: fields[1] as TimeOfDay,
-      isActive: fields[2] as bool,
+    return VocabTranslatedLocalModel(
+      englishWords: fields[0] as VocabularyRemote,
+      vietnameseWords: fields[1] as VocabularyRemote,
     );
   }
 
   @override
-  void write(BinaryWriter writer, TimeNotification obj) {
+  void write(BinaryWriter writer, VocabTranslatedLocalModel obj) {
     writer
-      ..writeByte(3)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.time)
       ..writeByte(2)
-      ..write(obj.isActive);
+      ..writeByte(0)
+      ..write(obj.englishWords)
+      ..writeByte(1)
+      ..write(obj.vietnameseWords);
   }
 
   @override
@@ -41,32 +39,33 @@ class TimeNotificationAdapter extends TypeAdapter<TimeNotification> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TimeNotificationAdapter &&
+      other is VocabTranslatedLocalModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class ListTimeNotificationAdapter extends TypeAdapter<ListTimeNotification> {
+class ListVocabTranslatedAdapter extends TypeAdapter<ListVocabTranslated> {
   @override
-  final int typeId = 45;
+  final int typeId = 49;
 
   @override
-  ListTimeNotification read(BinaryReader reader) {
+  ListVocabTranslated read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ListTimeNotification(
-      listTimeNotification: (fields[0] as List).cast<TimeNotification>(),
+    return ListVocabTranslated(
+      listVocabTranslated:
+          (fields[0] as List).cast<VocabTranslatedLocalModel>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, ListTimeNotification obj) {
+  void write(BinaryWriter writer, ListVocabTranslated obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.listTimeNotification);
+      ..write(obj.listVocabTranslated);
   }
 
   @override
@@ -75,7 +74,7 @@ class ListTimeNotificationAdapter extends TypeAdapter<ListTimeNotification> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ListTimeNotificationAdapter &&
+      other is ListVocabTranslatedAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

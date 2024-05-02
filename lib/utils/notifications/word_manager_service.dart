@@ -7,7 +7,7 @@ class WorkManagerService {
     await Workmanager().registerPeriodicTask(
       'mng_task1',
       'Pratise Vocabulary Reminder',
-      frequency: const Duration(hours: 1),
+      frequency: const Duration(minutes: 20),
     );
   }
 
@@ -25,8 +25,8 @@ class WorkManagerService {
 @pragma('vm-entry-point')
 void actionTask() {
   //show notification
-  Workmanager().executeTask((taskName, inputData) {
-    LocalNotifications.showMultiNotificationsSchedule();
+  Workmanager().executeTask((taskName, inputData) async {
+    await LocalNotifications.showMultiNotificationsSchedule();
     return Future.value(true);
   });
 }

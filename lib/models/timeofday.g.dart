@@ -14,8 +14,8 @@ class TimeOfDayAdapter extends TypeAdapter<TimeOfDay> {
   }
 
   @override
-  void write(BinaryWriter writer, TimeOfDay time) {
-    writer.writeByte(time.hour);
-    writer.writeByte(time.minute);
+  void write(BinaryWriter writer, TimeOfDay obj) {
+    writer.writeByte(obj.hour);
+    writer.writeByte(obj.minute);
   }
 }

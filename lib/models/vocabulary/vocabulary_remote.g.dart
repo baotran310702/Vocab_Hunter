@@ -8,7 +8,7 @@ part of 'vocabulary_remote.dart';
 
 class VocabularyRemoteAdapter extends TypeAdapter<VocabularyRemote> {
   @override
-  final int typeId = 16;
+  final int typeId = 37;
 
   @override
   VocabularyRemote read(BinaryReader reader) {
@@ -57,7 +57,7 @@ class VocabularyRemoteAdapter extends TypeAdapter<VocabularyRemote> {
 
 class PhoneticsAdapter extends TypeAdapter<Phonetics> {
   @override
-  final int typeId = 17;
+  final int typeId = 38;
 
   @override
   Phonetics read(BinaryReader reader) {
@@ -97,7 +97,7 @@ class PhoneticsAdapter extends TypeAdapter<Phonetics> {
 
 class MeaningsAdapter extends TypeAdapter<Meanings> {
   @override
-  final int typeId = 18;
+  final int typeId = 39;
 
   @override
   Meanings read(BinaryReader reader) {
@@ -140,7 +140,7 @@ class MeaningsAdapter extends TypeAdapter<Meanings> {
 
 class DefinitionsAdapter extends TypeAdapter<Definitions> {
   @override
-  final int typeId = 19;
+  final int typeId = 40;
 
   @override
   Definitions read(BinaryReader reader) {
@@ -183,7 +183,7 @@ class DefinitionsAdapter extends TypeAdapter<Definitions> {
 
 class LicenseAdapter extends TypeAdapter<License> {
   @override
-  final int typeId = 21;
+  final int typeId = 42;
 
   @override
   License read(BinaryReader reader) {

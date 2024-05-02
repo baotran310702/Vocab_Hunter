@@ -8,7 +8,7 @@ part of 'enum.dart';
 
 class AchievementTypeAdapter extends TypeAdapter<AchievementType> {
   @override
-  final int typeId = 13;
+  final int typeId = 34;
 
   @override
   AchievementType read(BinaryReader reader) {
@@ -57,7 +57,7 @@ class AchievementTypeAdapter extends TypeAdapter<AchievementType> {
 
 class WordTypeAdapter extends TypeAdapter<WordType> {
   @override
-  final int typeId = 14;
+  final int typeId = 35;
 
   @override
   WordType read(BinaryReader reader) {

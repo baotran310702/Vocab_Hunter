@@ -17,8 +17,12 @@ class UserServices {
           .get();
 
       if (snapshot.docs.isNotEmpty) {
-        QueryDocumentSnapshot doc = snapshot.docs.first;
-        await doc.reference.update(currentUser.toMap());
+        await _firestore
+            .collection(AppCollections.user)
+            .doc(snapshot.docs.first.id)
+            .update(currentUser.toMap());
+      } else {
+        debugPrint('User not found');
       }
     } catch (e) {
       if (e is FirebaseException) {

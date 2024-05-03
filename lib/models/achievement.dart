@@ -70,4 +70,38 @@ class Achievement {
       total: total ?? this.total,
     );
   }
+
+  static List<Achievement> defaultListAchievement = [
+    Achievement(
+      title: "Capy Vocab",
+      description:
+          "You have learned 150 words in practise room to receive this achievement.",
+      type: AchievementType.sleepyBoi,
+      amount: 15,
+      total: 150,
+    ),
+    Achievement(
+      title: "Capy Topics",
+      description: "You have learned 5 topics to receive this achievement.",
+      type: AchievementType.writingBoi,
+      amount: 5,
+      total: 5,
+    ),
+    Achievement(
+      title: "Capy Hardwork",
+      description:
+          "Search 100 words in dictionary to receive this achievement.",
+      type: AchievementType.eatingBoi,
+      amount: 100,
+      total: 100,
+    ),
+    Achievement(
+      title: "Capy Pratise",
+      description:
+          "You have to completed 5 times in pratises room with no failures to receive this achievement.",
+      type: AchievementType.writingBoi,
+      amount: 1,
+      total: 5,
+    ),
+  ];
 }

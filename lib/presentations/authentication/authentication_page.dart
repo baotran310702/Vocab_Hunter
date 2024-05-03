@@ -7,10 +7,10 @@ class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
 
   @override
-  State<AuthenticationPage> createState() => AauthenticationStatePage();
+  State<AuthenticationPage> createState() => AuthenticationStatePage();
 }
 
-class AauthenticationStatePage extends State<AuthenticationPage> {
+class AuthenticationStatePage extends State<AuthenticationPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

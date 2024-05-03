@@ -54,7 +54,7 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     UserModel currentUser = await UserHiveLocal().getUser();
     String? currentDefaultId =
         await UserPrefererencesLocal().getDefaultListLearningVocab();
-    if (currentDefaultId == null) {
+    if (currentDefaultId == "") {
       await UserPrefererencesLocal().setDefaultListLearningVocab(
           currentUser.learningWords.isNotEmpty
               ? currentUser.learningWords[0].listId
@@ -198,7 +198,7 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
     UserModel currentUser = state.userModel;
 
     String currentListId =
-        await UserPrefererencesLocal().getDefaultListLearningVocab() ?? '';
+        await UserPrefererencesLocal().getDefaultListLearningVocab();
 
     List<UserVocab> listUpdated = currentUser.learningWords.map((e) {
       if (e.listId == currentListId) {
@@ -234,7 +234,7 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
 
   _onAddVocabToListLearning(AddVocabToListLearning event, Emitter emit) async {
     String listDefaultId =
-        await UserPrefererencesLocal().getDefaultListLearningVocab() ?? '';
+        await UserPrefererencesLocal().getDefaultListLearningVocab();
     UserModel currentUser = state.userModel;
     List<UserVocab> listUpdated = currentUser.learningWords.map((e) {
       if (e.listId == listDefaultId) {

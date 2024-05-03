@@ -5,7 +5,7 @@ class HomePageState extends Equatable {
   final List<News> news;
   final List<VocabWordSimilarity> recommendVocabs;
   final UserModel currentUser;
-  final List<VocabularyRemote>? currentRecommendWords;
+  final List<(VocabularyRemote, VocabularyRemote)>? currentRecommendWords;
 
   const HomePageState({
     required this.isLoading,
@@ -30,7 +30,7 @@ class HomePageState extends Equatable {
     List<News>? news,
     List<VocabWordSimilarity>? recommendVocabs,
     UserModel? currentUser,
-    List<VocabularyRemote>? currentRecommendWords,
+    List<(VocabularyRemote, VocabularyRemote)>? currentRecommendWords,
   }) {
     return HomePageState(
       isLoading: isLoading ?? this.isLoading,

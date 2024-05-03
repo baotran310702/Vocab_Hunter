@@ -4,6 +4,8 @@ class APIPath {
       "https://api.dictionaryapi.dev/api/v2/entries/en/";
   static const String wordSimilarityLocalhost =
       "http://192.168.2.82:5000/api/recommend-similar-words/";
+  static const String listWordSimilarityLocalhost =
+      "http://192.168.2.40:5000/api/recommend-list-similar-words/";
 }
 
 class KeyLocalPreferences {

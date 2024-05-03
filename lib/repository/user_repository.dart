@@ -27,6 +27,10 @@ class UserRepository {
     await authenServices.signOut();
   }
 
+  Future<void> changePassword(String newPassword) async {
+    await authenServices.changePassword(newPassword);
+  }
+
   Future<void> syncUserData() async {
     await userServices.syncUserData();
   }

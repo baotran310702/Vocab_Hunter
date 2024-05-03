@@ -49,4 +49,9 @@ class VocabRepository {
         .toList();
     return userLearningVocabs;
   }
+
+  Future<List<VocabWordSimilarity>> getWordsSimmilarityFromListLocal(
+      List<String> words) async {
+    return await recommendsWords.getWordsSimmilarityFromListLocal(words);
+  }
 }

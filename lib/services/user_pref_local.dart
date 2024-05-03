@@ -47,8 +47,8 @@ class UserPrefererencesLocal {
   }
 
   /// Get default id for list learning vocabulary
-  Future<String?> getDefaultListLearningVocab() async {
+  Future<String> getDefaultListLearningVocab() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(KeyLocalPreferences.defaultListLearningVocab);
+    return prefs.getString(KeyLocalPreferences.defaultListLearningVocab) ?? "";
   }
 }

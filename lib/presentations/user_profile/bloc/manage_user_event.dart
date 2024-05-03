@@ -25,3 +25,8 @@ class UpdateTimeNotification extends ManageUserEvents {
   final TimeNotification timeNotification;
   UpdateTimeNotification({required this.timeNotification});
 }
+
+class UpdateNewPassWord extends ManageUserEvents {
+  final String newPassWord;
+  UpdateNewPassWord({required this.newPassWord});
+}

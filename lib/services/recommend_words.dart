@@ -52,4 +52,28 @@ class RecommendsWords {
     }
     return result;
   }
+
+  Future<List<VocabWordSimilarity>> getWordsSimmilarityFromListLocal(
+      List<String> words) async {
+    String wordsParams = words.join(",");
+    List<VocabWordSimilarity> result = [];
+
+    try {
+      var apiURL = APIPath.listWordSimilarityLocalhost + wordsParams;
+      var response = await Dio().get(apiURL);
+      if (response.statusCode == 200) {
+        //parse response to list of vocab
+        var data = response.data["similar_words"];
+
+        for (var value in data) {
+          result.add(VocabWordSimilarity.fromLocalJson(value));
+        }
+      }
+    } catch (e) {
+      debugPrint("Exception occur is: ${Exception(e).toString()}");
+      return result;
+    }
+
+    return result;
+  }
 }

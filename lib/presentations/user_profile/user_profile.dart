@@ -1,8 +1,10 @@
+import 'package:english_learner/models/achievement.dart';
 import 'package:english_learner/presentations/test/user_test.dart';
 import 'package:english_learner/presentations/user_profile/views/achievement_page.dart';
 import 'package:english_learner/presentations/user_profile/views/change_password_page.dart';
 import 'package:english_learner/presentations/user_profile/views/user_informations.dart';
 import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/converter.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -85,38 +87,22 @@ class UserProfile extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            BoxAchievement(
-                              icon: Image.asset(
-                                AppIcons.sleepyBoi,
-                                width: 80,
-                                height: 80,
-                              ),
-                              title: "Patient",
-                            ),
-                            BoxAchievement(
-                              icon: Image.asset(
-                                AppIcons.writingBoi,
-                                width: 80,
-                                height: 80,
-                              ),
-                              title: "Hardworking",
-                            ),
-                            BoxAchievement(
-                              icon: Image.asset(
-                                AppIcons.eatingBoi,
-                                width: 80,
-                                height: 80,
-                              ),
-                              title: "Toeic Achiev",
-                            ),
-                            BoxAchievement(
-                              icon: Image.asset(
-                                AppIcons.sleepyBoi,
-                                width: 80,
-                                height: 80,
-                              ),
-                              title: "IELTS Achiev",
-                            ),
+                            for (int i = 0;
+                                i < Achievement.defaultListAchievement.length;
+                                i++)
+                              if (Achievement.defaultListAchievement[i].total ==
+                                  Achievement.defaultListAchievement[i].amount)
+                                BoxAchievement(
+                                  icon: Image.asset(
+                                    CustomConverter.convertAchievement(
+                                        Achievement
+                                            .defaultListAchievement[i].type),
+                                    width: 80,
+                                    height: 80,
+                                  ),
+                                  title: Achievement
+                                      .defaultListAchievement[i].title,
+                                ),
                           ],
                         ),
                       ),

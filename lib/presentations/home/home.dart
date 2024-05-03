@@ -63,18 +63,34 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        for (int i in list)
-                          BoxVocab(
-                            key: Key(
-                              i.toString(),
-                            ),
-                          ),
-                      ],
-                    ),
+                  BlocBuilder<HomePageBloc, HomePageState>(
+                    builder: (context, state) {
+                      if (state.isLoading ||
+                          state.currentRecommendWords == null) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            for (int i = 0;
+                                i < state.currentRecommendWords!.length;
+                                i++)
+                              BoxVocab(
+                                key: Key(
+                                  i.toString(),
+                                ),
+                                englishVocabulary:
+                                    state.currentRecommendWords![i].$1,
+                                vietnameseVocabulary:
+                                    state.currentRecommendWords![i].$2,
+                              ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 20),
                   Row(

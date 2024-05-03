@@ -77,7 +77,7 @@ class CustomConverter {
       case AchievementType.eatingBoi:
         return AppIcons.eatingBoi;
       case AchievementType.sleepyBoi:
-        return AppIcons.eatingBoi;
+        return AppIcons.sleepyBoi;
       case AchievementType.writingBoi:
         return AppIcons.writingBoi;
       default:

@@ -44,3 +44,4 @@ class ManageUserState extends Equatable {
         error,
       ];
 }
+

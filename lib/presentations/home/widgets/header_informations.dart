@@ -1,6 +1,8 @@
+import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HeaderInformations extends StatefulWidget {
   final String description;
@@ -116,34 +118,38 @@ class _HeaderInformationsState extends State<HeaderInformations> {
                 ),
               ],
             )
-          : Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Center(
-                    child: Image.asset(
-                      AppIcons.user,
-                      width: 32,
-                      height: 32,
+          : BlocBuilder<ManageUserProfileBloc, ManageUserState>(
+              builder: (context, state) {
+                return Row(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Center(
+                        child: Image.asset(
+                          AppIcons.user,
+                          width: 32,
+                          height: 32,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                const Text(
-                  "Mr. John Doe",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
+                    const SizedBox(width: 10),
+                    Text(
+                      state.userModel.userName,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                );
+              },
             ),
     );
   }

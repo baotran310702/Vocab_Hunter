@@ -91,4 +91,9 @@ class AuthenticationServices {
     await UserHiveLocal().removeUser();
     await FirebaseAuth.instance.signOut();
   }
+
+  Future<void> changePassword(String newPassword) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    currentUser!.updatePassword(newPassword);
+  }
 }

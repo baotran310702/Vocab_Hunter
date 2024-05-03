@@ -1,4 +1,6 @@
+import 'package:english_learner/models/vocabulary/vocab_translated_local.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/presentations/dictionary_page/views/detail_vocabulary.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/extension.dart';
 import 'package:english_learner/utils/icons.dart';
@@ -29,6 +31,16 @@ class _BoxVocabState extends State<BoxVocab> {
     setState(() {
       scale = 1;
     });
+
+    if (mounted) {
+      Navigator.push(context, MaterialPageRoute(builder: (builder) {
+        return DetailVocabulary(
+          vocabTranslatedLocal: VocabTranslatedLocalModel(
+              englishWords: widget.englishVocabulary,
+              vietnameseWords: widget.vietnameseVocabulary),
+        );
+      }));
+    }
   }
 
   @override
@@ -86,11 +98,12 @@ class _BoxVocabState extends State<BoxVocab> {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Text(
-                  widget.vietnameseVocabulary.word ?? "",
+                  widget.englishVocabulary.meanings?[0].definitions?[0]
+                          .definition ??
+                      "",
                   style: const TextStyle(
                     fontSize: 15,
                     color: Colors.black,

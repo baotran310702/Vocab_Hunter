@@ -1,3 +1,4 @@
+import 'package:english_learner/presentations/global_instance/bloc/global_bloc.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/icons.dart';
@@ -71,18 +72,33 @@ class _HeaderInformationsState extends State<HeaderInformations> {
             children: [
               Image.asset(
                 AppIcons.bell,
-                width: 24,
-                height: 24,
+                width: 32,
+                height: 32,
               ),
-              const Positioned(
+              Positioned(
                 top: -0.5,
-                right: 6.5,
-                child: Text(
-                  "6",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                right: 0,
+                child: Container(
+                  width: 14,
+                  height: 14,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: BlocBuilder<GlobalBloc, GlobalState>(
+                    builder: (context, state) {
+                      return Center(
+                        child: Text(
+                          state.notificationApps.length.toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
                   ),
                 ),
               )

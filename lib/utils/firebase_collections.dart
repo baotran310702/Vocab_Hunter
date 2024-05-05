@@ -3,4 +3,5 @@ class AppCollections {
   static const String userAuth = "UserAuthen";
   static const String vocabTopic = "VocabTopic";
   static const String vocabulary = "Vocabulary";
+  static const String notification = "Notifications";
 }

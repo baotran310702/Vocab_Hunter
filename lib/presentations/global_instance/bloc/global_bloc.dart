@@ -1,13 +1,49 @@
+import 'dart:async';
+
+import 'package:english_learner/models/notification.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../repository/user_repository.dart';
 
 part 'global_event.dart';
 part 'global_state.dart';
 
 class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
-  GlobalBloc() : super(const GlobalState(isFront: true)) {
+  final UserRepository _userRepository = UserRepository();
+
+  late StreamSubscription _notificationSubscription;
+
+  _initNotificationStream() {
+    _notificationSubscription =
+        _userRepository.streamNotificationApp().listen((event) {
+      List<NotificationApp> notificationApps = [];
+      for (var doc in event.docs) {
+        notificationApps.add(NotificationApp.fromMap(doc.data()));
+      }
+      print("okokoko streamm callewd");
+      add(UpdateNotificationApp(notificationApps));
+    });
+  }
+
+  GlobalBloc() : super(const GlobalState(isFront: true, notificationApps: [])) {
+    _initNotificationStream();
     on<ChangeFlashCardSide>(_onUpdateChangeFlashCardSide);
     on<ResetFlashCardSide>(_onUpdateResetFlashCardSide);
+    on<UpdateNotificationApp>(_onUpdateNotificationApp);
+  }
+
+  @override
+  Future<void> close() {
+    _notificationSubscription.cancel();
+    return super.close();
+  }
+
+  _onUpdateNotificationApp(
+    UpdateNotificationApp event,
+    Emitter<GlobalState> emit,
+  ) {
+    emit(state.copyWith(notificationApps: event.notificationApps));
   }
 
   _onUpdateChangeFlashCardSide(

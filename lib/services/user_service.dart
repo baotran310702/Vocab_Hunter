@@ -1,12 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/utils/firebase_collections.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'user_hive_local.dart';
 
 class UserServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Stream<QuerySnapshot> streamNotificationApp() {
+    Stream<QuerySnapshot> snapshots = _firestore
+        .collection(AppCollections.notification)
+        .orderBy('time', descending: true)
+        .snapshots();
+
+    return snapshots;
+  }
+
   Future<void> syncUserData() async {
     UserModel currentUser = await UserHiveLocal().getUser();
 

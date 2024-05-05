@@ -20,6 +20,19 @@ class CustomConverter {
     }
   }
 
+  /// Convert dynamic to DateTime
+  static DateTime convertToDateTime(dynamic value) {
+    if (value is String) {
+      return DateTime.parse(value);
+    } else if (value is int) {
+      return DateTime.fromMillisecondsSinceEpoch(value);
+    } else if (value is double) {
+      return DateTime.fromMillisecondsSinceEpoch(value.toInt());
+    } else {
+      return DateTime.now();
+    }
+  }
+
   /// Convert to word type in firebase
   static convertToMeaningsFirebase(Map<String, List<String>> json) {
     return {

@@ -49,10 +49,11 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     UserModel user = listInformation[0] as UserModel;
     String defaultIdVocabList = listInformation[1] as String;
 
-    UserVocab currentDefaultUserVocab =
-        user.learningWords.firstWhere((element) {
-      return element.listId == defaultIdVocabList;
-    });
+    UserVocab currentDefaultUserVocab = defaultIdVocabList.trim() != ""
+        ? user.learningWords.firstWhere((element) {
+            return element.listId == defaultIdVocabList;
+          })
+        : user.learningWords[0];
 
     List<String> currentStringWords = currentDefaultUserVocab
         .listVocabulary.entries.first.value

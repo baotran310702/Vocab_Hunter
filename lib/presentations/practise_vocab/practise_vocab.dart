@@ -1,4 +1,5 @@
 import 'package:english_learner/presentations/global_instance/appbar.dart';
+import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/practise_vocab/bloc/practise_vocab_bloc.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/custom_drop_down.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/progress.dart';
@@ -30,7 +31,7 @@ class _PractiseVocabState extends State<PractiseVocab> {
                 .toList();
             currentLearningList.insert(0, "All");
             if (state.isLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const LoadingPage(message: "Loading, please wait...");
             }
             if (state is AnswerResult) {
               return SafeArea(

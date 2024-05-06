@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/models/word_notification.dart';
 import 'package:english_learner/repository/gemini_repository.dart';
 import 'package:english_learner/services/user_hive_local.dart';
+import 'package:english_learner/services/word_notification_local.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,7 +45,7 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
         i--;
         continue;
       }
-      currentFillBlankWords.add(questionList[i].$1.word ?? "");
+      currentFillBlankWords.add(questionList[index].$1.word ?? "");
     }
 
     int maxTry = 3;
@@ -115,13 +117,23 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
     );
   }
 
-  _onChangeNextQuestion(ChangeNextQuestion event, Emitter emit) {
+  _onChangeNextQuestion(ChangeNextQuestion event, Emitter emit) async {
     if (state.currentQuestionIndex == state.questionList.length - 1) {
       List<(VocabularyRemote, VocabularyRemote)> currentAnswerList =
           event.isTrue
               ? List.from(state.correctAnswerList)
               : List.from(state.failedAnswerList);
       currentAnswerList.add(state.questionList[state.currentQuestionIndex]);
+
+      await Future.wait([
+        ...state.correctAnswerList
+            .map((e) => _updateNotificationList((e.$1, e.$2), true))
+            .toList(),
+        ...state.failedAnswerList
+            .map((e) => _updateNotificationList((e.$1, e.$2), true))
+            .toList(),
+      ]);
+
       emit(
         AnswerResult(
           message: "Congratulations!",
@@ -137,6 +149,7 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
           sentences: state.sentences,
         ),
       );
+
       return;
     }
     if (event.isTrue) {
@@ -156,6 +169,46 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
             failedAnswerList: currentAnswerList,
             currentQuestionIndex: state.currentQuestionIndex + 1),
       );
+    }
+  }
+
+  //function handle without event.
+  Future<void> _updateNotificationList(
+      (VocabularyRemote, VocabularyRemote) vocab, bool isCorrect) async {
+    ListWordNotification listWordNotification =
+        await WordNotificationServices().getListWordNotification();
+    List<WordNotification> currentListNotification =
+        List.from(listWordNotification.listWordNotification);
+    int index = currentListNotification
+        .indexWhere((element) => element.englishWords.word == vocab.$1.word);
+    if (index != -1) {
+      WordNotification newWord = currentListNotification[index].copyWith(
+        failureCount: isCorrect
+            ? currentListNotification[index].failureCount
+            : currentListNotification[index].failureCount + 1,
+        successCount: isCorrect
+            ? currentListNotification[index].successCount + 1
+            : currentListNotification[index].successCount,
+      );
+      List<WordNotification> newList = currentListNotification
+          .map((e) => e.englishWords.word == vocab.$1.word ? newWord : e)
+          .toList();
+      await WordNotificationServices().updateListWordNotification(
+          ListWordNotification(listWordNotification: newList));
+      return;
+    } else {
+      WordNotification newWord = WordNotification(
+        englishWords: vocab.$1,
+        vietnameseWords: vocab.$2,
+        failureCount: isCorrect ? 0 : 1,
+        successCount: isCorrect ? 1 : 0,
+        thresholdWords: ThresholdWords.lowFailure,
+      );
+      List<WordNotification> newList = List.from(currentListNotification);
+      newList.add(newWord);
+      await WordNotificationServices().updateListWordNotification(
+          ListWordNotification(listWordNotification: newList));
+      return;
     }
   }
 }

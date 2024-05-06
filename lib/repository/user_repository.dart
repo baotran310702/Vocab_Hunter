@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:english_learner/models/notification.dart';
 import 'package:english_learner/services/auth_service.dart';
 import 'package:english_learner/services/user_service.dart';
 

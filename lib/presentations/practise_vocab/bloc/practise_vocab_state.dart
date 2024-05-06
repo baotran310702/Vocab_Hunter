@@ -5,6 +5,7 @@ class PractiseVocabState extends Equatable {
   final UserModel currentUser;
   final String currentListId;
   final int currentQuestionIndex;
+  final Map<String, String> sentences;
   final List<(VocabularyRemote, VocabularyRemote)> questionList;
   final List<(VocabularyRemote, VocabularyRemote)> correctAnswerList;
   final List<(VocabularyRemote, VocabularyRemote)> failedAnswerList;
@@ -13,6 +14,7 @@ class PractiseVocabState extends Equatable {
     required this.isLoading,
     required this.currentUser,
     required this.currentQuestionIndex,
+    required this.sentences,
     required this.currentListId,
     required this.questionList,
     required this.correctAnswerList,
@@ -25,6 +27,7 @@ class PractiseVocabState extends Equatable {
       currentUser: UserModel.empty(),
       currentQuestionIndex: 0,
       currentListId: "",
+      sentences: const {},
       questionList: const [],
       correctAnswerList: const [],
       failedAnswerList: const [],
@@ -37,6 +40,7 @@ class PractiseVocabState extends Equatable {
     UserModel? currentUser,
     String? currentListId,
     int? currentQuestionIndex,
+    Map<String, String>? sentences,
     List<(VocabularyRemote, VocabularyRemote)>? questionList,
     List<(VocabularyRemote, VocabularyRemote)>? correctAnswerList,
     List<(VocabularyRemote, VocabularyRemote)>? failedAnswerList,
@@ -46,6 +50,7 @@ class PractiseVocabState extends Equatable {
       currentUser: currentUser ?? this.currentUser,
       currentQuestionIndex: currentQuestionIndex ?? this.currentQuestionIndex,
       currentListId: currentListId ?? this.currentListId,
+      sentences: sentences ?? this.sentences,
       questionList: questionList ?? this.questionList,
       correctAnswerList: correctAnswerList ?? this.correctAnswerList,
       failedAnswerList: failedAnswerList ?? this.failedAnswerList,
@@ -57,6 +62,7 @@ class PractiseVocabState extends Equatable {
         isLoading,
         currentUser,
         currentQuestionIndex,
+        sentences,
         currentListId,
         questionList,
         correctAnswerList,
@@ -71,6 +77,7 @@ class AnswerResult extends PractiseVocabState {
     required bool isLoading,
     required int currentQuestionIndex,
     required UserModel currentUser,
+    required Map<String, String> sentences,
     required String currentListId,
     required List<(VocabularyRemote, VocabularyRemote)> questionList,
     required List<(VocabularyRemote, VocabularyRemote)> correctAnswerList,
@@ -83,5 +90,6 @@ class AnswerResult extends PractiseVocabState {
           questionList: questionList,
           correctAnswerList: correctAnswerList,
           failedAnswerList: failedAnswerList,
+          sentences: sentences,
         );
 }

@@ -2,7 +2,7 @@ import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/practise_vocab/bloc/practise_vocab_bloc.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/custom_drop_down.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/progress.dart';
-import 'package:english_learner/presentations/practise_vocab/widgets/question_word.dart';
+import 'package:english_learner/presentations/practise_vocab/views/question_word.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,12 +53,13 @@ class _PractiseVocabState extends State<PractiseVocab> {
                   ),
                 ),
               );
+            } else {
+              return SafeArea(
+                child: Center(
+                  child: practiseContent(currentLearningList, state, context),
+                ),
+              );
             }
-            return SafeArea(
-              child: Center(
-                child: practiseContent(currentLearningList, state, context),
-              ),
-            );
           },
         ),
       ),

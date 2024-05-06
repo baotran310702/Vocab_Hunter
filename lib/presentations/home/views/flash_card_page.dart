@@ -184,7 +184,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
                             Flexible(
                               child: CardSwiper(
                                 controller: cardController,
-                                isDisabled: true,
+                                isDisabled: false,
                                 cardsCount: cards.length,
                                 numberOfCardsDisplayed: 3,
                                 backCardOffset: const Offset(0, 40),

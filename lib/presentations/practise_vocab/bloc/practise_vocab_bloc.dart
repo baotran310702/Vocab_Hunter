@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/repository/gemini_repository.dart';
 import 'package:english_learner/services/user_hive_local.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +12,7 @@ part 'practise_vocab_event.dart';
 part 'practise_vocab_state.dart';
 
 class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
+  final GeminiRepository geminiRepository = GeminiRepository();
   PractiseVocabBloc() : super(PractiseVocabState.initial()) {
     on<PractiseVocabInitial>(_onPractiseVocabInit);
     on<ChangeVocabList>(_onChangeVocabList);
@@ -16,6 +20,7 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
   }
 
   _onPractiseVocabInit(PractiseVocabInitial event, Emitter emit) async {
+    emit(state.copyWith(isLoading: true));
     UserModel currentUserModel = await UserHiveLocal().getUser();
 
     List<(VocabularyRemote, VocabularyRemote)> questionList = [];
@@ -29,11 +34,42 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
     }
     questionList.shuffle();
 
+    int blankWordListLenth = questionList.length ~/ 3;
+    List<String> currentFillBlankWords = [];
+    for (int i = 0; i < blankWordListLenth; i++) {
+      int index = Random().nextInt(questionList.length);
+      if (currentFillBlankWords.contains(questionList[index].$1.word ?? "") ||
+          questionList[index].$1.word == null) {
+        i--;
+        continue;
+      }
+      currentFillBlankWords.add(questionList[i].$1.word ?? "");
+    }
+
+    int maxTry = 3;
+    int temp = 0;
+    Map<String, String> sentences = {};
+    while (temp < maxTry) {
+      var listSentences = await Future.wait(
+        currentFillBlankWords.map(
+          (e) => geminiRepository.getExampleSentencesVocab(e),
+        ),
+      );
+
+      for (int i = 0; i < currentFillBlankWords.length; i++) {
+        sentences.addAll({currentFillBlankWords[i]: listSentences[i]});
+      }
+      if (sentences.isNotEmpty) break;
+      temp++;
+    }
+
     emit(state.copyWith(
+      isLoading: false,
       currentUser: currentUserModel,
       questionList: questionList,
       currentListId: "*",
       currentQuestionIndex: 1,
+      sentences: sentences,
     ));
   }
 
@@ -98,6 +134,7 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
               event.isTrue ? currentAnswerList : state.correctAnswerList,
           failedAnswerList:
               event.isTrue ? state.failedAnswerList : currentAnswerList,
+          sentences: state.sentences,
         ),
       );
       return;

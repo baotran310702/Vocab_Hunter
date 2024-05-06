@@ -59,6 +59,21 @@ class CustomConverter {
     }
   }
 
+  /// Convert dynamic to int
+  static int convertToInt(dynamic value) {
+    if (value is String) {
+      return int.parse(value);
+    } else if (value is int) {
+      return value;
+    } else if (value is double) {
+      return value.toInt();
+    } else if (value is bool) {
+      return value ? 1 : 0;
+    } else {
+      return 0;
+    }
+  }
+
   static Map<String, List<String>> convertToMeaningLocal(
       List<dynamic> meaning1, List<dynamic> meaning2) {
     Map<String, List<String>> result = {};

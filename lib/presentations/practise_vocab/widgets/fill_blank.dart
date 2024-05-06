@@ -1,30 +1,39 @@
 import 'dart:math';
 
-import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/extension.dart';
 import 'package:flutter/material.dart';
 
-class MultiChoiceVocab extends StatefulWidget {
+import '../../../models/vocabulary/vocabulary_remote.dart';
+
+class FillBlankQuesiton extends StatefulWidget {
   final List<(VocabularyRemote, VocabularyRemote)> questionList;
   final (VocabularyRemote, VocabularyRemote) currentQuestion;
+  final String currentSentences;
   final Function(bool, bool) onChangeNextQuestion;
-  const MultiChoiceVocab({
+  const FillBlankQuesiton({
     super.key,
     required this.questionList,
+    required this.currentSentences,
     required this.currentQuestion,
     required this.onChangeNextQuestion,
   });
 
   @override
-  State<MultiChoiceVocab> createState() => _MultiChoiceVocabState();
+  State<FillBlankQuesiton> createState() => _FillBlankQuesitonState();
 }
 
-class _MultiChoiceVocabState extends State<MultiChoiceVocab> {
+class _FillBlankQuesitonState extends State<FillBlankQuesiton> {
   @override
   Widget build(BuildContext context) {
     List<((VocabularyRemote, VocabularyRemote), bool)> listAnswer =
         _createResultList(widget.questionList, widget.currentQuestion);
+
+    (String, String) splitedSentences = splitSentences(
+      widget.currentSentences,
+      widget.currentQuestion.$1.word ?? "",
+    );
+
     return Column(
       children: [
         Container(
@@ -36,29 +45,50 @@ class _MultiChoiceVocabState extends State<MultiChoiceVocab> {
           ),
           height: MediaQuery.of(context).size.height * 0.2,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Center(
-              child: RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                const TextSpan(
-                  text: 'What is the meaning of ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Fill the blank with the right word!",
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: splitedSentences.$1,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: "______",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextSpan(
+                      text: splitedSentences.$2.contains(".")
+                          ? splitedSentences.$2
+                          : "${splitedSentences.$2}.",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
-                TextSpan(
-                  text: "${widget.currentQuestion.$1.word ?? ""}?",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-          )),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
         for (int i = 0; i < 4; i++)
           Container(
@@ -83,7 +113,7 @@ class _MultiChoiceVocabState extends State<MultiChoiceVocab> {
                 );
               },
               child: Text(
-                listAnswer[i].$1.$2.word?.capitalize() ?? "",
+                listAnswer[i].$1.$1.word?.capitalize() ?? "",
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.black,
@@ -124,5 +154,15 @@ class _MultiChoiceVocabState extends State<MultiChoiceVocab> {
     listAnswer.add((currentQuestion, true));
     listAnswer.shuffle();
     return listAnswer;
+  }
+
+  (String, String) splitSentences(String currentSentence, String word) {
+    String lowerCaseSentences = currentSentence.toLowerCase();
+    String lowerCaseWord = word.toLowerCase();
+    int index = lowerCaseSentences.indexOf(lowerCaseWord);
+    return (
+      currentSentence.substring(0, index),
+      currentSentence.substring(index + lowerCaseWord.length)
+    );
   }
 }

@@ -21,7 +21,6 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
       for (var doc in event.docs) {
         notificationApps.add(NotificationApp.fromMap(doc.data()));
       }
-      print("okokoko streamm callewd");
       add(UpdateNotificationApp(notificationApps));
     });
   }

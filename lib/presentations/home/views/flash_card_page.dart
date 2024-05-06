@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/global_instance/bloc/global_bloc.dart';
+import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/home/widgets/card.dart';
 import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
 import 'package:english_learner/utils/colors.dart';
@@ -133,7 +134,10 @@ class _FlashCardPageState extends State<FlashCardPage> {
                 BlocBuilder<ManageVocabBloc, ManageVocabState>(
                   builder: (context, state) {
                     if (state.isLoading) {
-                      return const Flexible(child: CircularProgressIndicator());
+                      return const Flexible(
+                          child: LoadingPage(
+                        message: "Recommending, please wait...",
+                      ));
                     }
                     if (state.vocabRemoteList.isEmpty) {
                       return Flexible(
@@ -184,7 +188,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
                             Flexible(
                               child: CardSwiper(
                                 controller: cardController,
-                                isDisabled: true,
+                                isDisabled: false,
                                 cardsCount: cards.length,
                                 numberOfCardsDisplayed: 3,
                                 backCardOffset: const Offset(0, 40),

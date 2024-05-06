@@ -3,7 +3,7 @@ class APIPath {
   static const String dictionaryDev =
       "https://api.dictionaryapi.dev/api/v2/entries/en/";
   static const String wordSimilarityLocalhost =
-      "http://192.168.2.82:5000/api/recommend-similar-words/";
+      "http://192.168.2.40:5000/api/recommend-similar-words/";
   static const String listWordSimilarityLocalhost =
       "http://192.168.2.40:5000/api/recommend-list-similar-words/";
 }
@@ -45,4 +45,8 @@ class KeyBoxHiveLocal {
   static const String listWordNotificationKeyBox = 'listWordNotificationKeyBox';
   static const String vocabTranslatedLocal = 'vocabTranslatedLocal';
   static const String listVocabTranslatedLocal = 'listVocabTranslatedLocal';
+}
+
+class APIKeys {
+  static const String geminiAPIKey = "AIzaSyDI2JmRf-0cUeAXIbCxw6bogA3TIewUSJg";
 }

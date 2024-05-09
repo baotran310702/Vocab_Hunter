@@ -1,4 +1,4 @@
-# english_learner
+# CapLish
 
 Vocabulary English Learning Project
 

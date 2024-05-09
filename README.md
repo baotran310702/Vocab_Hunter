@@ -1,20 +1,12 @@
 # english_learner
 
-A new Flutter project.
+Vocabulary English Learning Project
 
 ## Getting Started
 
 - Run this command if you update any attribute in file able to save local.</br>
-<strong>flutter packages pub run build_runner build<strong/>
+<strong>flutter packages pub run build_runner build<strong/></br>
 
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- View design link here: https://www.figma.com/file/ZWzbSVtU7UhKenuCtMBl7V/HO%C3%80N-THI%E1%BB%86N?type=design&node-id=2001-49773&mode=design</br>
+- 

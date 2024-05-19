@@ -71,6 +71,21 @@ class _HomePageState extends State<HomePage> {
                           child: CircularProgressIndicator(),
                         );
                       }
+                      if (state.currentRecommendWords!.isEmpty) {
+                        return const Center(
+                            child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 30),
+                          child: Text(
+                            "No words recommends,please check your list words if it's empty.",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w300,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ));
+                      }
                       return SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(

@@ -43,4 +43,5 @@ class AppIcons {
   static const String train = "assets/icons/train.png";
   static const String animation = "assets/icons/animation.gif";
   static const String loading = "assets/icons/loading.gif";
+  static const String bubble = "assets/icons/bubble.gif";
 }

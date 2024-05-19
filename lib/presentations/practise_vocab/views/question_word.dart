@@ -1,3 +1,4 @@
+import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/practise_vocab/bloc/practise_vocab_bloc.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/fill_blank.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/multi_choice.dart';
@@ -19,6 +20,23 @@ class _QuestionVocabState extends State<QuestionVocab> {
       builder: (context, state) {
         if (state.isLoading) {
           return const Center(child: CircularProgressIndicator());
+        }
+
+        if (state.questionList.isEmpty) {
+          return const LoadingPage(message: "Loadinggg");
+          // return const Center(
+          //   child: Padding(
+          //     padding: EdgeInsets.symmetric(horizontal: 20),
+          //     child: Text(
+          //       "No question available, this list may have no words to practise.",
+          //       style: TextStyle(
+          //         fontSize: 19,
+          //         fontWeight: FontWeight.w300,
+          //       ),
+          //       textAlign: TextAlign.center,
+          //     ),
+          //   ),
+          // );
         }
 
         if (state.questionList.isNotEmpty) {

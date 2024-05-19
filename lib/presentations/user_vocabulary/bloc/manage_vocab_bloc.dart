@@ -35,7 +35,7 @@ class ManageVocabBloc extends Bloc<ManageVocabEvent, ManageVocabState> {
 
     on<GetMeaningVocab>(_onGetMeaningVocab);
     on<GetSimilarityVocabLocalEvent>(_onGetSimilarityVocabLocal,
-        transformer: droppable());
+        transformer: restartable());
     on<GetSimilarVocabModel>(_onGetSimilarVocabModel);
     on<ClearRecommendVocabEvent>(_onClearRecommendVocabEvent);
 

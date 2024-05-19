@@ -1,11 +1,14 @@
+import 'package:english_learner/models/excel/ielts.dart';
 import 'package:english_learner/models/time_notification.dart';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/services/excel_service.dart';
 import 'package:english_learner/services/time_notification_local.dart';
 import 'package:english_learner/services/user_hive_local.dart';
 import 'package:english_learner/services/word_notification_local.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/vocabulary/vocab_topic.dart';
 import '../../models/word_notification.dart';
 
 class UserTest extends StatefulWidget {
@@ -75,11 +78,66 @@ class _UserTestState extends State<UserTest> {
                 onPressed: clear24hLocal,
                 child: const Text(""),
               ),
+              const Text('Update Data to Firebase'),
+              ElevatedButton(
+                onPressed: firebaseUpdate,
+                child: const Text("Update Vocabulary to Firebase"),
+              ),
+              const Text('Update Data TOEIC to Firebase'),
+              ElevatedButton(
+                onPressed: firebaseUpdateToeic,
+                child: const Text("Update Vocabulary TOEIC to Firebase"),
+              ),
+              const Text('TOPIC Vocabularyyyy'),
+              ElevatedButton(
+                onPressed: firebaseUpdateTopic,
+                child: const Text("'TOPIC Vocabularyyy"),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  firebaseUpdateTopic() async {
+    ExcelService excelServices = ExcelService();
+    List<VocabTopic> listVocab = await excelServices.getTopicVocab();
+    //cate gory listVocab by topic
+    Map<String, List<VocabTopic>> map = {};
+    for (var item in listVocab) {
+      if (map.containsKey(item.topic)) {
+        map[item.topic]!.add(item);
+      } else {
+        map[item.topic] = [item];
+      }
+    }
+    print(map.length);
+    await excelServices.updateTopicVocabFbByTopicNotIelts(map);
+    print("updated data completed 100%  ");
+  }
+
+  firebaseUpdateToeic() async {
+    ExcelService excelServices = ExcelService();
+    List<VocabTopic> listVocab = await excelServices.getVocabLocal();
+
+    await excelServices.updateToeicVocabFirebase(listVocab);
+    print("updated data completed 100%");
+  }
+
+  firebaseUpdate() async {
+    ExcelService excelServices = ExcelService();
+    List<IeltsVocab> listVocab = await excelServices.getIeltsVocab();
+    //cate gory listVocab by topic
+    Map<String, List<IeltsVocab>> map = {};
+    for (var item in listVocab) {
+      if (map.containsKey(item.topic)) {
+        map[item.topic]!.add(item);
+      } else {
+        map[item.topic] = [item];
+      }
+    }
+    // await excelServices.updateTopicVocabFirebase(map);
   }
 
   clear24hLocal() async {
@@ -113,6 +171,22 @@ class _UserTestState extends State<UserTest> {
     for (var item in listTimeNotification2.listTimeNotification) {
       debugPrint(item.time.toString());
     }
+  }
+
+  testChunks() async {
+    List<int> list = List.generate(100, (index) => index);
+    int numChunk = 15;
+    // Tính toán kích thước của mỗi mảng con
+    int chunkSize = (list.length / numChunk).ceil();
+
+    List<List<int>> chunks = [];
+
+    for (int i = 0; i < list.length; i += chunkSize) {
+      chunks.add(list.sublist(
+          i, i + chunkSize > list.length ? list.length : i + chunkSize));
+    }
+
+    print(chunks);
   }
 
   getWordsLocal() async {

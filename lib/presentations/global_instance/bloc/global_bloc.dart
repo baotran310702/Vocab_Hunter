@@ -26,10 +26,14 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
   }
 
   GlobalBloc() : super(const GlobalState(isFront: true, notificationApps: [])) {
-    _initNotificationStream();
+    on<GlobalInitialEvent>(_onGlobalInit);
     on<ChangeFlashCardSide>(_onUpdateChangeFlashCardSide);
     on<ResetFlashCardSide>(_onUpdateResetFlashCardSide);
     on<UpdateNotificationApp>(_onUpdateNotificationApp);
+  }
+
+  _onGlobalInit(GlobalInitialEvent event, Emitter emit) {
+    _initNotificationStream();
   }
 
   @override

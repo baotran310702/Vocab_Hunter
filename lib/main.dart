@@ -8,7 +8,7 @@ import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_
 import 'package:english_learner/services/vocab_translated_local_service.dart';
 import 'package:english_learner/services/word_notification_local.dart';
 import 'package:english_learner/utils/notifications/notifications_services.dart';
-import 'package:english_learner/utils/notifications/word_manager_service.dart';
+import 'package:english_learner/utils/notifications/work_manager_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,7 +83,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => ManageVocabBloc()..add(InitUserVocabEvent()),
         ),
         BlocProvider(
-          create: (context) => GlobalBloc(),
+          create: (context) => GlobalBloc()..add(GlobalInitialEvent()),
         ),
         BlocProvider(
           create: (context) => ManageUserProfileBloc()..add(InitUserEvent()),

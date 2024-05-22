@@ -6,6 +6,7 @@ class HomePageState extends Equatable {
   final List<VocabWordSimilarity> recommendVocabs;
   final UserModel currentUser;
   final List<(VocabularyRemote, VocabularyRemote)>? currentRecommendWords;
+  final List<Topic> listTopicVocab;
 
   const HomePageState({
     required this.isLoading,
@@ -13,6 +14,7 @@ class HomePageState extends Equatable {
     required this.recommendVocabs,
     required this.currentUser,
     this.currentRecommendWords,
+    required this.listTopicVocab,
   });
 
   factory HomePageState.initial() {
@@ -22,6 +24,7 @@ class HomePageState extends Equatable {
       recommendVocabs: const [],
       currentUser: UserModel.empty(),
       currentRecommendWords: null,
+      listTopicVocab: const [],
     );
   }
 
@@ -31,6 +34,7 @@ class HomePageState extends Equatable {
     List<VocabWordSimilarity>? recommendVocabs,
     UserModel? currentUser,
     List<(VocabularyRemote, VocabularyRemote)>? currentRecommendWords,
+    List<Topic>? listTopicVocab,
   }) {
     return HomePageState(
       isLoading: isLoading ?? this.isLoading,
@@ -38,6 +42,7 @@ class HomePageState extends Equatable {
       recommendVocabs: recommendVocabs ?? this.recommendVocabs,
       currentUser: currentUser ?? this.currentUser,
       currentRecommendWords: currentRecommendWords,
+      listTopicVocab: listTopicVocab ?? this.listTopicVocab,
     );
   }
 
@@ -47,5 +52,6 @@ class HomePageState extends Equatable {
         news,
         recommendVocabs,
         currentUser,
+        listTopicVocab,
       ];
 }

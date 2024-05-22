@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:english_learner/models/excel/ielts.dart';
+import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/utils/firebase_collections.dart';
@@ -56,6 +57,31 @@ class ExcelService {
     return [];
   }
 
+  Future<List<SubTopic>> getSubTopicVocab() async {
+    ByteData data =
+        await rootBundle.load("assets/final_result_des_topic_ielts.xlsx");
+    var bytes = data.buffer.asUint8List();
+
+    var excel = Excel.decodeBytes(bytes);
+    List<SubTopic> result = [];
+
+    if (excel.tables.keys.isNotEmpty) {
+      var table = excel.tables[excel.tables.keys.first];
+      for (int i = 0; i < table!.maxRows; i++) {
+        SubTopic newVocab = SubTopic(
+            name: table.row(i)[0]?.value.toString() ?? "",
+            subTopicId: table.row(i)[0]?.value.toString() ?? "",
+            image: '',
+            description: table.row(i)[2]?.value.toString() ?? "");
+        result.add(newVocab);
+      }
+
+      return result;
+    } else {
+      return [];
+    }
+  }
+
   Future<List<VocabTopic>> getTopicVocab() async {
     ByteData data = await rootBundle.load("assets/final_result_topic.xlsx");
     var bytes = data.buffer.asUint8List();
@@ -105,11 +131,8 @@ class ExcelService {
         );
         result.add(newVocab);
       }
-      print("start handling pronounce");
 
       await handlePronouceVocab(result);
-
-      print("completed handling pronounce");
 
       return result;
     }
@@ -118,12 +141,8 @@ class ExcelService {
   }
 
   Future<void> handlePronouceVocab(List<VocabTopic> listVocab) async {
-    print("start handle pronounce");
-
     var pronounceList = await Future.wait(
         listVocab.map((e) => getVocabPronounce(e.word)).toList());
-
-    print("completed handle pronounce");
 
     for (int i = 0; i < listVocab.length; i++) {
       listVocab[i].pronounce = pronounceList[i].toString();
@@ -148,8 +167,6 @@ class ExcelService {
 
     var jsonResult = json.decode(jsonString) as List;
 
-    print("checking for pronounce $word");
-
     List<dynamic> result = jsonResult;
 
     for (var item in result) {
@@ -164,7 +181,6 @@ class ExcelService {
 
   Future<void> updateTopicVocabFirebase(
       Map<String, List<IeltsVocab>> map) async {
-    List<Map<String, dynamic>> list = [];
     for (var entry in map.entries) {
       await _firestore
           .collection(AppCollections.vocabTopic)
@@ -175,13 +191,10 @@ class ExcelService {
         'vocab': entry.value.map((e) => e.toJson()).toList()
       });
     }
-
-    print("update completed");
   }
 
   Future<void> updateTopicVocabFbByTopicNotIelts(
       Map<String, List<VocabTopic>> map) async {
-    List<Map<String, dynamic>> list = [];
     for (var entry in map.entries) {
       await _firestore
           .collection(AppCollections.vocabTopic)
@@ -192,12 +205,9 @@ class ExcelService {
         'vocab': entry.value.map((e) => e.toMap()).toList()
       });
     }
-
-    print("update completed");
   }
 
   Future<void> updateToeicVocabFirebase(List<VocabTopic> list) async {
-    print("start update firebase");
     int numChunk = 30;
     // Tính toán kích thước của mỗi mảng con
     int chunkSize = (list.length / numChunk).ceil();

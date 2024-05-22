@@ -10,8 +10,9 @@ class ProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PractiseVocabBloc, PractiseVocabState>(
       builder: (context, state) {
-        double leftPercent =
-            state.currentQuestionIndex / (state.questionList.length - 1);
+        double leftPercent = state.questionList.isNotEmpty
+            ? state.currentQuestionIndex / (state.questionList.length - 1)
+            : 0;
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),

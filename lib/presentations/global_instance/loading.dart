@@ -15,10 +15,6 @@ class LoadingPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(AppIcons.logoText, width: 300, height: 120),
-          Image.asset(AppIcons.bathingBoi, width: 280, height: 280),
-          const SizedBox(
-            height: 12,
-          ),
           Text(
             message,
             style: const TextStyle(
@@ -30,6 +26,13 @@ class LoadingPage extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           Image.asset(AppIcons.loading, width: 150, height: 150),
+          Stack(children: [
+            Image.asset(AppIcons.bathingBoi, width: 280, height: 280),
+            Image.asset(AppIcons.bubble, width: 280, height: 280),
+          ]),
+          const SizedBox(
+            height: 12,
+          ),
         ],
       ),
     );

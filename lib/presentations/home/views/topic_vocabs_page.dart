@@ -1,37 +1,57 @@
 import 'package:english_learner/presentations/home/widgets/back_button.dart';
 import 'package:english_learner/presentations/home/widgets/list_topics_vocab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TopicVocab extends StatelessWidget {
+import '../bloc/home_page_bloc.dart';
+
+class TopicVocab extends StatefulWidget {
   const TopicVocab({super.key});
 
   @override
+  State<TopicVocab> createState() => _TopicVocabState();
+}
+
+class _TopicVocabState extends State<TopicVocab> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Topic Vocab'),
-        leading: const ButtonBack(),
-      ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.circular(20),
+    return BlocProvider(
+      create: (context) => HomePageBloc()..add(InitTopicVocabulary()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Topic Vocab'),
+          leading: const ButtonBack(),
         ),
-        child: const SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              ListTopicVocab(),
-              ListTopicVocab(),
-              ListTopicVocab(),
-              ListTopicVocab(),
-              ListTopicVocab(),
-              ListTopicVocab(),
-            ],
-          ),
+        body: BlocBuilder<HomePageBloc, HomePageState>(
+          builder: (context, state) {
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Colors.amber,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: state.listTopicVocab.isEmpty
+                      ? [
+                          const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        ]
+                      : state.listTopicVocab
+                          .map(
+                            (e) => ListTopicVocab(
+                              topic: e,
+                            ),
+                          )
+                          .toList(),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

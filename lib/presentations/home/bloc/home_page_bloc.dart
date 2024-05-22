@@ -1,4 +1,5 @@
 import 'package:english_learner/models/news.dart';
+import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocab_word_similarity.dart';
@@ -15,15 +16,29 @@ part 'home_page_event.dart';
 part 'home_page_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
-  final VocabRepository _recommendsWords = VocabRepository();
+  final VocabRepository _vocabRepository = VocabRepository();
   final TranslateRepository _translateRepository = TranslateRepository();
   HomePageBloc() : super(HomePageState.initial()) {
     on<HomePageInitialEvent>(_onInitial);
     on<CreateRecommendWords>(_onCreateRecommendWords);
+    on<InitTopicVocabulary>(_onInitTopicVocabulary);
+  }
+
+  // @override dispose
+
+  _onInitTopicVocabulary(InitTopicVocabulary event, Emitter emit) async {
+  
+    emit(state.copyWith(isLoading: true));
+
+    List<Topic> listTopicVocab = await _vocabRepository.getAllTopicVocab();
+
+    emit(state.copyWith(isLoading: false, listTopicVocab: listTopicVocab));
   }
 
   _onInitial(HomePageInitialEvent event, Emitter emit) async {
     emit(state.copyWith(isLoading: true));
+
+   
 
     var listInformation = await Future.wait([
       UserHiveLocal().getUser(),
@@ -60,7 +75,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         .map((e) => e.word ?? "")
         .toList();
 
-    List<VocabWordSimilarity> recommendsWords = await _recommendsWords
+    List<VocabWordSimilarity> recommendsWords = await _vocabRepository
         .getWordsSimmilarityFromListLocal(currentStringWords);
 
     var listTranslated = await Future.wait(recommendsWords.map((e) async {
@@ -89,7 +104,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   _onCreateRecommendWords(CreateRecommendWords event, Emitter emit) async {
     emit(state.copyWith(isLoading: true));
     List<VocabWordSimilarity> recommendsWords =
-        await _recommendsWords.getSimilarVocab(event.word);
+        await _vocabRepository.getSimilarVocab(event.word);
 
     emit(state.copyWith(recommendVocabs: recommendsWords, isLoading: false));
   }

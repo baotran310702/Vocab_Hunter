@@ -1,9 +1,11 @@
+import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/presentations/home/views/list_topic_vocab_page.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class BoxTopicItem extends StatefulWidget {
-  const BoxTopicItem({super.key});
+  final SubTopic subTopic;
+  const BoxTopicItem({super.key, required this.subTopic});
 
   @override
   State<BoxTopicItem> createState() => _BoxTopicItemState();

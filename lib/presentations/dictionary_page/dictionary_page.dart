@@ -290,9 +290,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
   }
 
   void _onTapDetailVocabulary(BuildContext context, Vocabulary vocabulary) {
-    context
-        .read<TranslatePageBloc>()
-        .add(TranslateWordRemote(word: vocabulary.vocabId));
     Navigator.push(
       context,
       MaterialPageRoute(

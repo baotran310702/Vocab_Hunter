@@ -1,9 +1,17 @@
+import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 class PronounceWord extends StatefulWidget {
   final String word;
-  const PronounceWord({super.key, required this.word});
+  final Color? color;
+  final double? size;
+  const PronounceWord({
+    super.key,
+    required this.word,
+    this.color,
+    this.size,
+  });
 
   @override
   State<PronounceWord> createState() => _PronounceWordState();
@@ -13,7 +21,7 @@ class _PronounceWordState extends State<PronounceWord> {
   late FlutterTts flutterTts;
   String? language;
   String? engine;
-  double volume = 0.5;
+  double volume = 0.8;
   double pitch = 1;
   double rate = 0.2;
   bool isCurrentLanguageInstalled = false;
@@ -49,11 +57,14 @@ class _PronounceWordState extends State<PronounceWord> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        _speak();
-      },
-      child: Icon(Icons.volume_up_rounded, size: 30, color: Colors.blue[600]),
-    );
+        onTap: () {
+          _speak();
+        },
+        child: Image.asset(
+          AppIcons.speaker,
+          width: 28,
+          height: 28,
+        ));
   }
 
   @override

@@ -1,9 +1,21 @@
+import 'package:english_learner/models/vocabulary/vocab_translated_local.dart';
+import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/presentations/dictionary_page/views/detail_vocabulary.dart';
 import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/extension.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class BoxVocab extends StatefulWidget {
-  const BoxVocab({super.key});
+  final VocabularyRemote englishVocabulary;
+
+  final VocabularyRemote vietnameseVocabulary;
+
+  const BoxVocab({
+    super.key,
+    required this.englishVocabulary,
+    required this.vietnameseVocabulary,
+  });
 
   @override
   State<BoxVocab> createState() => _BoxVocabState();
@@ -19,6 +31,16 @@ class _BoxVocabState extends State<BoxVocab> {
     setState(() {
       scale = 1;
     });
+
+    if (mounted) {
+      Navigator.push(context, MaterialPageRoute(builder: (builder) {
+        return DetailVocabulary(
+          vocabTranslatedLocal: VocabTranslatedLocalModel(
+              englishWords: widget.englishVocabulary,
+              vietnameseWords: widget.vietnameseVocabulary),
+        );
+      }));
+    }
   }
 
   @override
@@ -51,42 +73,45 @@ class _BoxVocabState extends State<BoxVocab> {
                   ),
                 ],
               ),
-              const Text(
-                "Word Name",
-                style: TextStyle(
+              Text(
+                widget.englishVocabulary.word?.capitalize() ?? "",
+                style: const TextStyle(
                   fontSize: 18,
                   color: Colors.black,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const Text(
-                "/pronounce/",
-                style: TextStyle(
+              Text(
+                widget.englishVocabulary.phonetic ?? "",
+                style: const TextStyle(
                   fontSize: 15,
                   color: Colors.black,
                   fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.italic,
                 ),
               ),
-              const Text(
-                "word type",
-                style: TextStyle(
+              Text(
+                widget.englishVocabulary.meanings?[0].partOfSpeech ?? "",
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Text(
-                  "Meaning123123123123123123123123123123123123123",
-                  style: TextStyle(
-                    fontSize: 13,
+                  widget.englishVocabulary.meanings?[0].definitions?[0]
+                          .definition ??
+                      "",
+                  style: const TextStyle(
+                    fontSize: 15,
                     color: Colors.black,
                     fontWeight: FontWeight.w400,
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],

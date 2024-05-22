@@ -1,5 +1,5 @@
+import 'package:english_learner/models/vocabulary/vocab_translated_local.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
-import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/header_informations.dart';
 import 'package:english_learner/presentations/home/widgets/vocabulary_item.dart';
@@ -38,11 +38,11 @@ class _DictionaryPageState extends State<DictionaryPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TranslatePageBloc(),
+      create: (context) => TranslatePageBloc()..add(TranslateEventInitial()),
       child: BlocBuilder<TranslatePageBloc, TranslatePageState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: AppColors.backgroundAppbar,
+            backgroundColor: AppColors.backgroundHeader,
             resizeToAvoidBottomInset: false,
             extendBody: true,
             extendBodyBehindAppBar: true,
@@ -56,7 +56,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const HeaderInformations(
-                        title: "Search anywords you want,lets learn togother!",
+                        title:
+                            "Search any words you want, lets learn togother!",
                         description: "Learn as much as possible!",
                       ),
                       const SizedBox(height: 20),
@@ -65,47 +66,65 @@ class _DictionaryPageState extends State<DictionaryPage> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(top: 66),
-                              child: Column(
-                                children: [
-                                  const Text(
-                                    "Search History",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      "Search History",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: Column(
-                                        children: List.generate(
-                                          10,
-                                          (index) => Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            decoration: const BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                  color: Colors.grey,
-                                                  width: 0.5,
+                                    const SizedBox(height: 10),
+                                    Flexible(
+                                      child: state.isLoading
+                                          ? const SizedBox()
+                                          : SingleChildScrollView(
+                                              scrollDirection: Axis.vertical,
+                                              child: Column(
+                                                children: List.generate(
+                                                  state
+                                                      .listVocabTranslated
+                                                      .listVocabTranslated
+                                                      .length,
+                                                  (index) => Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 10),
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          color: Colors.grey,
+                                                          width: 0.5,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: VocabularyItem(
+                                                      vocab: state
+                                                          .listVocabTranslated
+                                                          .listVocabTranslated[
+                                                              index]
+                                                          .englishWords,
+                                                      onTap: () {
+                                                        _onTapHistoryVocabulary(
+                                                          context,
+                                                          state.listVocabTranslated
+                                                                  .listVocabTranslated[
+                                                              index],
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                            child: InkWell(
-                                                onTap: () {
-                                                  _onTapDetailVocabulary(
-                                                      context,
-                                                      state.searchedVocabulary[
-                                                          index]);
-                                                },
-                                                child: const VocabularyItem()),
-                                          ),
-                                        ),
-                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                             TapRegion(
@@ -258,12 +277,24 @@ class _DictionaryPageState extends State<DictionaryPage> {
     );
   }
 
+  void _onTapHistoryVocabulary(
+      BuildContext context, VocabTranslatedLocalModel vocabulary) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailVocabulary(
+          vocabTranslatedLocal: vocabulary,
+        ),
+      ),
+    );
+  }
+
   void _onTapDetailVocabulary(BuildContext context, Vocabulary vocabulary) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailVocabulary(
-          vocabularyRemote: VocabularyRemote.empty(),
+          word: vocabulary.vocabId,
         ),
       ),
     );
@@ -271,6 +302,5 @@ class _DictionaryPageState extends State<DictionaryPage> {
 
   void _onSearchChange(BuildContext context, String text) {
     BlocProvider.of<TranslatePageBloc>(context).add(TranslateWordLocal(text));
-    // BlocProvider.of<TranslatePageBloc>(context).add(TranslateWordRemote(text));
   }
 }

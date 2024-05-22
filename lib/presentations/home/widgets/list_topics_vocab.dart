@@ -1,17 +1,17 @@
+import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/presentations/home/widgets/box_topic_item.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class ListTopicVocab extends StatefulWidget {
-  const ListTopicVocab({super.key});
+  final Topic topic;
+  const ListTopicVocab({super.key, required this.topic});
 
   @override
   State<ListTopicVocab> createState() => _ListTopicVocabState();
 }
 
 class _ListTopicVocabState extends State<ListTopicVocab> {
-  List<int> list = List.generate(10, (index) => index);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +27,7 @@ class _ListTopicVocabState extends State<ListTopicVocab> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Art",
+                widget.topic.name,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -47,7 +47,11 @@ class _ListTopicVocabState extends State<ListTopicVocab> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: list.map((e) => const BoxTopicItem()).toList(),
+              children: widget.topic.subTopics
+                  .map((e) => BoxTopicItem(
+                        subTopic: e,
+                      ))
+                  .toList(),
             ),
           )
         ],

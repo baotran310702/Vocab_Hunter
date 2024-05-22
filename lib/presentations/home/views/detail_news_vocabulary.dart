@@ -1,4 +1,4 @@
-import 'package:english_learner/presentations/global_widgets/appbar.dart';
+import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:flutter/material.dart';
 
 class DetailNewsPage extends StatefulWidget {

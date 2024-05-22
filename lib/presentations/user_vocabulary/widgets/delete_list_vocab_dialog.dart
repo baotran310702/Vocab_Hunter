@@ -1,15 +1,17 @@
+import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class DeleteListVocab extends StatelessWidget {
-  const DeleteListVocab({super.key});
+  final UserVocab userVocab;
+  const DeleteListVocab({super.key, required this.userVocab});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        "New Name of List Vocabulary",
-        style: TextStyle(
+      title: Text(
+        "List ${userVocab.listName} will be removed!",
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 16,
           fontWeight: FontWeight.bold,
@@ -24,7 +26,9 @@ class DeleteListVocab extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-                "You want to delete this list? All data will be cleared!"),
+              "You want to delete this list? All data will be cleared!",
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -56,9 +60,11 @@ class DeleteListVocab extends StatelessWidget {
                     fixedSize:
                         Size(MediaQuery.of(context).size.width * 0.33, 54),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context, userVocab.listId);
+                  },
                   child: const Text(
-                    "Save",
+                    "Delete",
                     style: TextStyle(
                       color: Colors.white,
                     ),

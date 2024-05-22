@@ -1,15 +1,26 @@
 import 'package:english_learner/services/translate_services.dart';
+import 'package:english_learner/utils/constants.dart';
+import 'package:hive/hive.dart';
+
+part 'vocabulary_remote.g.dart';
 
 abstract class VocabularyRemoteService {
   TranslateServices services = TranslateServices();
 }
 
+@HiveType(typeId: KeyHiveLocal.hiveVocabRemote)
 class VocabularyRemote extends VocabularyRemoteService {
+  @HiveField(0)
   String? word;
+  @HiveField(1)
   String? phonetic;
+  @HiveField(2)
   List<Phonetics>? phonetics;
+  @HiveField(3)
   List<Meanings>? meanings;
+  @HiveField(4)
   License? license;
+  @HiveField(5)
   List<String>? sourceUrls;
 
   VocabularyRemote({
@@ -104,9 +115,13 @@ class VocabularyRemote extends VocabularyRemoteService {
   }
 }
 
+@HiveType(typeId: KeyHiveLocal.hivePhonestic)
 class Phonetics {
+  @HiveField(0)
   String? text;
+  @HiveField(1)
   String? audio;
+  @HiveField(2)
   String? sourceUrl;
 
   Phonetics({this.text, this.audio, this.sourceUrl});
@@ -126,10 +141,15 @@ class Phonetics {
   }
 }
 
+@HiveType(typeId: KeyHiveLocal.hiveMeanings)
 class Meanings extends VocabularyRemoteService {
+  @HiveField(0)
   String? partOfSpeech;
+  @HiveField(1)
   List<Definitions>? definitions;
+  @HiveField(2)
   List<String>? synonyms;
+  @HiveField(3)
   List<String>? antonyms;
 
   Meanings({this.partOfSpeech, this.definitions, this.synonyms, this.antonyms});
@@ -158,9 +178,16 @@ class Meanings extends VocabularyRemoteService {
   }
 
   Future<Meanings> toVietnamese() async {
-    List<Definitions> definitionsTranslated = await translateDefinitions();
-    List<String> synonymsTranslated = await getVietnameseSynonyms();
-    List<String> antonymsTranslated = await getVietNameseAtonyms();
+    var listMeaning = await Future.wait([
+      translateDefinitions(),
+      getVietnameseSynonyms(),
+      getVietNameseAtonyms(),
+    ]);
+
+    List<Definitions> definitionsTranslated =
+        listMeaning[0] as List<Definitions>;
+    List<String> synonymsTranslated = listMeaning[1] as List<String>;
+    List<String> antonymsTranslated = listMeaning[2] as List<String>;
 
     return Meanings(
       partOfSpeech: partOfSpeech,
@@ -221,10 +248,15 @@ class Meanings extends VocabularyRemoteService {
   }
 }
 
+@HiveType(typeId: KeyHiveLocal.hiveDefinitions)
 class Definitions extends VocabularyRemoteService {
+  @HiveField(0)
   String? definition;
+  @HiveField(1)
   List<String>? synonyms;
+  @HiveField(2)
   List<String>? antonyms;
+  @HiveField(3)
   String? example;
 
   Definitions({this.definition, this.synonyms, this.antonyms, this.example});
@@ -246,10 +278,17 @@ class Definitions extends VocabularyRemoteService {
   }
 
   Future<Definitions> toVietnamese() async {
-    String definitionTranslated = await getVietnameseDefinition();
-    List<String> synonymsTranslated = await getVietnameseSynonyms();
-    List<String> antonymsTranslated = await getVietNameseAtonyms();
-    String exampleTranslated = await getVietnameseExample();
+    var listDef = await Future.wait([
+      getVietnameseDefinition(),
+      getVietnameseSynonyms(),
+      getVietNameseAtonyms(),
+      getVietnameseExample(),
+    ]);
+
+    String definitionTranslated = listDef[0] as String;
+    List<String> synonymsTranslated = listDef[1] as List<String>;
+    List<String> antonymsTranslated = listDef[2] as List<String>;
+    String exampleTranslated = listDef[3] as String;
 
     return Definitions(
       definition: definitionTranslated,
@@ -304,8 +343,11 @@ class Definitions extends VocabularyRemoteService {
   }
 }
 
+@HiveType(typeId: KeyHiveLocal.hiveLiences)
 class License {
+  @HiveField(0)
   String? name;
+  @HiveField(1)
   String? url;
 
   License({this.name, this.url});

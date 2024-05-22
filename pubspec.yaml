@@ -1,12 +1,11 @@
 name: english_learner
 description: "A new Flutter project."
-publish_to: 'none' 
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.2.3 <4.0.0'
-
+  sdk: ">=3.2.3 <4.0.0"
 
 dependencies:
   flutter:
@@ -33,17 +32,20 @@ dependencies:
   flutter_card_swiper: ^7.0.0
   flippy: ^0.1.1
   animated_notch_bottom_bar: ^1.0.0
+  shared_preferences: ^2.2.2
+  path_provider: ^2.1.2
+  flutter_gemini: ^2.0.3
+  firebase_storage: ^11.6.9
+  excel: ^4.0.3
 
-
-  
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-
+  build_runner: ^2.4.6
+  hive_generator: ^2.0.1
 
 flutter:
-
   uses-material-design: true
   assets:
     - assets/dictionary.json

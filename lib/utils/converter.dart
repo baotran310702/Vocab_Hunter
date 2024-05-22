@@ -3,7 +3,7 @@ import 'package:english_learner/utils/icons.dart';
 import 'package:english_learner/utils/word_type.dart';
 
 class CustomConverter {
-  // convert anytype to string
+  /// Convert to String with dynamic type
   static String convertToString(dynamic value) {
     if (value is String) {
       return value;
@@ -20,6 +20,20 @@ class CustomConverter {
     }
   }
 
+  /// Convert dynamic to DateTime
+  static DateTime convertToDateTime(dynamic value) {
+    if (value is String) {
+      return DateTime.parse(value);
+    } else if (value is int) {
+      return DateTime.fromMillisecondsSinceEpoch(value);
+    } else if (value is double) {
+      return DateTime.fromMillisecondsSinceEpoch(value.toInt());
+    } else {
+      return DateTime.now();
+    }
+  }
+
+  /// Convert to word type in firebase
   static convertToMeaningsFirebase(Map<String, List<String>> json) {
     return {
       'adj': json['adj'],
@@ -30,7 +44,7 @@ class CustomConverter {
     };
   }
 
-  //write a function that convert anytype to double
+  /// Convert to double with dynamic type
   static double convertToDouble(dynamic value) {
     if (value is String) {
       return double.parse(value);
@@ -42,6 +56,21 @@ class CustomConverter {
       return value ? 1.0 : 0.0;
     } else {
       return 0.0;
+    }
+  }
+
+  /// Convert dynamic to int
+  static int convertToInt(dynamic value) {
+    if (value is String) {
+      return int.parse(value);
+    } else if (value is int) {
+      return value;
+    } else if (value is double) {
+      return value.toInt();
+    } else if (value is bool) {
+      return value ? 1 : 0;
+    } else {
+      return 0;
     }
   }
 
@@ -76,11 +105,27 @@ class CustomConverter {
       case AchievementType.eatingBoi:
         return AppIcons.eatingBoi;
       case AchievementType.sleepyBoi:
-        return AppIcons.eatingBoi;
+        return AppIcons.sleepyBoi;
       case AchievementType.writingBoi:
         return AppIcons.writingBoi;
       default:
         return "";
+    }
+  }
+
+  static String convertVietnameseWordType(String wordType) {
+    String currentWords = wordType.toLowerCase();
+    switch (currentWords) {
+      case "noun":
+        return "Danh từ";
+      case "verb":
+        return "Động từ";
+      case "adj":
+        return "Tính từ";
+      case "adv":
+        return "Trạng từ";
+      default:
+        return "Chưa phân loại";
     }
   }
 }

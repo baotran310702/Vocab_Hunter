@@ -2,6 +2,8 @@ part of 'manage_vocab_bloc.dart';
 
 abstract class ManageVocabEvent {}
 
+class InitUserVocabEvent extends ManageVocabEvent {}
+
 class AddVocabEvent extends ManageVocabEvent {
   final Vocabulary word;
 
@@ -37,7 +39,63 @@ class GetMeaningVocab extends ManageVocabEvent {
   GetMeaningVocab({required this.inputVocab});
 }
 
+class GetSimilarityVocabLocalEvent extends ManageVocabEvent {
+  final String inputVocab;
+  GetSimilarityVocabLocalEvent({required this.inputVocab});
+}
+
 class GetSimilarVocabModel extends ManageVocabEvent {
   final String inputVocab;
   GetSimilarVocabModel({required this.inputVocab});
 }
+
+class ClearRecommendVocabEvent extends ManageVocabEvent {}
+
+class AddNewListVocabEvent extends ManageVocabEvent {
+  final String nameList;
+  final List<String> listVocab;
+  AddNewListVocabEvent({
+    required this.listVocab,
+    required this.nameList,
+  });
+}
+
+class AddNewListLearningVocab extends ManageVocabEvent {
+  final String name;
+  AddNewListLearningVocab({required this.name});
+}
+
+class DeleteListLearningVocab extends ManageVocabEvent {
+  final String listId;
+  DeleteListLearningVocab({required this.listId});
+}
+
+class AddVocabToListLearning extends ManageVocabEvent {
+  final VocabularyRemote vocabEng;
+  final VocabularyRemote vocabViet;
+  AddVocabToListLearning({required this.vocabEng, required this.vocabViet});
+}
+
+class RemoveFromListLearning extends ManageVocabEvent {
+  final VocabularyRemote vocab;
+
+  RemoveFromListLearning({required this.vocab});
+}
+
+class DeleteVocabFromListLearning extends ManageVocabEvent {
+  final String listId;
+  DeleteVocabFromListLearning({required this.listId});
+}
+
+class UpdateListLearningVocab extends ManageVocabEvent {
+  final String listId;
+  final String listName;
+  UpdateListLearningVocab({required this.listId, required this.listName});
+}
+
+class SetDefaultListLearningVocab extends ManageVocabEvent {
+  final String listId;
+  SetDefaultListLearningVocab({required this.listId});
+}
+
+class SyncUserData extends ManageVocabEvent {}

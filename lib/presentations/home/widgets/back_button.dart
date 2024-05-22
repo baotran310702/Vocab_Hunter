@@ -2,14 +2,16 @@ import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class ButtonBack extends StatelessWidget {
-  const ButtonBack({super.key});
+  final Function()? onPress;
+  const ButtonBack({super.key, this.onPress});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-      },
+      onTap: onPress ??
+          () {
+            Navigator.pop(context);
+          },
       child: Transform.scale(
         scale: 0.4,
         child: Image.asset(

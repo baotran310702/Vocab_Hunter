@@ -1,9 +1,9 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-
+import 'package:english_learner/models/vocabulary/vocab_translated_local.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
-
 import 'package:english_learner/repository/translate_repository.dart';
+import 'package:english_learner/services/vocab_translated_local_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,10 +14,36 @@ class TranslatePageBloc extends Bloc<TranslateEvent, TranslatePageState> {
   final TranslateRepository _translateRepository = TranslateRepository();
 
   TranslatePageBloc() : super(TranslatePageState.initial()) {
+    on<TranslateEventInitial>(_onTranslateEventInitial);
     on<TranslateWordEvent>(_onTranslateWord);
     on<TranslateWordLocal>(_onTranslateWordLocal);
     on<LoadingSearch>(_onLoadingSearch, transformer: droppable());
     on<TranslateWordRemote>(__onTranslateWordRemote);
+  }
+
+  _onTranslateEventInitial(
+      TranslateEventInitial event, Emitter<TranslatePageState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    ListVocabTranslated listVocabTranslatedVocab =
+        await VocabTranslatedLocalServices().getListVocabTranslated();
+
+    List<VocabTranslatedLocalModel> listFiltered = [];
+    for (var item in listVocabTranslatedVocab.listVocabTranslated) {
+      if (listFiltered.indexWhere((element) =>
+              item.englishWords.word == element.englishWords.word) ==
+          -1) {
+        listFiltered.add(item);
+      }
+    }
+
+    emit(
+      state.copyWith(
+        isLoading: false,
+        listVocabTranslated: ListVocabTranslated(
+          listVocabTranslated: listFiltered,
+        ),
+      ),
+    );
   }
 
   _onTranslateWord(TranslateWordEvent event, Emitter<TranslatePageState> emit) {
@@ -45,7 +71,7 @@ class TranslatePageBloc extends Bloc<TranslateEvent, TranslatePageState> {
 
   __onTranslateWordRemote(
       TranslateWordRemote event, Emitter<TranslatePageState> emit) async {
-    if (event.word.trim().isEmpty) {
+    if (event.word.trim() == "") {
       emit(state.copyWith(
           isLoading: false, searchedVocabulary: [], isLocal: false));
       return;
@@ -54,11 +80,28 @@ class TranslatePageBloc extends Bloc<TranslateEvent, TranslatePageState> {
     // Vocabulary result =
     (VocabularyRemote, VocabularyRemote) vocabularyRemote =
         await _translateRepository.translateWordOnline(event.word);
+
+    await VocabTranslatedLocalServices()
+        .insertVocabTranslated(VocabTranslatedLocalModel(
+      englishWords: vocabularyRemote.$1,
+      vietnameseWords: vocabularyRemote.$2,
+    ));
+
+    List<VocabTranslatedLocalModel> listVocabTranslatedVocab =
+        List.from(state.listVocabTranslated.listVocabTranslated);
+
     emit(
       state.copyWith(
         isLoading: false,
         currentVocabularyRemote: vocabularyRemote,
         isLocal: false,
+        listVocabTranslated: ListVocabTranslated(
+          listVocabTranslated: listVocabTranslatedVocab
+            ..add(VocabTranslatedLocalModel(
+              englishWords: vocabularyRemote.$1,
+              vietnameseWords: vocabularyRemote.$2,
+            )),
+        ),
       ),
     );
   }

@@ -6,9 +6,10 @@ class AddNewListDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController textFieldController = TextEditingController();
     return AlertDialog(
       title: const Text(
-        "Edit List Vocabulary",
+        "Write New List Name",
         style: TextStyle(
           color: Colors.black,
           fontSize: 16,
@@ -23,8 +24,9 @@ class AddNewListDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              controller: textFieldController,
+              decoration: const InputDecoration(
                 labelText: "New List Name",
                 hintText: "New name...",
               ),
@@ -60,7 +62,9 @@ class AddNewListDialog extends StatelessWidget {
                     fixedSize:
                         Size(MediaQuery.of(context).size.width * 0.33, 54),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop(textFieldController.text);
+                  },
                   child: const Text(
                     "Create",
                     style: TextStyle(

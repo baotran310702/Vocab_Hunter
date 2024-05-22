@@ -1,21 +1,25 @@
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:english_learner/firebase_options.dart';
-import 'package:english_learner/presentations/dictionary_page/dictionary_page.dart';
-import 'package:english_learner/presentations/home/home.dart';
-import 'package:english_learner/presentations/login_page/sign_in_page.dart';
-import 'package:english_learner/presentations/login_page/sign_up_page.dart';
-import 'package:english_learner/presentations/user_profile/user_profile.dart';
+import 'package:english_learner/my_app.dart';
+import 'package:english_learner/presentations/authentication/authentication_page.dart';
+import 'package:english_learner/presentations/authentication/views/sign_in_page.dart';
+import 'package:english_learner/presentations/global_instance/bloc/global_bloc.dart';
+import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/presentations/user_vocabulary/bloc/manage_vocab_bloc.dart';
-import 'package:english_learner/presentations/user_vocabulary/user_vocabulary.dart';
-import 'package:english_learner/repository/vocab_repository.dart';
-import 'package:english_learner/utils/colors.dart';
-import 'package:english_learner/utils/icons.dart';
+import 'package:english_learner/services/vocab_translated_local_service.dart';
+import 'package:english_learner/services/word_notification_local.dart';
 import 'package:english_learner/utils/notifications/notifications_services.dart';
-import 'package:english_learner/utils/notifications/word_manager_service.dart';
+import 'package:english_learner/utils/notifications/work_manager_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive/hive.dart';
+
+import 'package:path_provider/path_provider.dart';
+
+import 'presentations/dictionary_page/bloc/translate_page_bloc.dart';
+import 'services/user_hive_local.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -27,7 +31,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  final dir = await getApplicationDocumentsDirectory();
+
+  Hive.init(dir.path);
+
   await Future.wait([
+    UserHiveLocal().init(),
+    WordNotificationServices().init(),
+    VocabTranslatedLocalServices().init(),
     LocalNotifications().init(),
     WorkManagerService().init(),
   ]);
@@ -49,38 +60,11 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  final _pageController = PageController(initialPage: 0);
-  final _controller = NotchBottomBarController();
-
-  int maxCount = 4;
-  // int _selectedIndex = 0;
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  /// widget list
-  final List<Widget> bottomBarPages = [
-    const HomePage(),
-    const DictionaryPage(),
-    const UserVocabularyTrain(),
-    const UserProfile(),
-  ];
-
-  /// on item tapped
-  void _onItemTapped(int index) {
-    setState(() {
-      _pageController.jumpToPage(index);
-    });
-  }
-
   @override
   void initState() {
     requestPermission();
@@ -96,84 +80,26 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ManageVocabBloc(VocabRepository()),
+          create: (context) => ManageVocabBloc()..add(InitUserVocabEvent()),
+        ),
+        BlocProvider(
+          create: (context) => GlobalBloc()..add(GlobalInitialEvent()),
+        ),
+        BlocProvider(
+          create: (context) => ManageUserProfileBloc()..add(InitUserEvent()),
+        ),
+        BlocProvider(
+          create: (context) => TranslatePageBloc(),
         ),
       ],
       child: MaterialApp(
+        builder: FToastBuilder(),
         debugShowCheckedModeBanner: false,
         routes: {
-          '/sign-in': (context) => const SignInPage(),
-          '/sign-up': (context) => const SignUpPage(),
-          '/': (context) => home(),
+          '/': (context) => const AuthenticationPage(),
+          '/home': (context) => const MyMainApp(),
+          '/login': (context) => const SignInPage(),
         },
-      ),
-    );
-  }
-
-  Scaffold home() {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      resizeToAvoidBottomInset: false,
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: _pageController,
-        children: bottomBarPages,
-        onPageChanged: (int index) {},
-      ),
-      bottomNavigationBar: AnimatedNotchBottomBar(
-        notchBottomBarController: _controller,
-        color: AppColors.bottomBarColor,
-        notchColor: AppColors.mainBackgroundColor,
-        bottomBarItems: [
-          BottomBarItem(
-            inActiveItem: Image.asset(
-              AppIcons.home,
-              color: Colors.white,
-            ),
-            activeItem: Image.asset(
-              AppIcons.home,
-            ),
-            itemLabel: "Home",
-          ),
-          BottomBarItem(
-            inActiveItem: Image.asset(
-              AppIcons.dictionaryIcon,
-              color: Colors.white,
-            ),
-            activeItem: Image.asset(AppIcons.dictionaryIcon),
-            itemLabel: "Dictionary",
-          ),
-          BottomBarItem(
-            inActiveItem: Image.asset(
-              AppIcons.book,
-              color: Colors.white,
-            ),
-            activeItem: Image.asset(AppIcons.book),
-            itemLabel: "Your Words",
-          ),
-          BottomBarItem(
-            inActiveItem: Image.asset(
-              AppIcons.user,
-              color: Colors.white,
-            ),
-            activeItem: Image.asset(AppIcons.user),
-            itemLabel: "User",
-          ),
-        ],
-        onTap: (int value) {
-          setState(() {
-            _pageController.jumpToPage(value);
-          });
-        },
-        durationInMilliSeconds: 400,
-        kIconSize: 25,
-        kBottomRadius: 30,
-        removeMargins: false,
-        bottomBarHeight: 64,
-        itemLabelStyle: const TextStyle(
-          fontSize: 10,
-          color: Colors.white,
-        ),
       ),
     );
   }

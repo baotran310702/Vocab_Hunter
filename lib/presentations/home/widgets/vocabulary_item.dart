@@ -1,11 +1,18 @@
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/presentations/dictionary_page/widgets/pronounce_word.dart';
 import 'package:flutter/material.dart';
 
 class VocabularyItem extends StatefulWidget {
-  final VocabularyRemote vocab;
+  final VocabularyRemote? vocab;
+  final VocabularyByTopic? vocabularyByTopic;
   final Function onTap;
-  const VocabularyItem({super.key, required this.vocab, required this.onTap});
+  const VocabularyItem({
+    super.key,
+    this.vocab,
+    this.vocabularyByTopic,
+    required this.onTap,
+  });
 
   @override
   State<VocabularyItem> createState() => _VocabularyItemState();
@@ -14,6 +21,14 @@ class VocabularyItem extends StatefulWidget {
 class _VocabularyItemState extends State<VocabularyItem> {
   @override
   Widget build(BuildContext context) {
+    VocabularyItemList itemVocab = VocabularyItemList(
+        word: widget.vocab?.word ?? widget.vocabularyByTopic?.word ?? "",
+        pronouce:
+            widget.vocab?.phonetic ?? widget.vocabularyByTopic?.pronouce ?? "",
+        meaning: widget.vocab?.meanings?.first.definitions?.first.definition ??
+            widget.vocabularyByTopic?.meaning ??
+            "");
+
     return InkWell(
       onTap: () {
         widget.onTap();
@@ -32,9 +47,9 @@ class _VocabularyItemState extends State<VocabularyItem> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildWord(),
-                    buildPhonetics(),
-                    buildMeanings(context),
+                    buildWord(itemVocab),
+                    buildPhonetics(itemVocab),
+                    buildMeanings(context, itemVocab),
                   ],
                 ),
               ],
@@ -42,7 +57,7 @@ class _VocabularyItemState extends State<VocabularyItem> {
             Column(
               children: [
                 Row(
-                  children: [PronounceWord(word: widget.vocab.word ?? "")],
+                  children: [PronounceWord(word: itemVocab.word)],
                 ),
               ],
             ),
@@ -52,9 +67,9 @@ class _VocabularyItemState extends State<VocabularyItem> {
     );
   }
 
-  Text buildWord() {
+  Text buildWord(VocabularyItemList itemVocab) {
     return Text(
-      widget.vocab.word ?? "",
+      itemVocab.word,
       style: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
@@ -62,16 +77,11 @@ class _VocabularyItemState extends State<VocabularyItem> {
     );
   }
 
-  Widget buildMeanings(BuildContext context) {
+  Widget buildMeanings(BuildContext context, VocabularyItemList itemVocab) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.7,
       child: Text(
-        widget.vocab.meanings != null &&
-                widget.vocab.meanings!.isNotEmpty &&
-                widget.vocab.meanings![0].definitions != null &&
-                widget.vocab.meanings![0].definitions!.isNotEmpty
-            ? widget.vocab.meanings![0].definitions![0].definition ?? ""
-            : "",
+        itemVocab.meaning,
         style: const TextStyle(
           fontSize: 14,
         ),
@@ -80,19 +90,57 @@ class _VocabularyItemState extends State<VocabularyItem> {
     );
   }
 
-  Widget buildPhonetics() {
-    if (widget.vocab.phonetics == null ||
-        widget.vocab.phonetics!.isEmpty ||
-        widget.vocab.phonetics![0].text == null) {
+  Widget buildPhonetics(VocabularyItemList itemVocab) {
+    if (itemVocab.pronouce.trim() == "") {
       return const SizedBox();
     } else {
       return Text(
-        widget.vocab.phonetics![0].text!,
+        itemVocab.pronouce,
         style: const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w300,
         ),
       );
     }
+  }
+}
+
+class VocabularyItemList {
+  final String word;
+  final String pronouce;
+  final String meaning;
+
+  VocabularyItemList({
+    required this.word,
+    required this.pronouce,
+    required this.meaning,
+  });
+
+  VocabularyItemList copyWith({
+    String? word,
+    String? pronouce,
+    String? meaning,
+  }) {
+    return VocabularyItemList(
+      word: word ?? this.word,
+      pronouce: pronouce ?? this.pronouce,
+      meaning: meaning ?? this.meaning,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'word': word,
+      'pronouce': pronouce,
+      'meaning': meaning,
+    };
+  }
+
+  factory VocabularyItemList.fromMap(Map<String, dynamic> map) {
+    return VocabularyItemList(
+      word: map['word'],
+      pronouce: map['pronouce'],
+      meaning: map['meaning'],
+    );
   }
 }

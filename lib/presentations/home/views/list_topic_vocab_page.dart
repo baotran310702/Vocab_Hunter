@@ -110,8 +110,6 @@ class _PageContentState extends State<PageContent> {
 
     setState(() {});
 
-    print(indx);
-
     context.read<HomePageBloc>().add(
           DownLoadDetailTopicVocab(
             subTopicId: subTopicId,

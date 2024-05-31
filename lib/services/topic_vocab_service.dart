@@ -149,8 +149,7 @@ class TopicVocabServices {
         .get();
 
     for (var item in querySnapshop.docs) {
-      SubTopic subTopic = SubTopic.fromJson(item.data());
-      print(subTopic.toJson());
+      subTopics.add(SubTopic.fromJson(item.data()));
     }
 
     return subTopics;

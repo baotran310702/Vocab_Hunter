@@ -178,7 +178,6 @@ class _UserTestState extends State<UserTest> {
           if (vocabTopic.topic.toLowerCase().trim() ==
               subTopic.name.toLowerCase().trim()) {
             subTopic.amountVocab = vocabTopic.vocabularyByTopic.length;
-            print("update amounttt");
           }
         }
       }

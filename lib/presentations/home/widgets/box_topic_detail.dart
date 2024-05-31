@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:english_learner/models/sub_topic.dart';
-import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/presentations/home/views/flash_card_page.dart';
-import 'package:english_learner/presentations/home/views/list_vocabulary_page.dart';
+import 'package:english_learner/presentations/home/views/list_vocab_topic_page.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -151,8 +150,8 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return ListVocabularyItem(
-                                        currentVocabList: UserVocab.empty(),
+                                      return ListVocabTopicItem(
+                                        subTopic: widget.subTopic,
                                       );
                                     },
                                   ),

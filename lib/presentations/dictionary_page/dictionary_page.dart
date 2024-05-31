@@ -41,6 +41,10 @@ class _DictionaryPageState extends State<DictionaryPage> {
       create: (context) => TranslatePageBloc()..add(TranslateEventInitial()),
       child: BlocBuilder<TranslatePageBloc, TranslatePageState>(
         builder: (context, state) {
+          List<VocabTranslatedLocalModel> listVocabTranslated = state
+              .listVocabTranslated.listVocabTranslated
+              .where((element) => element.englishWords.word != "")
+              .toList();
           return Scaffold(
             backgroundColor: AppColors.backgroundHeader,
             resizeToAvoidBottomInset: false,
@@ -86,10 +90,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                               scrollDirection: Axis.vertical,
                                               child: Column(
                                                 children: List.generate(
-                                                  state
-                                                      .listVocabTranslated
-                                                      .listVocabTranslated
-                                                      .length,
+                                                  listVocabTranslated.length,
                                                   (index) => Container(
                                                     padding: const EdgeInsets
                                                         .symmetric(
@@ -104,16 +105,14 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                                       ),
                                                     ),
                                                     child: VocabularyItem(
-                                                      vocab: state
-                                                          .listVocabTranslated
-                                                          .listVocabTranslated[
-                                                              index]
-                                                          .englishWords,
+                                                      vocab:
+                                                          listVocabTranslated[
+                                                                  index]
+                                                              .englishWords,
                                                       onTap: () {
                                                         _onTapHistoryVocabulary(
                                                           context,
-                                                          state.listVocabTranslated
-                                                                  .listVocabTranslated[
+                                                          listVocabTranslated[
                                                               index],
                                                         );
                                                       },

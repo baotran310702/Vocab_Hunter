@@ -4,6 +4,7 @@ import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocab_word_similarity.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/models/vocabulary_topic/list_vocabulary_topic.dart';
 import 'package:english_learner/repository/translate_repository.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:english_learner/services/user_hive_local.dart';
@@ -22,12 +23,51 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     on<HomePageInitialEvent>(_onInitial);
     on<CreateRecommendWords>(_onCreateRecommendWords);
     on<InitTopicVocabulary>(_onInitTopicVocabulary);
+    on<InitDetailTopicVocabulary>(_onInitDetailTopicVocabulary);
+    on<DownLoadDetailTopicVocab>(_onDownLoadDetailTopicVocab);
   }
 
-  // @override dispose
+  _onDownLoadDetailTopicVocab(
+      DownLoadDetailTopicVocab event, Emitter emit) async {
+    ListVocabularyTopic vocabularyTopic =
+        await _vocabRepository.getOneListTopicVocabularyTopic(
+      topicId: event.topicId,
+      subTopicId: event.subTopicId,
+    );
+    await _vocabRepository.saveAListVocabularyTopicLocal(vocabularyTopic);
+    if (state is DetailVocabTopicState) {
+      final currentState = state as DetailVocabTopicState;
+      final updatedListSubTopicItemLocal =
+          List<ListVocabularyTopic>.from(currentState.listSubTopicItemLocal)
+            ..add(vocabularyTopic);
+
+      emit(DetailVocabTopicState(
+          isLoading: state.isLoading,
+          news: state.news,
+          recommendVocabs: state.recommendVocabs,
+          currentUser: state.currentUser,
+          listTopicVocab: state.listTopicVocab,
+          listSubTopicItemLocal: updatedListSubTopicItemLocal));
+    }
+  }
+
+  _onInitDetailTopicVocabulary(
+      InitDetailTopicVocabulary event, Emitter emit) async {
+    List<ListVocabularyTopic> listVocabTopicLocal =
+        await _vocabRepository.getListVocabTopicsLocal();
+    emit(
+      DetailVocabTopicState(
+        isLoading: state.isLoading,
+        news: state.news,
+        recommendVocabs: state.recommendVocabs,
+        currentUser: state.currentUser,
+        listTopicVocab: state.listTopicVocab,
+        listSubTopicItemLocal: listVocabTopicLocal,
+      ),
+    );
+  }
 
   _onInitTopicVocabulary(InitTopicVocabulary event, Emitter emit) async {
-  
     emit(state.copyWith(isLoading: true));
 
     List<Topic> listTopicVocab = await _vocabRepository.getAllTopicVocab();
@@ -37,8 +77,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
   _onInitial(HomePageInitialEvent event, Emitter emit) async {
     emit(state.copyWith(isLoading: true));
-
-   
 
     var listInformation = await Future.wait([
       UserHiveLocal().getUser(),

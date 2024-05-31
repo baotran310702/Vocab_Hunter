@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
-import 'package:english_learner/models/excel/ielts.dart';
+import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
@@ -33,17 +33,17 @@ class ExcelService {
     return [];
   }
 
-  Future<List<IeltsVocab>> getIeltsVocab() async {
+  Future<List<VocabularyByTopic>> getIeltsVocab() async {
     ByteData data = await rootBundle.load("assets/final_result_ielts.xlsx");
     var bytes = data.buffer.asUint8List();
 
     var excel = Excel.decodeBytes(bytes);
-    List<IeltsVocab> result = [];
+    List<VocabularyByTopic> result = [];
 
     if (excel.tables.keys.isNotEmpty) {
       var table = excel.tables[excel.tables.keys.first];
       for (int i = 0; i < table!.maxRows; i++) {
-        IeltsVocab newVocab = IeltsVocab(
+        VocabularyByTopic newVocab = VocabularyByTopic(
             word: table.row(i)[0]?.value.toString() ?? "",
             meaning: table.row(i)[2]?.value.toString() ?? "",
             pronouce: table.row(i)[1]?.value.toString() ?? "",
@@ -69,10 +69,12 @@ class ExcelService {
       var table = excel.tables[excel.tables.keys.first];
       for (int i = 0; i < table!.maxRows; i++) {
         SubTopic newVocab = SubTopic(
-            name: table.row(i)[0]?.value.toString() ?? "",
-            subTopicId: table.row(i)[0]?.value.toString() ?? "",
-            image: '',
-            description: table.row(i)[2]?.value.toString() ?? "");
+          name: table.row(i)[0]?.value.toString() ?? "",
+          subTopicId: table.row(i)[0]?.value.toString() ?? "",
+          image: '',
+          description: table.row(i)[2]?.value.toString() ?? "",
+          amountVocab: 0,
+        );
         result.add(newVocab);
       }
 
@@ -180,7 +182,7 @@ class ExcelService {
   }
 
   Future<void> updateTopicVocabFirebase(
-      Map<String, List<IeltsVocab>> map) async {
+      Map<String, List<VocabularyByTopic>> map) async {
     for (var entry in map.entries) {
       await _firestore
           .collection(AppCollections.vocabTopic)

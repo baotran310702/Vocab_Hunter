@@ -3,6 +3,7 @@ import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocab_word_similarity.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
+import 'package:english_learner/models/vocabulary_topic/list_vocabulary_topic.dart';
 import 'package:english_learner/services/recommend_words.dart';
 import 'package:english_learner/services/topic_vocab_service.dart';
 import 'package:english_learner/services/vocab_services.dart';
@@ -61,5 +62,25 @@ class VocabRepository {
 
   Future<List<Topic>> getAllTopicVocab() async {
     return await topicVocabServices.getAllTopicVocab();
+  }
+
+  Future<List<ListVocabularyTopic>> getListVocabTopicsLocal() async {
+    return await topicVocabServices.getListVocabTopicLocal();
+  }
+
+  Future<ListVocabularyTopic> getOneListTopicVocabularyTopic(
+      {required String topicId, required String subTopicId}) async {
+    return await topicVocabServices.getOneListTopicVocabularyTopic(
+        topicId, subTopicId);
+  }
+
+  Future<void> saveListVocabularyTopicLocal(
+      List<ListVocabularyTopic> listVocabularyTopic) async {
+    await topicVocabServices.saveListVocabularyTopicLocal(listVocabularyTopic);
+  }
+
+  Future<void> saveAListVocabularyTopicLocal(
+      ListVocabularyTopic listVocabulary) async {
+    await topicVocabServices.saveAListVocabularyTopicLocal(listVocabulary);
   }
 }

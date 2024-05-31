@@ -3,14 +3,15 @@
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:equatable/equatable.dart';
 
+// ignore: must_be_immutable
 class Topic extends Equatable {
-  final String topicId;
-  final String name;
-  final String image;
-  final String description;
-  final List<SubTopic> subTopics;
+  String topicId;
+  String name;
+  String image;
+  String description;
+  List<SubTopic> subTopics;
 
-  const Topic({
+  Topic({
     required this.topicId,
     required this.name,
     required this.image,
@@ -22,7 +23,7 @@ class Topic extends Equatable {
     return Topic(
       topicId: id,
       name: json['name'] ?? "",
-      image: json['image'] ?? " ",
+      image: json['image'] ?? "",
       description: json['description'] ?? "",
       subTopics: json['subTopic'] == null
           ? []

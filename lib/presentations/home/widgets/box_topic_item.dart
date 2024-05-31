@@ -1,6 +1,8 @@
 import 'package:english_learner/models/sub_topic.dart';
-import 'package:english_learner/presentations/home/views/list_topic_vocab_page.dart';
+import 'package:english_learner/utils/extension.dart';
 import 'package:english_learner/utils/icons.dart';
+//import file extension.dart
+
 import 'package:flutter/material.dart';
 
 class BoxTopicItem extends StatefulWidget {
@@ -30,14 +32,7 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
 
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return const ListDetailTopicVocab();
-            },
-          ),
-        );
+        /// Handle navigate to detail topic here
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -93,22 +88,26 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
               padding: const EdgeInsets.only(left: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Topic Name",
-                    style: TextStyle(
+                  Text(
+                    widget.subTopic.name.trim().capitalize(),
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "Detail topic description here",
-                    style: TextStyle(
-                      fontSize: 16,
+                  Text(
+                    widget.subTopic.description.capitalize(),
+                    style: const TextStyle(
+                      fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 10),
                   Row(
@@ -124,10 +123,10 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
                             bottomLeft: Radius.circular(12),
                           ),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            "160 words",
-                            style: TextStyle(
+                            "${widget.subTopic.amountVocab.toString()} words",
+                            style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                             ),
@@ -135,20 +134,21 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
                         ),
                       ),
                       Container(
-                          height: 40,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffe0e0e0),
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(12),
-                                bottomRight: Radius.circular(12)),
-                          ),
-                          child: Image.asset(
-                            AppIcons.start,
-                            width: 16,
-                            height: 16,
-                          )),
+                        height: 40,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        decoration: const BoxDecoration(
+                          color: Color(0xffe0e0e0),
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(12),
+                              bottomRight: Radius.circular(12)),
+                        ),
+                        child: Image.asset(
+                          AppIcons.start,
+                          width: 16,
+                          height: 16,
+                        ),
+                      ),
                     ],
                   )
                 ],

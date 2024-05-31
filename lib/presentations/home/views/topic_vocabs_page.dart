@@ -1,3 +1,4 @@
+import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/home/widgets/back_button.dart';
 import 'package:english_learner/presentations/home/widgets/list_topics_vocab.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _TopicVocabState extends State<TopicVocab> {
                   children: state.listTopicVocab.isEmpty
                       ? [
                           const Center(
-                            child: CircularProgressIndicator(),
+                            child: LoadingPage(message: "Downloading Topic..."),
                           )
                         ]
                       : state.listTopicVocab

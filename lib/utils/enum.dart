@@ -28,3 +28,5 @@ enum WordType {
   @HiveField(4)
   undefined
 }
+
+enum DownloadStatus { notDownloaded, dowloading, downloaded }

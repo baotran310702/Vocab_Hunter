@@ -20,7 +20,9 @@ class _ListVocabularyItemState extends State<ListVocabularyItem> {
   @override
   Widget build(BuildContext context) {
     List<VocabularyRemote> currentVocabEnglishList =
-        widget.currentVocabList.listVocabulary.entries.first.value;
+        widget.currentVocabList.listVocabulary.isEmpty
+            ? []
+            : widget.currentVocabList.listVocabulary.entries.first.value;
 
     return Scaffold(
       appBar: MyAppbar(

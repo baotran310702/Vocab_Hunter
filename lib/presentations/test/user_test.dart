@@ -1,4 +1,5 @@
-import 'package:english_learner/models/excel/ielts.dart';
+import 'package:english_learner/models/vocabulary_topic/list_vocabulary_topic.dart';
+import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/time_notification.dart';
 import 'package:english_learner/models/topic.dart';
@@ -110,6 +111,11 @@ class _UserTestState extends State<UserTest> {
                   onPressed: testGeminiVocabTopicDescirption,
                   child: const Text("Test Gemini"),
                 ),
+                const Text('Update amout topiccc'),
+                ElevatedButton(
+                  onPressed: updateAmountWordsTopicVocab,
+                  child: const Text("Update amounttttttt newsest topic"),
+                ),
                 if (isLoading) const CircularProgressIndicator(),
                 const SizedBox(
                   height: 60,
@@ -131,11 +137,13 @@ class _UserTestState extends State<UserTest> {
     for (int i = 0; i < 30; i++) {
       listTopics.add(
         SubTopic(
-            name: "Part $i",
-            subTopicId: "part $i",
-            image:
-                "https://sununi.edu.vn/wp-content/uploads/2023/08/hoc-toeic-hay-ielts-2.jpg",
-            description: "Part $i of TOEIC vocabulary."),
+          name: "Part $i",
+          subTopicId: "part $i",
+          image:
+              "https://sununi.edu.vn/wp-content/uploads/2023/08/hoc-toeic-hay-ielts-2.jpg",
+          description: "Part $i of TOEIC vocabulary.",
+          amountVocab: 0,
+        ),
       );
     }
 
@@ -154,6 +162,32 @@ class _UserTestState extends State<UserTest> {
     for (SubTopic topic in listTopics) {
       String description = await services.getDescriptionTopic(topic.name);
       topic.description = description;
+    }
+  }
+
+  updateAmountWordsTopicVocab() async {
+    TopicVocabServices services = TopicVocabServices();
+    List<Topic> list = await services.getAllTopicVocab();
+
+    for (var item in list) {
+      if (item.name.toLowerCase() != 'topic') continue;
+      List<ListVocabularyTopic> listVocabTopic =
+          await services.getListVocabularyTopic(item.topicId);
+      for (SubTopic subTopic in item.subTopics) {
+        for (ListVocabularyTopic vocabTopic in listVocabTopic) {
+          if (vocabTopic.topic.toLowerCase().trim() ==
+              subTopic.name.toLowerCase().trim()) {
+            subTopic.amountVocab = vocabTopic.vocabularyByTopic.length;
+            print("update amounttt");
+          }
+        }
+      }
+    }
+
+    List<Topic> newTopics = list;
+    //update subtopic
+    for (Topic topic in newTopics) {
+      await services.updateSubTopicVocab(topic.subTopics, topic.topicId);
     }
   }
 
@@ -202,9 +236,9 @@ class _UserTestState extends State<UserTest> {
 
   firebaseUpdate() async {
     ExcelService excelServices = ExcelService();
-    List<IeltsVocab> listVocab = await excelServices.getIeltsVocab();
+    List<VocabularyByTopic> listVocab = await excelServices.getIeltsVocab();
     //cate gory listVocab by topic
-    Map<String, List<IeltsVocab>> map = {};
+    Map<String, List<VocabularyByTopic>> map = {};
     for (var item in listVocab) {
       if (map.containsKey(item.topic)) {
         map[item.topic]!.add(item);

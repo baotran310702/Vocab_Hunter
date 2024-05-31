@@ -1,4 +1,5 @@
 import 'package:english_learner/models/topic.dart';
+import 'package:english_learner/presentations/home/views/list_topic_vocab_page.dart';
 import 'package:english_learner/presentations/home/widgets/box_topic_item.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -34,11 +35,26 @@ class _ListTopicVocabState extends State<ListTopicVocab> {
                   color: AppColors.textColors,
                 ),
               ),
-              const Text(
-                "See all",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ListDetailTopicVocab(
+                          listSubtopics: widget.topic.subTopics,
+                          nameTopic: widget.topic.name,
+                        );
+                      },
+                    ),
+                  );
+                },
+                child: const Text(
+                  "See all",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ],

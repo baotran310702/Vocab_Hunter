@@ -10,3 +10,14 @@ class CreateRecommendWords extends HomePageEvent {
 }
 
 class InitTopicVocabulary extends HomePageEvent {}
+
+class InitDetailTopicVocabulary extends HomePageEvent {}
+
+class DownLoadDetailTopicVocab extends HomePageEvent {
+  final String subTopicId;
+  final String topicId;
+  DownLoadDetailTopicVocab({
+    required this.topicId,
+    required this.subTopicId,
+  });
+}

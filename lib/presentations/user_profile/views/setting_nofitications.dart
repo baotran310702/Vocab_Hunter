@@ -62,7 +62,7 @@ class _SettingNotificationsState extends State<SettingNotifications> {
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               return Dismissible(
-                                key: Key(index.toString()),
+                                key: UniqueKey(),
                                 onDismissed: (direction) {
                                   final removedItem = switchValues[index];
                                   switchValues.removeAt(index);

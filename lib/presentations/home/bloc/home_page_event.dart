@@ -21,3 +21,4 @@ class DownLoadDetailTopicVocab extends HomePageEvent {
     required this.subTopicId,
   });
 }
+

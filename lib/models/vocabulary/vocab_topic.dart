@@ -1,13 +1,25 @@
-import 'package:equatable/equatable.dart';
+// ignore_for_file: must_be_immutable
 
-// ignore: must_be_immutable
+import 'package:english_learner/utils/constants.dart';
+import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+part 'vocab_topic.g.dart';
+
+@HiveType(typeId: KeyHiveLocal.hiveTopicVocabLocalNew)
 class VocabTopic extends Equatable {
+  @HiveField(0)
   String word;
+  @HiveField(1)
   String pronounce;
+  @HiveField(2)
   String type;
+  @HiveField(3)
   String meaning;
+  @HiveField(4)
   String exampleEnglish;
+  @HiveField(5)
   String exampleVietnamese;
+  @HiveField(6)
   String topic;
 
   VocabTopic({
@@ -24,7 +36,7 @@ class VocabTopic extends Equatable {
   factory VocabTopic.fromMap(Map<String, dynamic> map) {
     return VocabTopic(
       word: map['word'] ?? '',
-      pronounce: map['pronounce'] ?? '',
+      pronounce: map['pronouce'] ?? '',
       type: map['type'] ?? '',
       meaning: map['meaning'] ?? '',
       exampleEnglish: map['exampleEnglish'] ?? '',
@@ -37,7 +49,7 @@ class VocabTopic extends Equatable {
   Map<String, dynamic> toMap() {
     return {
       'word': word,
-      'pronounce': pronounce,
+      'pronouce': pronounce,
       'type': type,
       'meaning': meaning,
       'exampleEnglish': exampleEnglish,

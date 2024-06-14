@@ -1,6 +1,7 @@
 import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/home/widgets/back_button.dart';
 import 'package:english_learner/presentations/home/widgets/list_topics_vocab.dart';
+import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,7 +30,7 @@ class _TopicVocabState extends State<TopicVocab> {
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                color: Colors.amber,
+                color: AppColors.backgroundHeader,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: SingleChildScrollView(

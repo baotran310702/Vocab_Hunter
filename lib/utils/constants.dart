@@ -36,6 +36,9 @@ class KeyHiveLocal {
   static const int hiveListVocabTranslated = 49;
   static const int hiveTopicVocabLocal = 50;
   static const int hiveListTopicVocabLocal = 51;
+  static const int hiveTopicVocabLocalNew = 52;
+  static const int hiveTopicCacheLocal = 53;
+  static const int hiveSubTopicLocal = 54;
 }
 
 class KeyBoxHiveLocal {

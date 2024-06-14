@@ -1,3 +1,4 @@
+import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/practise_vocab/bloc/practise_vocab_bloc.dart';
@@ -8,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PractiseVocab extends StatefulWidget {
-  const PractiseVocab({super.key});
+  final List<VocabularyByTopic>? vocabularies;
+  const PractiseVocab({super.key, this.vocabularies});
 
   @override
   State<PractiseVocab> createState() => _PractiseVocabState();

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_learner/models/topic.dart';
+import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/models/vocabulary_topic/list_vocabulary_topic.dart';
-import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/utils/constants.dart';
+import 'package:english_learner/utils/extension.dart';
 import 'package:english_learner/utils/firebase_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -28,8 +29,8 @@ class TopicVocabServices {
 
     Hive.init(dir.path);
 
-    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicVocabLocal)) {
-      Hive.registerAdapter(VocabularyByTopicAdapter());
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicVocabLocalNew)) {
+      Hive.registerAdapter(VocabTopicAdapter());
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTopicVocabLocal)) {
       Hive.registerAdapter(ListVocabularyTopicAdapter());
@@ -48,8 +49,8 @@ class TopicVocabServices {
 
     Hive.init(dir.path);
 
-    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicVocabLocal)) {
-      Hive.registerAdapter(VocabularyByTopicAdapter());
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicVocabLocalNew)) {
+      Hive.registerAdapter(VocabTopicAdapter());
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTopicVocabLocal)) {
       Hive.registerAdapter(ListVocabularyTopicAdapter());
@@ -68,8 +69,8 @@ class TopicVocabServices {
 
     Hive.init(dir.path);
 
-    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicVocabLocal)) {
-      Hive.registerAdapter(VocabularyByTopicAdapter());
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicVocabLocalNew)) {
+      Hive.registerAdapter(VocabTopicAdapter());
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTopicVocabLocal)) {
       Hive.registerAdapter(ListVocabularyTopicAdapter());
@@ -88,6 +89,9 @@ class TopicVocabServices {
 
   Future<ListVocabularyTopic> getOneListTopicVocabularyTopic(
       String topicId, String subTopicId) async {
+    if (topicId.toLowerCase() == 'toeic') {
+      subTopicId = subTopicId.capitalize();
+    }
     try {
       final snapshot = await _firestore
           .collection(AppCollections.vocabTopic)
@@ -95,10 +99,54 @@ class TopicVocabServices {
           .collection(AppCollections.topicVocab)
           .where('topic', isEqualTo: subTopicId)
           .get();
-      return ListVocabularyTopic.fromJson(snapshot.docs.first.data());
+      ListVocabularyTopic topicResult =
+          ListVocabularyTopic.fromJson(snapshot.docs.first.data());
+      return topicResult;
     } catch (e) {
       debugPrint(e.toString());
       return ListVocabularyTopic.empty();
+    }
+  }
+
+  Future<void> renameFieldVocabulary() async {
+    try {
+      final snapshot = await _firestore
+          .collection(AppCollections.vocabTopic)
+          .doc('topic')
+          .collection(AppCollections.topicVocab)
+          .get();
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        for (var doc in snapshot.docs) {
+          var vocabData = doc.get('vocab');
+          for (var item in vocabData) {
+            if (item.containsKey('pronounce')) {
+              var oldValue = item['pronounce'];
+              var exampleEnglish = item['exampleEnglish'];
+              var exampleVietnamese = item['exampleVietnamese'];
+              var meaning = item['meaning'];
+              var topic = item['topic'];
+              var word = item['word'];
+              var type = item['type'];
+
+              Map<String, dynamic> updates = {
+                'vocab.pronouce': oldValue,
+                'vocab.exampleEnglish': exampleEnglish,
+                'vocab.exampleVietnamese': exampleVietnamese,
+                'vocab.meaning': meaning,
+                'vocab.topic': topic,
+                'vocab.word': word,
+                'vocab.type': type,
+                'vocab.pronounce': FieldValue.delete(),
+              };
+
+              transaction.update(doc.reference, updates);
+            }
+          }
+        }
+      });
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 

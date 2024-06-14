@@ -1,6 +1,7 @@
 import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/presentations/home/views/list_topic_vocab_page.dart';
 import 'package:english_learner/presentations/home/widgets/box_topic_item.dart';
+import 'package:english_learner/utils/cache_topic_choosen.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class _ListTopicVocabState extends State<ListTopicVocab> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
       decoration: BoxDecoration(
-        color: Colors.amber,
+        color: AppColors.backgroundHeader,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -37,6 +38,9 @@ class _ListTopicVocabState extends State<ListTopicVocab> {
               ),
               InkWell(
                 onTap: () {
+                  CacheTopicChoosen topicChoosen = CacheTopicChoosen();
+                  topicChoosen.setTopicId(widget.topic.topicId);
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -66,6 +70,7 @@ class _ListTopicVocabState extends State<ListTopicVocab> {
               children: widget.topic.subTopics
                   .map((e) => BoxTopicItem(
                         subTopic: e,
+                        topicId: widget.topic.topicId,
                       ))
                   .toList(),
             ),

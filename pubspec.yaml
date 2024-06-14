@@ -51,6 +51,8 @@ flutter:
     - assets/dictionary.json
     - assets/notification.wav
     - assets/icons/
+    - assets/final_result_toeic.xlsx
+    - assets/final_result_topic.xlsx
 
   # fonts:
   #   - family: Schyler

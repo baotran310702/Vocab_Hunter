@@ -1,11 +1,11 @@
+import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
-import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/presentations/dictionary_page/widgets/pronounce_word.dart';
 import 'package:flutter/material.dart';
 
 class VocabularyItem extends StatefulWidget {
   final VocabularyRemote? vocab;
-  final VocabularyByTopic? vocabularyByTopic;
+  final VocabTopic? vocabularyByTopic;
   final Function onTap;
   const VocabularyItem({
     super.key,
@@ -24,7 +24,7 @@ class _VocabularyItemState extends State<VocabularyItem> {
     VocabularyItemList itemVocab = VocabularyItemList(
         word: widget.vocab?.word ?? widget.vocabularyByTopic?.word ?? "",
         pronouce:
-            widget.vocab?.phonetic ?? widget.vocabularyByTopic?.pronouce ?? "",
+            widget.vocab?.phonetic ?? widget.vocabularyByTopic?.pronounce ?? "",
         meaning: widget.vocab?.meanings?.first.definitions?.first.definition ??
             widget.vocabularyByTopic?.meaning ??
             "");

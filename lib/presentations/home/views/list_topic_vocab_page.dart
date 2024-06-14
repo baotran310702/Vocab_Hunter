@@ -73,6 +73,13 @@ class _PageContentState extends State<PageContent> {
             }
             statusTopic.add((DownloadStatus.notDownloaded, item));
           }
+          // sort status topic
+          statusTopic.sort((a, b) {
+            if (a.$1 == DownloadStatus.downloaded) {
+              return -1;
+            }
+            return 1;
+          });
         }
         return Container(
           padding: const EdgeInsets.all(14),

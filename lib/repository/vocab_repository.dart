@@ -64,21 +64,29 @@ class VocabRepository {
     return await topicVocabServices.getAllTopicVocab();
   }
 
+  ///For local storage
+  /// Get all list of vocabulary topic from local storage
   Future<List<ListVocabularyTopic>> getListVocabTopicsLocal() async {
     return await topicVocabServices.getListVocabTopicLocal();
   }
 
+  ///For local storage
+  /// Get a list of vocabulary topic from local storage
   Future<ListVocabularyTopic> getOneListTopicVocabularyTopic(
       {required String topicId, required String subTopicId}) async {
     return await topicVocabServices.getOneListTopicVocabularyTopic(
         topicId, subTopicId);
   }
 
+  ///For local storage
+  /// Save a list of vocabulary topic to local storage
   Future<void> saveListVocabularyTopicLocal(
       List<ListVocabularyTopic> listVocabularyTopic) async {
     await topicVocabServices.saveListVocabularyTopicLocal(listVocabularyTopic);
   }
 
+  ///For local storage
+  /// Save a list of vocabulary topic to local storage
   Future<void> saveAListVocabularyTopicLocal(
       ListVocabularyTopic listVocabulary) async {
     await topicVocabServices.saveAListVocabularyTopicLocal(listVocabulary);

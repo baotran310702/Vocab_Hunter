@@ -1,4 +1,5 @@
 import 'package:english_learner/models/sub_topic.dart';
+import 'package:english_learner/utils/cache_topic_choosen.dart';
 import 'package:english_learner/utils/extension.dart';
 import 'package:english_learner/utils/icons.dart';
 //import file extension.dart
@@ -7,7 +8,12 @@ import 'package:flutter/material.dart';
 
 class BoxTopicItem extends StatefulWidget {
   final SubTopic subTopic;
-  const BoxTopicItem({super.key, required this.subTopic});
+  final String topicId;
+  const BoxTopicItem({
+    super.key,
+    required this.subTopic,
+    required this.topicId,
+  });
 
   @override
   State<BoxTopicItem> createState() => _BoxTopicItemState();
@@ -16,7 +22,7 @@ class BoxTopicItem extends StatefulWidget {
 class _BoxTopicItemState extends State<BoxTopicItem> {
   double scale = 0.6;
 
-  void handleScale() async {
+  void handleScaleHeart() async {
     setState(() {
       scale = 0.8;
     });
@@ -32,7 +38,9 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
 
     return InkWell(
       onTap: () {
-        /// Handle navigate to detail topic here
+        ///Handle detail box item
+
+        CacheTopicChoosen().setTopicId(widget.topicId);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -70,7 +78,7 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
                   child: Center(
                     child: InkWell(
                       onTap: () {
-                        handleScale();
+                        handleScaleHeart();
                       },
                       child: AnimatedScale(
                         scale: scale,
@@ -91,7 +99,7 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.subTopic.name.trim().capitalize(),
+                    widget.subTopic.name.capitalize(),
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

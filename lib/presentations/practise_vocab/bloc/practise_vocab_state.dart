@@ -6,6 +6,8 @@ class PractiseVocabState extends Equatable {
   final String currentListId;
   final int currentQuestionIndex;
   final Map<String, String> sentences;
+
+  // question list for each list
   final List<(VocabularyRemote, VocabularyRemote)> questionList;
   final List<(VocabularyRemote, VocabularyRemote)> correctAnswerList;
   final List<(VocabularyRemote, VocabularyRemote)> failedAnswerList;

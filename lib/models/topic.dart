@@ -1,14 +1,25 @@
 //write class topic with data type is topicId, name, image, description, topicStatus with all them is required params and final
 
-import 'package:english_learner/models/sub_topic.dart';
-import 'package:equatable/equatable.dart';
+// ignore_for_file: must_be_immutable
 
-// ignore: must_be_immutable
+import 'package:english_learner/models/sub_topic.dart';
+import 'package:english_learner/utils/constants.dart';
+import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+
+part 'topic.g.dart';
+
+@HiveType(typeId: KeyHiveLocal.hiveTopicCacheLocal)
 class Topic extends Equatable {
+  @HiveField(0)
   String topicId;
+  @HiveField(1)
   String name;
+  @HiveField(2)
   String image;
+  @HiveField(3)
   String description;
+  @HiveField(4)
   List<SubTopic> subTopics;
 
   Topic({

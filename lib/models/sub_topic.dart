@@ -1,12 +1,22 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:english_learner/utils/constants.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 
+part 'sub_topic.g.dart';
+
+@HiveType(typeId: KeyHiveLocal.hiveSubTopicLocal)
 class SubTopic extends Equatable {
+  @HiveField(0)
   String subTopicId;
+  @HiveField(1)
   String name;
+  @HiveField(2)
   String image;
+  @HiveField(3)
   String description;
+  @HiveField(4)
   int amountVocab;
 
   SubTopic({
@@ -16,6 +26,11 @@ class SubTopic extends Equatable {
     required this.subTopicId,
     required this.amountVocab,
   });
+
+  factory SubTopic.initial() {
+    return SubTopic(
+        name: "", image: "", description: "", subTopicId: "", amountVocab: -1);
+  }
 
   factory SubTopic.fromJson(Map<String, dynamic> json) {
     return SubTopic(

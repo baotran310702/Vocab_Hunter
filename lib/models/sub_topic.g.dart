@@ -1,35 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'list_vocabulary_topic.dart';
+part of 'sub_topic.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ListVocabularyTopicAdapter extends TypeAdapter<ListVocabularyTopic> {
+class SubTopicAdapter extends TypeAdapter<SubTopic> {
   @override
-  final int typeId = 51;
+  final int typeId = 54;
 
   @override
-  ListVocabularyTopic read(BinaryReader reader) {
+  SubTopic read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ListVocabularyTopic(
-      topic: fields[0] as String,
-      vocabularyByTopic: (fields[1] as List).cast<VocabTopic>(),
+    return SubTopic(
+      name: fields[1] as String,
+      image: fields[2] as String,
+      description: fields[3] as String,
+      subTopicId: fields[0] as String,
+      amountVocab: fields[4] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, ListVocabularyTopic obj) {
+  void write(BinaryWriter writer, SubTopic obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.topic)
+      ..write(obj.subTopicId)
       ..writeByte(1)
-      ..write(obj.vocabularyByTopic);
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.image)
+      ..writeByte(3)
+      ..write(obj.description)
+      ..writeByte(4)
+      ..write(obj.amountVocab);
   }
 
   @override
@@ -38,7 +47,7 @@ class ListVocabularyTopicAdapter extends TypeAdapter<ListVocabularyTopic> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ListVocabularyTopicAdapter &&
+      other is SubTopicAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

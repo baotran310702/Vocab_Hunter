@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/models/word_notification.dart';
 import 'package:english_learner/repository/gemini_repository.dart';
 import 'package:english_learner/services/user_hive_local.dart';

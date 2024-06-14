@@ -1,10 +1,10 @@
-import 'package:english_learner/models/vocabulary_topic/list_vocabulary_topic.dart';
-import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/time_notification.dart';
 import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/models/vocabulary_topic/list_vocabulary_topic.dart';
+import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/services/excel_service.dart';
 import 'package:english_learner/services/gemini_services.dart';
 import 'package:english_learner/services/time_notification_local.dart';
@@ -94,7 +94,8 @@ class _UserTestState extends State<UserTest> {
                 const Text('Update Data TOEIC to Firebase'),
                 ElevatedButton(
                   onPressed: firebaseUpdateToeic,
-                  child: const Text("Update Vocabulary TOEIC to Firebase"),
+                  child: const Text(
+                      "Update Vocabulary TOEIC to Firebase okokokokoko"),
                 ),
                 const Text('TOPIC Vocabularyyyy'),
                 ElevatedButton(
@@ -115,6 +116,10 @@ class _UserTestState extends State<UserTest> {
                 ElevatedButton(
                   onPressed: updateAmountWordsTopicVocab,
                   child: const Text("Update amounttttttt newsest topic"),
+                ),
+                ElevatedButton(
+                  onPressed: renameField,
+                  child: const Text("Renameee topic vocabbb"),
                 ),
                 if (isLoading) const CircularProgressIndicator(),
                 const SizedBox(
@@ -317,6 +322,17 @@ class _UserTestState extends State<UserTest> {
     for (var item in list) {
       debugPrint(item.englishWords.word);
     }
+  }
+
+  renameField() async {
+    TopicVocabServices topicVocabServices = TopicVocabServices();
+    setState(() {
+      isLoading = true;
+    });
+    await topicVocabServices.renameFieldVocabulary();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   getDataLocal() async {

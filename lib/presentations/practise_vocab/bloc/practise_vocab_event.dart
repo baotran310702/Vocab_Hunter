@@ -3,7 +3,8 @@ part of 'practise_vocab_bloc.dart';
 abstract class PractiseVocabEvent {}
 
 class PractiseVocabInitial extends PractiseVocabEvent {
-  PractiseVocabInitial();
+  final List<VocabularyByTopic>? vocabularies;
+  PractiseVocabInitial({this.vocabularies});
 }
 
 class ChangeVocabList extends PractiseVocabEvent {

@@ -9,14 +9,14 @@ import '../../dictionary_page/widgets/pronounce_word.dart';
 import '../../global_instance/bloc/global_bloc.dart';
 
 class FlashCard extends StatefulWidget {
-  final (VocabularyRemote, VocabularyRemote) vocabularyRemote;
+  final (VocabularyRemote, VocabularyRemote)? vocabularyRemote;
 
   final Function onSave;
   final bool isSaved;
 
   const FlashCard({
     super.key,
-    required this.vocabularyRemote,
+    this.vocabularyRemote,
     required this.onSave,
     required this.isSaved,
   });
@@ -44,27 +44,33 @@ class _FlashCardState extends State<FlashCard> {
           onTap: () {
             context.read<GlobalBloc>().add(ChangeFlashCardSide());
           },
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.6,
-            decoration: BoxDecoration(
-              color: AppColors.backgroundHeader,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            child: FrontWidget(
-              vocabularyRemote: state.isFront
-                  ? widget.vocabularyRemote.$1
-                  : widget.vocabularyRemote.$2,
-              onSave: widget.onSave,
-              isSaved: widget.isSaved,
-            ),
-          ),
+          child: frontSide(context, state),
         );
       },
+    );
+  }
+
+  Container frontSide(BuildContext context, GlobalState state) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.6,
+      decoration: BoxDecoration(
+        color: AppColors.backgroundHeader,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.black,
+          width: 1,
+        ),
+      ),
+      child: FrontWidget(
+        vocabularyRemote: widget.vocabularyRemote != null
+            ? state.isFront
+                ? widget.vocabularyRemote!.$1
+                : widget.vocabularyRemote!.$2
+            : VocabularyRemote.empty(),
+        onSave: widget.onSave,
+        isSaved: widget.isSaved,
+      ),
     );
   }
 }

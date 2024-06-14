@@ -1,4 +1,4 @@
-import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
+import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/utils/constants.dart';
 import 'package:hive/hive.dart';
 
@@ -9,7 +9,7 @@ class ListVocabularyTopic {
   @HiveField(0)
   final String topic;
   @HiveField(1)
-  final List<VocabularyByTopic> vocabularyByTopic;
+  final List<VocabTopic> vocabularyByTopic;
 
   ListVocabularyTopic({
     required this.topic,
@@ -26,8 +26,7 @@ class ListVocabularyTopic {
       topic: json['topic'] ?? "",
       vocabularyByTopic: json['vocab'] != null
           ? json['vocab']
-              .map<VocabularyByTopic>(
-                  (item) => VocabularyByTopic.fromJson(item))
+              .map<VocabTopic>((item) => VocabTopic.fromMap(item))
               .toList()
           : [],
     );

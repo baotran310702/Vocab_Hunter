@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:english_learner/models/sub_topic.dart';
-import 'package:english_learner/presentations/home/views/flash_card_page.dart';
+import 'package:english_learner/presentations/home/views/flash_card_topic_page.dart';
 import 'package:english_learner/presentations/home/views/list_vocab_topic_page.dart';
 import 'package:english_learner/utils/colors.dart';
+import 'package:english_learner/utils/extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/enum.dart';
@@ -30,6 +32,7 @@ class BoxTopicDetail extends StatefulWidget {
 }
 
 class _BoxTopicDetailState extends State<BoxTopicDetail> {
+  bool _isValidUrl = false;
   double scale = 0.6;
 
   void handleScale() async {
@@ -40,6 +43,25 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
     setState(() {
       scale = 0.6;
     });
+  }
+
+  Future<void> _checkImageUrl(String url) async {
+    try {
+      final response = await Dio().get(url);
+      if (response.statusCode == 200) {
+        setState(() {
+          _isValidUrl = true;
+        });
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkImageUrl(widget.subTopic.image);
   }
 
   @override
@@ -53,17 +75,39 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
             children: [
               Column(
                 children: [
-                  Container(
-                    height: widget.boxHeight / 2,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(widget.radius),
-                        topRight: Radius.circular(widget.radius),
-                      ),
-                    ),
-                  ),
+                  _isValidUrl
+                      ? Container(
+                          height: widget.boxHeight / 2,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(widget.radius),
+                              topRight: Radius.circular(widget.radius),
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(widget.radius),
+                              topRight: Radius.circular(widget.radius),
+                            ),
+                            child: Image.network(
+                              widget.subTopic.image,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          height: widget.boxHeight / 2,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(widget.radius),
+                              topRight: Radius.circular(widget.radius),
+                            ),
+                          ),
+                        ),
                   Container(
                     height: widget.boxHeight / 2,
                     width: MediaQuery.of(context).size.width,
@@ -81,7 +125,7 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                           height: 4,
                         ),
                         Text(
-                          widget.subTopic.name,
+                          widget.subTopic.name.capitalize(),
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -124,7 +168,9 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                               onPressed: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return const FlashCardPage();
+                                  return FlashCardTopicPage(
+                                    subTopic: widget.subTopic,
+                                  );
                                 }));
                               },
                               child: Text(
@@ -181,7 +227,7 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                   width: 52,
                   height: 52,
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: Colors.grey.withOpacity(0.65),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Center(

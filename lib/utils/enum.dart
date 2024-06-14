@@ -30,3 +30,5 @@ enum WordType {
 }
 
 enum DownloadStatus { notDownloaded, dowloading, downloaded }
+
+enum FlashCardType { topicWidget, listVocabWidget }

@@ -228,7 +228,7 @@ class ExcelService {
           .collection(AppCollections.topicVocab)
           .add(
         {
-          'topic': 'part $i',
+          'topic': 'Part $i',
           'vocab': chunks[i].map((e) => e.toMap()).toList(),
         },
       );

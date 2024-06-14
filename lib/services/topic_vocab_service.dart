@@ -250,6 +250,9 @@ class TopicVocabServices {
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicCacheLocal)) {
       Hive.registerAdapter(TopicAdapter());
     }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveSubTopicLocal)) {
+      Hive.registerAdapter(SubTopicAdapter());
+    }
 
     final topicBox = await Hive.openBox<Topic>(KeyBoxHiveLocal.topicCacheLocal);
     for (Topic topic in listTopic) {

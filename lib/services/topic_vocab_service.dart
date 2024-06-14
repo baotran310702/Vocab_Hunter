@@ -241,4 +241,32 @@ class TopicVocabServices {
       debugPrint(e.toString());
     }
   }
+
+  Future<void> saveListTopicLocal(List<Topic> listTopic) async {
+    final dir = await getApplicationDocumentsDirectory();
+
+    Hive.init(dir.path);
+
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicCacheLocal)) {
+      Hive.registerAdapter(TopicAdapter());
+    }
+
+    final topicBox = await Hive.openBox<Topic>(KeyBoxHiveLocal.topicCacheLocal);
+    for (Topic topic in listTopic) {
+      await topicBox.add(topic);
+    }
+  }
+
+  Future<List<Topic>> getListTopicCaching() async {
+    final dir = await getApplicationDocumentsDirectory();
+
+    Hive.init(dir.path);
+
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicCacheLocal)) {
+      Hive.registerAdapter(TopicAdapter());
+    }
+
+    final topicBox = await Hive.openBox<Topic>(KeyBoxHiveLocal.topicCacheLocal);
+    return topicBox.values.toList();
+  }
 }

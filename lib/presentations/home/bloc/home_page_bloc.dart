@@ -70,9 +70,16 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   _onInitTopicVocabulary(InitTopicVocabulary event, Emitter emit) async {
     emit(state.copyWith(isLoading: true));
 
-    List<Topic> listTopicVocab = await _vocabRepository.getAllTopicVocab();
+    List<Topic> listTopicLocal = await _vocabRepository.getListTopicCaching();
 
-    emit(state.copyWith(isLoading: false, listTopicVocab: listTopicVocab));
+    if (listTopicLocal.isEmpty) {
+      List<Topic> listTopicVocab = await _vocabRepository.getAllTopicVocab();
+      await _vocabRepository.saveListTopicLocal(listTopicVocab);
+      emit(state.copyWith(isLoading: false, listTopicVocab: listTopicVocab));
+      return;
+    }
+
+    emit(state.copyWith(isLoading: false, listTopicVocab: listTopicLocal));
   }
 
   _onInitial(HomePageInitialEvent event, Emitter emit) async {

@@ -91,4 +91,16 @@ class VocabRepository {
       ListVocabularyTopic listVocabulary) async {
     await topicVocabServices.saveAListVocabularyTopicLocal(listVocabulary);
   }
+
+  ///For local storage
+  /// Get all list of topic from local storage
+  Future<List<Topic>> getListTopicCaching() async {
+    return await topicVocabServices.getListTopicCaching();
+  }
+
+  ///For local storage
+  /// Save a list of topic to local storage
+  Future<void> saveListTopicLocal(List<Topic> listTopic) async {
+    await topicVocabServices.saveListTopicLocal(listTopic);
+  }
 }

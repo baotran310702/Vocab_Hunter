@@ -51,6 +51,7 @@ class KeyBoxHiveLocal {
   static const String vocabTranslatedLocal = 'vocabTranslatedLocal';
   static const String listVocabTranslatedLocal = 'listVocabTranslatedLocal';
   static const String listVocabTopicLocal = 'keyBoxListVocabTopicLocal';
+  static const String topicCacheLocal = 'topicCacheLocal';
 }
 
 class APIKeys {

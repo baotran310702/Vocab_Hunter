@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocab_topic.dart';
@@ -23,8 +24,94 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
   PractiseVocabBloc() : super(PractiseVocabState.initial()) {
     on<PractiseVocabInitial>(_onPractiseVocabInit);
     on<ChangeVocabList>(_onChangeVocabList);
-    on<ChangeNextQuestion>(_onChangeNextQuestion);
+    on<ChangeNextQuestion>(
+      _onChangeNextQuestion,
+      transformer: droppable(),
+    );
     on<PractiseVocabTopicInitial>(_onPractiseVocabTopicInit);
+    on<ChangeNextQuestionTopicVocab>(
+      _onChangeNextQuestionTopicVocab,
+      transformer: droppable(),
+    );
+  }
+
+  _onChangeNextQuestionTopicVocab(
+      ChangeNextQuestionTopicVocab event, Emitter emit) async {
+    if (state.currentQuestionIndex == state.questionTopicVocabList.length - 1) {
+      List<VocabTopic> currentAnswerList = event.isTrue
+          ? List.from(state.correctAnswerTopicVocabList)
+          : List.from(state.failedAnswerTopicVocabList);
+      currentAnswerList
+          .add(state.questionTopicVocabList[state.currentQuestionIndex]);
+
+      await Future.wait([
+        ...state.correctAnswerTopicVocabList
+            .map((e) => _updateNotificationList((
+                  VocabularyRemote.convertFromVocabTopic(
+                      vocabTopic: e, isVietNamese: false),
+                  VocabularyRemote.convertFromVocabTopic(
+                      vocabTopic: e, isVietNamese: true),
+                ), true))
+            .toList(),
+        ...state.failedAnswerTopicVocabList
+            .map((e) => _updateNotificationList((
+                  VocabularyRemote.convertFromVocabTopic(
+                      vocabTopic: e, isVietNamese: false),
+                  VocabularyRemote.convertFromVocabTopic(
+                      vocabTopic: e, isVietNamese: true),
+                ), true))
+            .toList(),
+      ]);
+
+      emit(
+        AnswerResult(
+          message: "Congratulations!",
+          isTopicVocab: true,
+          isLoading: state.isLoading,
+          currentQuestionIndex: state.currentQuestionIndex,
+          currentUser: state.currentUser,
+          currentListId: state.currentListId,
+          questionList: state.questionList,
+          correctAnswerList: state.correctAnswerList,
+          failedAnswerList: state.failedAnswerList,
+          sentences: state.sentences,
+          questionTopicVocabList: state.questionTopicVocabList,
+          correctAnswerTopicVocabList: event.isTrue
+              ? currentAnswerList
+              : state.correctAnswerTopicVocabList,
+          failedAnswerTopicVocabList: event.isTrue
+              ? state.failedAnswerTopicVocabList
+              : currentAnswerList,
+        ),
+      );
+
+      return;
+    }
+    if (event.isTrue) {
+      List<VocabTopic> newCorrectVocabTopicList =
+          List.from(state.correctAnswerTopicVocabList);
+      newCorrectVocabTopicList
+          .add(state.questionTopicVocabList[state.currentQuestionIndex]);
+
+      print("correct lenasdasdasdasd ${newCorrectVocabTopicList.length}");
+
+      emit(state.copyWith(
+          correctAnswerTopicVocabList: newCorrectVocabTopicList,
+          currentQuestionIndex: state.currentQuestionIndex + 1));
+    } else {
+      List<VocabTopic> newFailedVocabTopicList =
+          List.from(state.failedAnswerTopicVocabList);
+      newFailedVocabTopicList
+          .add(state.questionTopicVocabList[state.currentQuestionIndex]);
+
+      print("correct lenasdasdasdasd ${newFailedVocabTopicList.length}");
+
+      emit(
+        state.copyWith(
+            failedAnswerTopicVocabList: newFailedVocabTopicList,
+            currentQuestionIndex: state.currentQuestionIndex + 1),
+      );
+    }
   }
 
   _onPractiseVocabTopicInit(
@@ -32,9 +119,40 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
     emit(state.copyWith(isLoading: true));
     ListVocabularyTopic listVocabTopicLocal = await vocabRepository
         .getOneListTopicVocabularyTopicLocal(subTopicId: event.subTopicId);
+
+    List<VocabTopic> tempList =
+        List.from(listVocabTopicLocal.vocabularyByTopic);
+
+    tempList.shuffle();
+
+    int blankWordListLenth = tempList.length ~/ 3;
+
+    List<VocabTopic> currentFillBlankWords = [];
+    for (int i = 0; i < blankWordListLenth; i++) {
+      int index = Random().nextInt(tempList.length);
+      if (currentFillBlankWords
+              .indexWhere((element) => element.word == tempList[index].word) !=
+          -1) {
+        i--;
+        continue;
+      }
+      currentFillBlankWords.add(tempList[index]);
+    }
+
+    /// init sentences for filling question
+
+    Map<String, String> sentences = {};
+
+    for (int i = 0; i < currentFillBlankWords.length; i++) {
+      sentences.addAll({
+        currentFillBlankWords[i].word: currentFillBlankWords[i].exampleEnglish
+      });
+    }
+
     emit(state.copyWith(
       isLoading: false,
       questionTopicVocabList: listVocabTopicLocal.vocabularyByTopic,
+      sentences: sentences,
       currentQuestionIndex: 1,
     ));
   }
@@ -156,6 +274,7 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
         AnswerResult(
           message: "Congratulations!",
           isLoading: state.isLoading,
+          isTopicVocab: false,
           currentQuestionIndex: state.currentQuestionIndex,
           currentUser: state.currentUser,
           currentListId: state.currentListId,

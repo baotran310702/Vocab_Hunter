@@ -97,8 +97,10 @@ class PractiseVocabState extends Equatable {
 
 class AnswerResult extends PractiseVocabState {
   final String message;
+  final bool isTopicVocab;
   const AnswerResult({
     required this.message,
+    required this.isTopicVocab,
     required bool isLoading,
     required int currentQuestionIndex,
     required UserModel currentUser,

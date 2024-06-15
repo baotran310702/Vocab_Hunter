@@ -40,7 +40,7 @@ class _QuestionVocabTopicState extends State<QuestionVocabTopic> {
 
         if (state.questionTopicVocabList.isNotEmpty) {
           if (state.currentQuestionIndex <
-                  state.questionTopicVocabList.length &&
+                  state.questionTopicVocabList.length  &&
               state.sentences.containsKey(state
                   .questionTopicVocabList[state.currentQuestionIndex].word)) {
             return FillBlankTopicVocabQuesiton(
@@ -73,6 +73,8 @@ class _QuestionVocabTopicState extends State<QuestionVocabTopic> {
       Toasty.disposeAllToasty();
     }
 
-    context.read<PractiseVocabBloc>().add(ChangeNextQuestion(isTrue: isTrue));
+    context
+        .read<PractiseVocabBloc>()
+        .add(ChangeNextQuestionTopicVocab(isTrue: isTrue));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,7 +41,7 @@ class AuthenticationStatePage extends State<AuthenticationPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(),
+                  LoadingPage(message: "Authenticating..."),
                 ],
               ),
             ),

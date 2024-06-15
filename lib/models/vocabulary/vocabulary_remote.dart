@@ -1,3 +1,4 @@
+import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/services/translate_services.dart';
 import 'package:english_learner/utils/constants.dart';
 import 'package:hive/hive.dart';
@@ -50,6 +51,17 @@ class VocabularyRemote extends VocabularyRemoteService {
     license =
         json['license'] != null ? License.fromJson(json['license']) : null;
     sourceUrls = json['sourceUrls'].cast<String>();
+  }
+  //factory VocabularyRemote from VocabTopic
+  factory VocabularyRemote.convertFromVocabTopic(
+      {required VocabTopic vocabTopic, required bool isVietNamese}) {
+    return VocabularyRemote(
+      word: isVietNamese ? vocabTopic.meaning : vocabTopic.word,
+      phonetic: vocabTopic.pronounce,
+      meanings: [
+        Meanings(definitions: [Definitions(definition: vocabTopic.meaning)])
+      ],
+    );
   }
 
   //create an empty Vocabularyremote

@@ -49,10 +49,18 @@ class _FillBlankTopicVocabQuesitonState
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                "Fill the blank with the right word!",
-                style: TextStyle(fontSize: 18),
-              ),
+              splitedSentences.$2 == ""
+                  ? const Text(
+                      "Choose the word that most relatived.",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                  : const Text(
+                      "Fill the blank with the right word!",
+                      style: TextStyle(fontSize: 20),
+                    ),
               const SizedBox(height: 10),
               RichText(
                 text: TextSpan(
@@ -65,14 +73,23 @@ class _FillBlankTopicVocabQuesitonState
                         fontSize: 18,
                       ),
                     ),
-                    const TextSpan(
-                      text: "______",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        color: Colors.black,
-                        fontSize: 18,
-                      ),
-                    ),
+                    splitedSentences.$2 == ""
+                        ? const TextSpan(
+                            text: "",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black,
+                              fontSize: 18,
+                            ),
+                          )
+                        : const TextSpan(
+                            text: "______",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black,
+                              fontSize: 18,
+                            ),
+                          ),
                     TextSpan(
                       text: splitedSentences.$2.contains(".")
                           ? splitedSentences.$2
@@ -160,6 +177,9 @@ class _FillBlankTopicVocabQuesitonState
     String lowerCaseSentences = currentSentence.toLowerCase();
     String lowerCaseWord = word.toLowerCase();
     int index = lowerCaseSentences.indexOf(lowerCaseWord);
+    if (index == -1) {
+      return (currentSentence, "");
+    }
     return (
       currentSentence.substring(0, index),
       currentSentence.substring(index + lowerCaseWord.length)

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/presentations/home/views/flash_card_topic_page.dart';
 import 'package:english_learner/presentations/home/views/list_vocab_topic_page.dart';
+import 'package:english_learner/presentations/practise_vocab/practise_vocab_topic.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/extension.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,7 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
   }
 
   Future<void> _checkImageUrl(String url) async {
+    if (url.isEmpty) return;
     try {
       final response = await Dio().get(url);
       if (response.statusCode == 200) {
@@ -143,9 +145,21 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                           textAlign: TextAlign.center,
                           maxLines: 2,
                         ),
-                        CustomButtonTopic(
-                          amountWord: widget.subTopic.amountVocab,
-                          topicId: widget.subTopic.subTopicId,
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return PractiseVocabTopic(
+                                subTopicId: widget.subTopic.subTopicId.isEmpty
+                                    ? widget.subTopic.name
+                                    : widget.subTopic.subTopicId,
+                              );
+                            }));
+                          },
+                          child: CustomButtonTopic(
+                            amountWord: widget.subTopic.amountVocab,
+                            topicId: widget.subTopic.subTopicId,
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

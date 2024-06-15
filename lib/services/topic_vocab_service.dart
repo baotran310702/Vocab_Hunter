@@ -87,6 +87,26 @@ class TopicVocabServices {
         );
   }
 
+  Future<ListVocabularyTopic> getOneListTopicVocabularyTopicLocal(
+      String subTopicId) async {
+    final dir = await getApplicationDocumentsDirectory();
+
+    Hive.init(dir.path);
+
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicVocabLocalNew)) {
+      Hive.registerAdapter(VocabTopicAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListTopicVocabLocal)) {
+      Hive.registerAdapter(ListVocabularyTopicAdapter());
+    }
+
+    final topicVocabBox = await Hive.openBox<ListVocabularyTopic>(
+        KeyBoxHiveLocal.listVocabTopicLocal);
+    ListVocabularyTopic result = topicVocabBox.values.firstWhere((element) =>
+        element.topic.trim().toLowerCase() == subTopicId.trim().toLowerCase());
+    return result;
+  }
+
   Future<ListVocabularyTopic> getOneListTopicVocabularyTopic(
       String topicId, String subTopicId) async {
     if (topicId.toLowerCase() == 'toeic') {
@@ -267,6 +287,9 @@ class TopicVocabServices {
 
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicCacheLocal)) {
       Hive.registerAdapter(TopicAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveSubTopicLocal)) {
+      Hive.registerAdapter(SubTopicAdapter());
     }
 
     final topicBox = await Hive.openBox<Topic>(KeyBoxHiveLocal.topicCacheLocal);

@@ -4,15 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProgressBar extends StatelessWidget {
-  const ProgressBar({super.key});
+  final bool? isTopicVocab;
+  const ProgressBar({super.key, this.isTopicVocab});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PractiseVocabBloc, PractiseVocabState>(
       builder: (context, state) {
-        double leftPercent = state.questionList.isNotEmpty
-            ? state.currentQuestionIndex / (state.questionList.length - 1)
-            : 0;
+        double leftPercent = isTopicVocab != null && isTopicVocab == true
+            ? state.currentQuestionIndex /
+                (state.questionTopicVocabList.length - 1)
+            : state.questionList.isNotEmpty
+                ? state.currentQuestionIndex / (state.questionList.length - 1)
+                : 0;
+
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
@@ -22,7 +27,7 @@ class ProgressBar extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                "Progress: ${state.currentQuestionIndex}/${(state.questionList.length - 1)}",
+                "Progress: ${state.currentQuestionIndex}/${isTopicVocab != null && isTopicVocab == true ? (state.questionTopicVocabList.length - 1) : (state.questionList.length - 1)}",
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

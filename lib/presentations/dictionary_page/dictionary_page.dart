@@ -1,6 +1,7 @@
 import 'package:english_learner/models/vocabulary/vocab_translated_local.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
+import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/home/widgets/header_informations.dart';
 import 'package:english_learner/presentations/home/widgets/vocabulary_item.dart';
 import 'package:english_learner/utils/colors.dart';
@@ -85,7 +86,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                     const SizedBox(height: 10),
                                     Flexible(
                                       child: state.isLoading
-                                          ? const SizedBox()
+                                          ? const LoadingPage(
+                                              message: "Loading history...")
                                           : SingleChildScrollView(
                                               scrollDirection: Axis.vertical,
                                               child: Column(
@@ -261,6 +263,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                       isTapResult = false;
                       currentVocabulary = state.searchedVocabulary[index];
                     });
+
+                    context.read();
 
                     vocabInputController.text =
                         state.searchedVocabulary[index].vocabId;

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
@@ -20,8 +18,6 @@ class TopicVocabularyBloc extends Bloc<TopicVocabEvent, TopicVocabularyState> {
 
   _onGetVocabTopic(GetVocabTopicEvent event, Emitter emit) async {
     emit(state.copyWith(isLoading: true));
-    CacheTopicChoosen topicCache = CacheTopicChoosen();
-    String topicId = topicCache.getTopicId();
     String subTopicId = event.subTopic.subTopicId;
 
     List<ListVocabularyTopic> listVocabTopic =

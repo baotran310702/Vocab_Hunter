@@ -71,11 +71,19 @@ class VocabRepository {
   }
 
   ///For local storage
-  /// Get a list of vocabulary topic from local storage
+  /// Get a list of vocabulary topic remotely from firebase
   Future<ListVocabularyTopic> getOneListTopicVocabularyTopic(
       {required String topicId, required String subTopicId}) async {
     return await topicVocabServices.getOneListTopicVocabularyTopic(
         topicId, subTopicId);
+  }
+
+  ///For local storage
+  /// Get a list of vocabulary topic from local storage
+  Future<ListVocabularyTopic> getOneListTopicVocabularyTopicLocal(
+      {required String subTopicId}) async {
+    return await topicVocabServices
+        .getOneListTopicVocabularyTopicLocal(subTopicId);
   }
 
   ///For local storage

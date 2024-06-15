@@ -2,10 +2,13 @@ import 'dart:math';
 
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/user_vocab.dart';
+import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
+import 'package:english_learner/models/vocabulary_topic/list_vocabulary_topic.dart';
 import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/models/word_notification.dart';
 import 'package:english_learner/repository/gemini_repository.dart';
+import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:english_learner/services/user_hive_local.dart';
 import 'package:english_learner/services/word_notification_local.dart';
 import 'package:equatable/equatable.dart';
@@ -16,10 +19,24 @@ part 'practise_vocab_state.dart';
 
 class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
   final GeminiRepository geminiRepository = GeminiRepository();
+  final VocabRepository vocabRepository = VocabRepository();
   PractiseVocabBloc() : super(PractiseVocabState.initial()) {
     on<PractiseVocabInitial>(_onPractiseVocabInit);
     on<ChangeVocabList>(_onChangeVocabList);
     on<ChangeNextQuestion>(_onChangeNextQuestion);
+    on<PractiseVocabTopicInitial>(_onPractiseVocabTopicInit);
+  }
+
+  _onPractiseVocabTopicInit(
+      PractiseVocabTopicInitial event, Emitter emit) async {
+    emit(state.copyWith(isLoading: true));
+    ListVocabularyTopic listVocabTopicLocal = await vocabRepository
+        .getOneListTopicVocabularyTopicLocal(subTopicId: event.subTopicId);
+    emit(state.copyWith(
+      isLoading: false,
+      questionTopicVocabList: listVocabTopicLocal.vocabularyByTopic,
+      currentQuestionIndex: 1,
+    ));
   }
 
   _onPractiseVocabInit(PractiseVocabInitial event, Emitter emit) async {
@@ -131,7 +148,7 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
             .map((e) => _updateNotificationList((e.$1, e.$2), true))
             .toList(),
         ...state.failedAnswerList
-            .map((e) => _updateNotificationList((e.$1, e.$2), true))
+            .map((e) => _updateNotificationList((e.$1, e.$2), false))
             .toList(),
       ]);
 
@@ -148,6 +165,9 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
           failedAnswerList:
               event.isTrue ? state.failedAnswerList : currentAnswerList,
           sentences: state.sentences,
+          questionTopicVocabList: state.questionTopicVocabList,
+          correctAnswerTopicVocabList: state.correctAnswerTopicVocabList,
+          failedAnswerTopicVocabList: state.failedAnswerTopicVocabList,
         ),
       );
 

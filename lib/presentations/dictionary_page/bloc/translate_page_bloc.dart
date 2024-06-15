@@ -62,7 +62,10 @@ class TranslatePageBloc extends Bloc<TranslateEvent, TranslatePageState> {
         await _translateRepository.translateLocal(event.word);
 
     emit(state.copyWith(
-        isLoading: false, searchedVocabulary: result, isLocal: true));
+      isLoading: false,
+      searchedVocabulary: result,
+      isLocal: true,
+    ));
   }
 
   _onLoadingSearch(LoadingSearch event, Emitter<TranslatePageState> emit) {

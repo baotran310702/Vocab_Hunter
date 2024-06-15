@@ -7,6 +7,21 @@ class PractiseVocabInitial extends PractiseVocabEvent {
   PractiseVocabInitial({this.vocabularies});
 }
 
+class PractiseVocabTopicInitial extends PractiseVocabEvent {
+  final String subTopicId;
+  PractiseVocabTopicInitial({required this.subTopicId});
+}
+
+class SubmitAnswerTopicVocab extends PractiseVocabEvent {
+  final String answer;
+  SubmitAnswerTopicVocab({required this.answer});
+}
+
+class ChangeNextQuestionTopicVocab extends PractiseVocabEvent {
+  final bool isTrue;
+  ChangeNextQuestionTopicVocab({required this.isTrue});
+}
+
 class ChangeVocabList extends PractiseVocabEvent {
   final String listId;
   ChangeVocabList({required this.listId});

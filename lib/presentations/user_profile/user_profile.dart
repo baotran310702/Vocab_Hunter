@@ -1,5 +1,5 @@
 import 'package:english_learner/models/achievement.dart';
-import 'package:english_learner/presentations/test/user_test.dart';
+import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/presentations/user_profile/views/achievement_page.dart';
 import 'package:english_learner/presentations/user_profile/views/change_password_page.dart';
 import 'package:english_learner/presentations/user_profile/views/user_informations.dart';
@@ -22,204 +22,280 @@ class UserProfile extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       backgroundColor: AppColors.backgroundHeader,
-      body: SafeArea(
-        child: Container(
-          color: AppColors.backgroundHeader,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const HeaderInformations(
-                  title: "",
-                  description: "",
-                  isUserProifile: true,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.backgroundColorAchievement,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 12,
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 16, right: 16, bottom: 4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Your Achievement",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const AchievementPage();
-                                }));
-                              },
-                              child: const Text(
-                                "See more...",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            for (int i = 0;
-                                i < Achievement.defaultListAchievement.length;
-                                i++)
-                              if (Achievement.defaultListAchievement[i].total ==
-                                  Achievement.defaultListAchievement[i].amount)
-                                BoxAchievement(
-                                  icon: Image.asset(
-                                    CustomConverter.convertAchievement(
-                                        Achievement
-                                            .defaultListAchievement[i].type),
-                                    width: 80,
-                                    height: 80,
-                                  ),
-                                  title: Achievement
-                                      .defaultListAchievement[i].title,
-                                ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
+      body: BlocBuilder<ManageUserProfileBloc, ManageUserState>(
+        builder: (context, state) {
+          bool isHaveAchievement = false;
+          if (state.userModel.achievements.isNotEmpty) {
+            for (int i = 0; i < state.userModel.achievements.length; i++) {
+              if (state.userModel.achievements[i].total ==
+                  state.userModel.achievements[i].amount) {
+                isHaveAchievement = true;
+                break;
+              }
+            }
+          }
+          return SafeArea(
+            child: Container(
+              color: AppColors.backgroundHeader,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 16, right: 16, bottom: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    const HeaderInformations(
+                      title: "",
+                      description: "",
+                      isUserProifile: true,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.backgroundColorAchievement,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 12,
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Setting",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, bottom: 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Your Achievement",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return const AchievementPage();
+                                    }));
+                                  },
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return const AchievementPage();
+                                      }));
+                                    },
+                                    child: const Text(
+                                      "Explore More...",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+                          isHaveAchievement
+                              ? Center(
+                                  child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0, horizontal: 60),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          const Text(
+                                            "Receive achievemement by completed it!, ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.clip,
+                                            maxLines: 2,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) {
+                                                return const AchievementPage();
+                                              }));
+                                            },
+                                            child: Text(
+                                              "Explore now?",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.red[800],
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle: FontStyle.italic,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.clip,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ))
+                              : SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      for (int i = 0;
+                                          i <
+                                              state.userModel.achievements
+                                                  .length;
+                                          i++)
+                                        if (state.userModel.achievements[i]
+                                                .total ==
+                                            state.userModel.achievements[i]
+                                                .amount)
+                                          BoxAchievement(
+                                            icon: Image.asset(
+                                              CustomConverter
+                                                  .convertAchievement(state
+                                                      .userModel
+                                                      .achievements[i]
+                                                      .type),
+                                              width: 80,
+                                              height: 80,
+                                            ),
+                                            title: state.userModel
+                                                .achievements[i].title,
+                                          ),
+                                    ],
+                                  ),
+                                ),
                         ],
                       ),
                     ),
-                    Items(
-                      text: "User Informations",
-                      icon: AppIcons.userProfile,
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const UserInformations();
-                        }));
-                      },
-                    ),
-                    Items(
-                      text: "Change Password",
-                      icon: AppIcons.security,
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const ChangePasswordPage();
-                        }));
-                      },
-                    ),
-                    Items(
-                      text: "Targets",
-                      icon: AppIcons.cup,
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const UserTest();
-                        }));
-                      },
-                    ),
-                    Items(
-                      text: "Your Favourite",
-                      icon: AppIcons.heartUnselected,
-                      onTap: () {},
-                    ),
-                    Items(
-                      text: "In Progressing",
-                      icon: AppIcons.following,
-                      onTap: () {},
-                    ),
-                    Items(
-                      text: "Notifications",
-                      icon: AppIcons.alert,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const SettingNotifications();
-                            },
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding:
+                              EdgeInsets.only(left: 16, right: 16, bottom: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Setting",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
-                        );
-                      },
+                        ),
+                        Items(
+                          text: "User Informations",
+                          icon: AppIcons.userProfile,
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const UserInformations();
+                            }));
+                          },
+                        ),
+                        Items(
+                          text: "Change Password",
+                          icon: AppIcons.security,
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const ChangePasswordPage();
+                            }));
+                          },
+                        ),
+                        // Items(
+                        //   text: "Targets",
+                        //   icon: AppIcons.cup,
+                        //   onTap: () {
+                        //     Navigator.push(context,
+                        //         MaterialPageRoute(builder: (context) {
+                        //       return const UserTest();
+                        //     }));
+                        //   },
+                        // ),
+                        Items(
+                          text: "Your Favourite",
+                          icon: AppIcons.heartUnselected,
+                          onTap: () {},
+                        ),
+                        Items(
+                          text: "In Progressing",
+                          icon: AppIcons.following,
+                          onTap: () {},
+                        ),
+                        Items(
+                          text: "Notifications",
+                          icon: AppIcons.alert,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const SettingNotifications();
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                        Items(
+                          text: "Language",
+                          icon: AppIcons.language,
+                          onTap: () {},
+                        ),
+                      ],
                     ),
-                    Items(
-                      text: "Language",
-                      icon: AppIcons.language,
-                      onTap: () {},
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(
+                          MediaQuery.of(context).size.width * 0.9,
+                          52,
+                        ),
+                        backgroundColor: AppColors.colorExitButton,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                      ),
+                      onPressed: () {
+                        _onLogout();
+                        Navigator.pushReplacementNamed(context, '/');
+                      },
+                      child: const Text("Log Out"),
+                    ),
+                    const SizedBox(
+                      height: 16,
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 12,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: Size(
-                      MediaQuery.of(context).size.width * 0.9,
-                      52,
-                    ),
-                    backgroundColor: AppColors.colorExitButton,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                  ),
-                  onPressed: () {
-                    _onLogout();
-                    Navigator.pushReplacementNamed(context, '/');
-                  },
-                  child: const Text("Log Out"),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

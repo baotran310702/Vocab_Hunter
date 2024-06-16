@@ -1,6 +1,5 @@
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/vocabulary/vocab_topic.dart';
-import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/home/bloc/home_page_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/vocabulary_item.dart';

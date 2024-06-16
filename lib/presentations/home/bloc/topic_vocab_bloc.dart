@@ -1,7 +1,6 @@
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
-import 'package:english_learner/utils/cache_topic_choosen.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,3 +1,4 @@
+import 'package:english_learner/models/achievement.dart';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
@@ -46,7 +47,7 @@ class _UserInformationsState extends State<UserInformations> {
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage(AppIcons.bathingBoi),
+                      image: AssetImage(AppIcons.capyBathing),
                       fit: BoxFit.fill,
                     ),
                     color: Colors.amber,
@@ -199,13 +200,14 @@ class _UserInformationsState extends State<UserInformations> {
 
   _onSave({required String phoneNumber}) {
     if (validateMobile(phoneNumber) != null) {
-      print("number sai dinh dang");
+      //TODO: Dialog warning maybe here, so i have to custom some dialog, both warning dialog & loading dialog
       return;
     }
     UserModel currentUsermodel =
         context.read<ManageUserProfileBloc>().state.userModel;
-    UserModel newUserModel =
-        currentUsermodel.copyWith(phoneNumber: phoneNumber);
+    UserModel newUserModel = currentUsermodel.copyWith(
+        phoneNumber: phoneNumber,
+        achievements: Achievement.defaultListAchievement);
     context
         .read<ManageUserProfileBloc>()
         .add(UpdateUserInformation(newUserModel: newUserModel));

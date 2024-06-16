@@ -1,4 +1,5 @@
 class AppIcons {
+  //png icons
   static const String backBtn = "assets/icons/back_btn.png";
   static const String dictionaryIcon = "assets/icons/dictionary_icon.png";
   static const String bell = "assets/icons/bell.png";
@@ -32,15 +33,26 @@ class AppIcons {
   static const String alert = "assets/icons/alert.png";
   static const String security = "assets/icons/security.png";
   static const String following = "assets/icons/following.png";
-  static const String bathingBoi = "assets/icons/bathing_boi.png";
-  static const String sleepyBoi = "assets/icons/sleepy_boi.png";
-  static const String writingBoi = "assets/icons/writing_boi.png";
-  static const String eatingBoi = "assets/icons/eating_boi.png";
   static const String orange = "assets/icons/orange.png";
   static const String phone = "assets/icons/phone.png";
   static const String mail = "assets/icons/mail.png";
   static const String bin = "assets/icons/bin.png";
   static const String train = "assets/icons/train.png";
+  //capybara icon
+  static const String capyEating = "assets/icons/capy_an.png";
+  static const String capySleeping = "assets/icons/sleepy_boi.png";
+  static const String capyWritting = "assets/icons/capy_viet_bai.png";
+  static const String capyBathing = "assets/icons/bathing_boi.png";
+  static const String capyGraduate1 = "assets/icons/eating_boi.png";
+  static const String capyGraduate = "assets/icons/writing_boi.png";
+  static const String capyCow = "assets/icons/capy_bosua.png";
+  static const String capyCoca = "assets/icons/capy_coca.png";
+  static const String capyGuitar = "assets/icons/capy_guitar.png";
+  static const String capyCooking = "assets/icons/capy_nau_an.png";
+  static const String capyRabbit = "assets/icons/capy_tho.png";
+  static const String capyDoctor = "assets/icons/capy_tien_si.png";
+
+  //gif icons
   static const String animation = "assets/icons/animation.gif";
   static const String loading = "assets/icons/loading.gif";
   static const String bubble = "assets/icons/bubble.gif";

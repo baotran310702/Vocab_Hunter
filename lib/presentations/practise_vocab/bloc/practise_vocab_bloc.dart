@@ -93,7 +93,7 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
       newCorrectVocabTopicList
           .add(state.questionTopicVocabList[state.currentQuestionIndex]);
 
-      print("correct lenasdasdasdasd ${newCorrectVocabTopicList.length}");
+
 
       emit(state.copyWith(
           correctAnswerTopicVocabList: newCorrectVocabTopicList,
@@ -104,7 +104,6 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
       newFailedVocabTopicList
           .add(state.questionTopicVocabList[state.currentQuestionIndex]);
 
-      print("correct lenasdasdasdasd ${newFailedVocabTopicList.length}");
 
       emit(
         state.copyWith(

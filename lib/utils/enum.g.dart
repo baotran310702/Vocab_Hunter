@@ -14,32 +14,72 @@ class AchievementTypeAdapter extends TypeAdapter<AchievementType> {
   AchievementType read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return AchievementType.eatingBoi;
+        return AchievementType.capyEating;
       case 1:
-        return AchievementType.sleepyBoi;
+        return AchievementType.capySleeping;
       case 2:
-        return AchievementType.writingBoi;
+        return AchievementType.capyWritting;
       case 3:
-        return AchievementType.bathingBoi;
+        return AchievementType.capyBathing;
+      case 4:
+        return AchievementType.capyGraduate;
+      case 5:
+        return AchievementType.capyGraduate1;
+      case 6:
+        return AchievementType.capyCow;
+      case 7:
+        return AchievementType.capyCoca;
+      case 8:
+        return AchievementType.capyGuitar;
+      case 9:
+        return AchievementType.capyCooking;
+      case 10:
+        return AchievementType.capyRabbit;
+      case 11:
+        return AchievementType.capyDoctor;
       default:
-        return AchievementType.eatingBoi;
+        return AchievementType.capyEating;
     }
   }
 
   @override
   void write(BinaryWriter writer, AchievementType obj) {
     switch (obj) {
-      case AchievementType.eatingBoi:
+      case AchievementType.capyEating:
         writer.writeByte(0);
         break;
-      case AchievementType.sleepyBoi:
+      case AchievementType.capySleeping:
         writer.writeByte(1);
         break;
-      case AchievementType.writingBoi:
+      case AchievementType.capyWritting:
         writer.writeByte(2);
         break;
-      case AchievementType.bathingBoi:
+      case AchievementType.capyBathing:
         writer.writeByte(3);
+        break;
+      case AchievementType.capyGraduate:
+        writer.writeByte(4);
+        break;
+      case AchievementType.capyGraduate1:
+        writer.writeByte(5);
+        break;
+      case AchievementType.capyCow:
+        writer.writeByte(6);
+        break;
+      case AchievementType.capyCoca:
+        writer.writeByte(7);
+        break;
+      case AchievementType.capyGuitar:
+        writer.writeByte(8);
+        break;
+      case AchievementType.capyCooking:
+        writer.writeByte(9);
+        break;
+      case AchievementType.capyRabbit:
+        writer.writeByte(10);
+        break;
+      case AchievementType.capyDoctor:
+        writer.writeByte(11);
         break;
     }
   }

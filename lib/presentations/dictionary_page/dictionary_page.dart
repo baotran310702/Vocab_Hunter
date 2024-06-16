@@ -3,7 +3,6 @@ import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/header_informations.dart';
 import 'package:english_learner/presentations/home/widgets/vocabulary_item.dart';
-import 'package:english_learner/services/vocab_translated_local_service.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +48,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<TranslatePageBloc, TranslatePageState>(
       builder: (context, state) {
-        print("bloc rebuid and rebuild");
         listVocabTranslated = List.from(state
             .listVocabTranslated.listVocabTranslated
             .where((element) => element.englishWords.word != ""));

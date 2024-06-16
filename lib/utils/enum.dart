@@ -6,13 +6,29 @@ part 'enum.g.dart';
 @HiveType(typeId: KeyHiveLocal.hiveEnumAchievementTypeId)
 enum AchievementType {
   @HiveField(0)
-  eatingBoi,
+  capyEating,
   @HiveField(1)
-  sleepyBoi,
+  capySleeping,
   @HiveField(2)
-  writingBoi,
+  capyWritting,
   @HiveField(3)
-  bathingBoi,
+  capyBathing,
+  @HiveField(4)
+  capyGraduate,
+  @HiveField(5)
+  capyGraduate1,
+  @HiveField(6)
+  capyCow,
+  @HiveField(7)
+  capyCoca,
+  @HiveField(8)
+  capyGuitar,
+  @HiveField(9)
+  capyCooking,
+  @HiveField(10)
+  capyRabbit,
+  @HiveField(11)
+  capyDoctor
 }
 
 @HiveType(typeId: KeyHiveLocal.hiveEnumWordTypeId)

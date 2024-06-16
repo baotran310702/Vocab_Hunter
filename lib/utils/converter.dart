@@ -100,16 +100,94 @@ class CustomConverter {
 
   static String convertAchievement(AchievementType type) {
     switch (type) {
-      case AchievementType.bathingBoi:
-        return AppIcons.bathingBoi;
-      case AchievementType.eatingBoi:
-        return AppIcons.eatingBoi;
-      case AchievementType.sleepyBoi:
-        return AppIcons.sleepyBoi;
-      case AchievementType.writingBoi:
-        return AppIcons.writingBoi;
+      case AchievementType.capyBathing:
+        return AppIcons.capyBathing;
+      case AchievementType.capyEating:
+        return AppIcons.capyEating;
+      case AchievementType.capySleeping:
+        return AppIcons.capySleeping;
+      case AchievementType.capyWritting:
+        return AppIcons.capyWritting;
+      case AchievementType.capyGraduate:
+        return AppIcons.capyGraduate;
+      case AchievementType.capyGraduate1:
+        return AppIcons.capyGraduate1;
+      case AchievementType.capyCow:
+        return AppIcons.capyCow;
+      case AchievementType.capyCoca:
+        return AppIcons.capyCoca;
+      case AchievementType.capyGuitar:
+        return AppIcons.capyGuitar;
+      case AchievementType.capyCooking:
+        return AppIcons.capyCooking;
+      case AchievementType.capyRabbit:
+        return AppIcons.capyRabbit;
+      case AchievementType.capyDoctor:
+        return AppIcons.capyDoctor;
       default:
         return "";
+    }
+  }
+
+  static AchievementType convertToAchievementType(int number) {
+    switch (number) {
+      case 1:
+        return AchievementType.capyBathing;
+      case 2:
+        return AchievementType.capyEating;
+      case 3:
+        return AchievementType.capySleeping;
+      case 4:
+        return AchievementType.capyWritting;
+      case 5:
+        return AchievementType.capyGraduate;
+      case 6:
+        return AchievementType.capyGraduate1;
+      case 7:
+        return AchievementType.capyCow;
+      case 8:
+        return AchievementType.capyCoca;
+      case 9:
+        return AchievementType.capyGuitar;
+      case 10:
+        return AchievementType.capyCooking;
+      case 11:
+        return AchievementType.capyRabbit;
+      case 12:
+        return AchievementType.capyDoctor;
+      default:
+        throw Exception("Invalid number convert achievement: $number");
+    }
+  }
+
+  static int convertAchievementTypeToIndex(AchievementType type) {
+    switch (type) {
+      case AchievementType.capyBathing:
+        return 1;
+      case AchievementType.capyEating:
+        return 2;
+      case AchievementType.capySleeping:
+        return 3;
+      case AchievementType.capyWritting:
+        return 4;
+      case AchievementType.capyGraduate:
+        return 5;
+      case AchievementType.capyGraduate1:
+        return 6;
+      case AchievementType.capyCow:
+        return 7;
+      case AchievementType.capyCoca:
+        return 8;
+      case AchievementType.capyGuitar:
+        return 9;
+      case AchievementType.capyCooking:
+        return 10;
+      case AchievementType.capyRabbit:
+        return 11;
+      case AchievementType.capyDoctor:
+        return 12;
+      default:
+        return -1; // Hoặc giá trị nào đó để biểu thị lỗi
     }
   }
 

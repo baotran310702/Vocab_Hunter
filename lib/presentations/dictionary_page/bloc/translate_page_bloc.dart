@@ -23,7 +23,7 @@ class TranslatePageBloc extends Bloc<TranslateEvent, TranslatePageState> {
 
   _onTranslateEventInitial(
       TranslateEventInitial event, Emitter<TranslatePageState> emit) async {
-    print("bloc inited againnnnn");
+
     emit(state.copyWith(isLoading: true));
     ListVocabTranslated listVocabTranslatedVocab =
         await VocabTranslatedLocalServices().getListVocabTranslated();

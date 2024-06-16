@@ -45,7 +45,7 @@ class UserModel extends Equatable {
       rank: 0,
       learnedWords: const [],
       learningWords: const [],
-      achievements: const [],
+      achievements: Achievement.defaultListAchievement,
       phoneNumber: "",
       sex: Sex.woman,
     );

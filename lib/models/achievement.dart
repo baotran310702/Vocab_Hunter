@@ -1,4 +1,5 @@
 import 'package:english_learner/utils/constants.dart';
+import 'package:english_learner/utils/converter.dart';
 import 'package:english_learner/utils/enum.dart';
 import 'package:hive/hive.dart';
 
@@ -29,7 +30,7 @@ class Achievement {
     return Achievement(
       title: "title",
       description: "description",
-      type: AchievementType.sleepyBoi,
+      type: AchievementType.capySleeping,
       amount: 100,
       total: 150,
     );
@@ -39,7 +40,9 @@ class Achievement {
     return Achievement(
       title: json['title'].toString(),
       description: json['description'].toString(),
-      type: json['type'],
+      type: json['type'] != null
+          ? CustomConverter.convertToAchievementType(json['type'])
+          : AchievementType.capySleeping,
       amount: json['amount'],
       total: json['total'],
     );
@@ -49,7 +52,7 @@ class Achievement {
     return {
       'title': title,
       'description': description,
-      'type': type,
+      'type': CustomConverter.convertAchievementTypeToIndex(type),
       'amount': amount,
       'total': total,
     };
@@ -76,31 +79,31 @@ class Achievement {
       title: "Capy Vocab",
       description:
           "You have learned 150 words in practise room to receive this achievement.",
-      type: AchievementType.sleepyBoi,
-      amount: 15,
+      type: AchievementType.capySleeping,
+      amount: 0,
       total: 150,
     ),
     Achievement(
       title: "Capy Topics",
       description: "You have learned 5 topics to receive this achievement.",
-      type: AchievementType.writingBoi,
-      amount: 5,
+      type: AchievementType.capyWritting,
+      amount: 0,
       total: 5,
     ),
     Achievement(
       title: "Capy Hardwork",
       description:
           "Search 100 words in dictionary to receive this achievement.",
-      type: AchievementType.eatingBoi,
-      amount: 100,
+      type: AchievementType.capyGraduate1,
+      amount: 0,
       total: 100,
     ),
     Achievement(
       title: "Capy Pratise",
       description:
           "You have to completed 5 times in pratises room with no failures to receive this achievement.",
-      type: AchievementType.writingBoi,
-      amount: 1,
+      type: AchievementType.capyGraduate,
+      amount: 0,
       total: 5,
     ),
   ];

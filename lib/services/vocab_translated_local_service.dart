@@ -9,18 +9,17 @@ class VocabTranslatedLocalServices {
     final dir = await getApplicationDocumentsDirectory();
 
     Hive.init(dir.path);
+  }
 
+  /// Save the word notification data to the local database.
+  Future<void> saveVocabTranslated(
+      ListVocabTranslated listVocabTranslated) async {
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabularyTranslated)) {
       Hive.registerAdapter(VocabTranslatedLocalModelAdapter());
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListVocabTranslated)) {
       Hive.registerAdapter(ListVocabTranslatedAdapter());
     }
-  }
-
-  /// Save the word notification data to the local database.
-  Future<void> saveVocabTranslated(
-      ListVocabTranslated listVocabTranslated) async {
     final box = await Hive.openBox<ListVocabTranslated>(
         KeyBoxHiveLocal.listVocabTranslatedLocal);
     await box.put(
@@ -31,6 +30,13 @@ class VocabTranslatedLocalServices {
   ///If the word notification data already exists, it will be updated.
   Future<void> insertVocabTranslated(
       VocabTranslatedLocalModel vocabTranslatedLocal) async {
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabularyTranslated)) {
+      Hive.registerAdapter(VocabTranslatedLocalModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListVocabTranslated)) {
+      Hive.registerAdapter(ListVocabTranslatedAdapter());
+    }
+
     final box = await Hive.openBox<ListVocabTranslated>(
         KeyBoxHiveLocal.listVocabTranslatedLocal);
     ListVocabTranslated listVocabTranslated = box.get(
@@ -51,6 +57,12 @@ class VocabTranslatedLocalServices {
 
   /// Get the word notification data from the local database.
   Future<ListVocabTranslated> getListVocabTranslated() async {
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabularyTranslated)) {
+      Hive.registerAdapter(VocabTranslatedLocalModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListVocabTranslated)) {
+      Hive.registerAdapter(ListVocabTranslatedAdapter());
+    }
     final box = await Hive.openBox<ListVocabTranslated>(
         KeyBoxHiveLocal.listVocabTranslatedLocal);
     ListVocabTranslated listVocabTranslated = box.get(
@@ -62,6 +74,12 @@ class VocabTranslatedLocalServices {
 
   ///Clear all word notification data in the local database.
   Future<void> clearAllVocabTranslated() async {
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveVocabularyTranslated)) {
+      Hive.registerAdapter(VocabTranslatedLocalModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveListVocabTranslated)) {
+      Hive.registerAdapter(ListVocabTranslatedAdapter());
+    }
     final box = await Hive.openBox<ListVocabTranslated>(
         KeyBoxHiveLocal.listVocabTranslatedLocal);
     await box.clear();

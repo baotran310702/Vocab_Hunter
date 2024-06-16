@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 
 class LoadingPage extends StatelessWidget {
   final String message;
-  const LoadingPage({super.key, required this.message});
+  final double? customHeight;
+  const LoadingPage({super.key, required this.message, this.customHeight});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
+      height: customHeight ?? MediaQuery.of(context).size.height,
       color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

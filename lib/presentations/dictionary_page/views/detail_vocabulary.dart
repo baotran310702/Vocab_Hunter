@@ -2,6 +2,7 @@ import 'package:english_learner/models/vocabulary/vocab_translated_local.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
 import 'package:english_learner/presentations/dictionary_page/widgets/pronounce_word.dart';
+import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/home/widgets/back_button.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/converter.dart';
@@ -32,54 +33,51 @@ class _DetailVocabularyState extends State<DetailVocabulary>
   @override
   void initState() {
     super.initState();
-
     _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
   void dispose() {
-    super.dispose();
     _pageViewController.dispose();
     _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TranslatePageBloc()
-        ..add(TranslateWordRemote(word: widget.word ?? "")),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.word?.capitalize() ??
-              widget.vocabTranslatedLocal?.englishWords.word?.capitalize() ??
-              ""),
-          leading: const ButtonBack(),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: const [
-              Tab(
-                text: "Vietnamese - English",
-              ),
-              Tab(
-                text: "English - English",
-              ),
-            ],
-          ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Text(widget.word?.capitalize() ??
+            widget.vocabTranslatedLocal?.englishWords.word?.capitalize() ??
+            ""),
+        leading: const ButtonBack(),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(
+              text: "Vietnamese - English",
+            ),
+            Tab(
+              text: "English - English",
+            ),
+          ],
         ),
-        body: SafeArea(
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              DetailVocabularyPage(
-                isVietnamese: false,
-                vocabularyRemote: widget.vocabTranslatedLocal,
-              ),
-              DetailVocabularyPage(
-                isVietnamese: true,
-                vocabularyRemote: widget.vocabTranslatedLocal,
-              ),
-            ],
-          ),
+      ),
+      body: SafeArea(
+        child: TabBarView(
+          controller: _tabController,
+          children: [
+            DetailVocabularyPage(
+              isVietnamese: false,
+              vocabularyRemote: widget.vocabTranslatedLocal,
+            ),
+            DetailVocabularyPage(
+              isVietnamese: true,
+              vocabularyRemote: widget.vocabTranslatedLocal,
+            ),
+          ],
         ),
       ),
     );
@@ -112,7 +110,12 @@ class _DetailVocabularyPageState extends State<DetailVocabularyPage> {
         builder: (context, state) {
           if (state.currentVocabularyRemote == null || state.isLoading) {
             if (widget.vocabularyRemote == null) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: LoadingPage(
+                  message: "Translating...",
+                  customHeight: MediaQuery.of(context).size.height * 0.6,
+                ),
+              );
             }
           }
           VocabularyRemote currentVocabularyRemote = widget.isVietnamese
@@ -125,6 +128,8 @@ class _DetailVocabularyPageState extends State<DetailVocabularyPage> {
 
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
@@ -138,7 +143,8 @@ class _DetailVocabularyPageState extends State<DetailVocabularyPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${currentVocabularyRemote.word}",
+                            currentVocabularyRemote.word?.trim().capitalize() ??
+                                "",
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 24,
@@ -283,8 +289,8 @@ class BoxMeaning extends StatelessWidget {
               child: Text(
                 isVietnamese != null && isVietnamese == true
                     ? CustomConverter.convertVietnameseWordType(
-                        meanings.partOfSpeech?.capitalize() ?? "")
-                    : meanings.partOfSpeech?.capitalize() ?? "",
+                        meanings.partOfSpeech?.trim().capitalize() ?? "")
+                    : meanings.partOfSpeech?.trim().capitalize() ?? "",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -307,7 +313,7 @@ class BoxMeaning extends StatelessWidget {
                                   definition.definition?.trim().capitalize() !=
                                       "."
                               ? Text(
-                                  "- ${definition.definition?.capitalize() ?? ""}",
+                                  "- ${definition.definition?.trim().capitalize() ?? ""}",
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
@@ -316,7 +322,7 @@ class BoxMeaning extends StatelessWidget {
                               : const SizedBox(),
                           definition.example != null
                               ? Text(
-                                  definition.example?.capitalize() ?? "",
+                                  definition.example?.trim().capitalize() ?? "",
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontStyle: FontStyle.italic,

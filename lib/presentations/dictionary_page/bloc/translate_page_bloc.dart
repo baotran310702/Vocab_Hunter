@@ -23,6 +23,7 @@ class TranslatePageBloc extends Bloc<TranslateEvent, TranslatePageState> {
 
   _onTranslateEventInitial(
       TranslateEventInitial event, Emitter<TranslatePageState> emit) async {
+    print("bloc inited againnnnn");
     emit(state.copyWith(isLoading: true));
     ListVocabTranslated listVocabTranslatedVocab =
         await VocabTranslatedLocalServices().getListVocabTranslated();
@@ -84,6 +85,7 @@ class TranslatePageBloc extends Bloc<TranslateEvent, TranslatePageState> {
     (VocabularyRemote, VocabularyRemote) vocabularyRemote =
         await _translateRepository.translateWordOnline(event.word);
 
+    //Caching local
     await VocabTranslatedLocalServices()
         .insertVocabTranslated(VocabTranslatedLocalModel(
       englishWords: vocabularyRemote.$1,
@@ -93,17 +95,17 @@ class TranslatePageBloc extends Bloc<TranslateEvent, TranslatePageState> {
     List<VocabTranslatedLocalModel> listVocabTranslatedVocab =
         List.from(state.listVocabTranslated.listVocabTranslated);
 
+    listVocabTranslatedVocab.add(VocabTranslatedLocalModel(
+      englishWords: vocabularyRemote.$1,
+      vietnameseWords: vocabularyRemote.$2,
+    ));
     emit(
       state.copyWith(
         isLoading: false,
         currentVocabularyRemote: vocabularyRemote,
         isLocal: false,
         listVocabTranslated: ListVocabTranslated(
-          listVocabTranslated: listVocabTranslatedVocab
-            ..add(VocabTranslatedLocalModel(
-              englishWords: vocabularyRemote.$1,
-              vietnameseWords: vocabularyRemote.$2,
-            )),
+          listVocabTranslated: listVocabTranslatedVocab,
         ),
       ),
     );

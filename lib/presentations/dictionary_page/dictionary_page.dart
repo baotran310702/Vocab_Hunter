@@ -1,9 +1,9 @@
 import 'package:english_learner/models/vocabulary/vocab_translated_local.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/presentations/dictionary_page/bloc/translate_page_bloc.dart';
-import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/home/widgets/header_informations.dart';
 import 'package:english_learner/presentations/home/widgets/vocabulary_item.dart';
+import 'package:english_learner/services/vocab_translated_local_service.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +30,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
   bool isShowingResult = false;
   bool isTapResult = false;
 
+  List<VocabTranslatedLocalModel> listVocabTranslated = [];
+
   final Debouncer _debouncer = Debouncer(
     delay: const Duration(
       milliseconds: 650,
@@ -37,120 +39,124 @@ class _DictionaryPageState extends State<DictionaryPage> {
   );
 
   @override
+  void initState() {
+    vocabInputController.text = "";
+    context.read<TranslatePageBloc>().add(TranslateEventInitial());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TranslatePageBloc()..add(TranslateEventInitial()),
-      child: BlocBuilder<TranslatePageBloc, TranslatePageState>(
-        builder: (context, state) {
-          List<VocabTranslatedLocalModel> listVocabTranslated = state
-              .listVocabTranslated.listVocabTranslated
-              .where((element) => element.englishWords.word != "")
-              .toList();
-          return Scaffold(
-            backgroundColor: AppColors.backgroundHeader,
-            resizeToAvoidBottomInset: false,
-            extendBody: true,
-            extendBodyBehindAppBar: true,
-            body: SafeArea(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Container(
-                  color: AppColors.backgroundHeader,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const HeaderInformations(
-                        title:
-                            "Search any words you want, lets learn togother!",
-                        description: "Learn as much as possible!",
-                      ),
-                      const SizedBox(height: 20),
-                      Expanded(
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 66),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: Column(
-                                  children: [
-                                    const Text(
-                                      "Search History",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                      textAlign: TextAlign.center,
+    return BlocBuilder<TranslatePageBloc, TranslatePageState>(
+      builder: (context, state) {
+        print("bloc rebuid and rebuild");
+        listVocabTranslated = List.from(state
+            .listVocabTranslated.listVocabTranslated
+            .where((element) => element.englishWords.word != ""));
+
+        return Scaffold(
+          backgroundColor: AppColors.backgroundHeader,
+          resizeToAvoidBottomInset: false,
+          extendBody: false,
+          extendBodyBehindAppBar: true,
+          body: SafeArea(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Container(
+                color: AppColors.backgroundHeader,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const HeaderInformations(
+                      title: "Search any words you want, lets learn togother!",
+                      description: "Learn as much as possible!",
+                    ),
+                    const SizedBox(height: 20),
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 66),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    "Search History",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
-                                    const SizedBox(height: 10),
-                                    Flexible(
-                                      child: state.isLoading
-                                          ? const LoadingPage(
-                                              message: "Loading history...")
-                                          : SingleChildScrollView(
-                                              scrollDirection: Axis.vertical,
-                                              child: Column(
-                                                children: List.generate(
-                                                  listVocabTranslated.length,
-                                                  (index) => Container(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 10),
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      border: Border(
-                                                        bottom: BorderSide(
-                                                          color: Colors.grey,
-                                                          width: 0.5,
-                                                        ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Flexible(
+                                    child: state.isLoading
+                                        ? CircularProgressIndicator(
+                                            color: AppColors.achievedSlider,
+                                          )
+                                        : SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: Column(
+                                              children: List.generate(
+                                                listVocabTranslated.length,
+                                                (index) => Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 10),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                        color: Colors.grey,
+                                                        width: 0.5,
                                                       ),
                                                     ),
-                                                    child: VocabularyItem(
-                                                      vocab:
-                                                          listVocabTranslated[
-                                                                  index]
-                                                              .englishWords,
-                                                      onTap: () {
-                                                        _onTapHistoryVocabulary(
-                                                          context,
-                                                          listVocabTranslated[
-                                                              index],
-                                                        );
-                                                      },
-                                                    ),
+                                                  ),
+                                                  child: VocabularyItem(
+                                                    vocab: listVocabTranslated[
+                                                            index]
+                                                        .englishWords,
+                                                    onTap: () {
+                                                      _onTapHistoryVocabulary(
+                                                        context,
+                                                        listVocabTranslated[
+                                                            index],
+                                                      );
+                                                    },
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                    ),
-                                  ],
-                                ),
+                                          ),
+                                  ),
+                                ],
                               ),
                             ),
-                            TapRegion(
-                                onTapOutside: (tap) {
-                                  setState(() {
-                                    isShowingResult = false;
-                                  });
-                                  FocusScopeNode currentFocus =
-                                      FocusScope.of(context);
-                                  if (!currentFocus.hasPrimaryFocus) {
-                                    currentFocus.unfocus();
-                                  }
-                                },
-                                child: searchBox(context, state)),
-                          ],
-                        ),
+                          ),
+                          TapRegion(
+                              onTapOutside: (tap) {
+                                setState(() {
+                                  isShowingResult = false;
+                                });
+                                FocusScopeNode currentFocus =
+                                    FocusScope.of(context);
+                                if (!currentFocus.hasPrimaryFocus) {
+                                  currentFocus.unfocus();
+                                }
+                              },
+                              child: searchBox(context, state)),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -262,12 +268,12 @@ class _DictionaryPageState extends State<DictionaryPage> {
                       isShowingResult = false;
                       isTapResult = false;
                       currentVocabulary = state.searchedVocabulary[index];
+                      listVocabTranslated = [];
                     });
-
-                    context.read();
 
                     vocabInputController.text =
                         state.searchedVocabulary[index].vocabId;
+
                     _onTapDetailVocabulary(
                         context, state.searchedVocabulary[index]);
                   },
@@ -293,6 +299,10 @@ class _DictionaryPageState extends State<DictionaryPage> {
   }
 
   void _onTapDetailVocabulary(BuildContext context, Vocabulary vocabulary) {
+    context
+        .read<TranslatePageBloc>()
+        .add(TranslateWordRemote(word: vocabulary.vocabId));
+
     Navigator.push(
       context,
       MaterialPageRoute(

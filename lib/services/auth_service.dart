@@ -39,9 +39,14 @@ class AuthenticationServices {
       await _firestore
           .collection(AppCollections.userAuth)
           .add({"uid": uid, "token": token});
+
+      ///update user infor
       await UserHiveLocal()
           .saveUser(UserModel.fromMap(response.docs.first.data(), uid));
+      //update local token
       await UserPrefererencesLocal().saveToken(token);
+      //update local email user
+      await UserPrefererencesLocal().setEmailUser(email);
       return uid;
     } catch (e) {
       debugPrint("login fail with error: $e");

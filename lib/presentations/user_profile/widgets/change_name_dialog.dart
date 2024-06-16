@@ -6,6 +6,7 @@ class ChangeNameUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController textController = TextEditingController();
     return AlertDialog(
       title: const Text(
         "Write Your New Name",
@@ -23,8 +24,9 @@ class ChangeNameUser extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              controller: textController,
+              decoration: const InputDecoration(
                 labelText: "Update New Name Here",
                 hintText: "New name...",
               ),
@@ -60,7 +62,9 @@ class ChangeNameUser extends StatelessWidget {
                     fixedSize:
                         Size(MediaQuery.of(context).size.width * 0.33, 54),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context, textController.text);
+                  },
                   child: const Text(
                     "Save",
                     style: TextStyle(

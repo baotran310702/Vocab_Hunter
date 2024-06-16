@@ -9,6 +9,7 @@ class APIPath {
 }
 
 class KeyLocalPreferences {
+  static const String email = 'emailUser';
   static const String userId = 'userId';
   static const String token = 'token';
   static const String defaultListLearningVocab = 'defaultIdListLearningVocab';
@@ -39,6 +40,7 @@ class KeyHiveLocal {
   static const int hiveTopicVocabLocalNew = 52;
   static const int hiveTopicCacheLocal = 53;
   static const int hiveSubTopicLocal = 54;
+  static const int hiveSexLocal = 55;
 }
 
 class KeyBoxHiveLocal {

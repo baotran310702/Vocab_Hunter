@@ -108,3 +108,42 @@ class WordTypeAdapter extends TypeAdapter<WordType> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class SexAdapter extends TypeAdapter<Sex> {
+  @override
+  final int typeId = 55;
+
+  @override
+  Sex read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return Sex.man;
+      case 1:
+        return Sex.woman;
+      default:
+        return Sex.man;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, Sex obj) {
+    switch (obj) {
+      case Sex.man:
+        writer.writeByte(0);
+        break;
+      case Sex.woman:
+        writer.writeByte(1);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SexAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

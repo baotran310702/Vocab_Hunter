@@ -4,6 +4,8 @@ import 'package:english_learner/utils/constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
+import '../utils/enum.dart';
+
 part 'user.g.dart';
 
 @HiveType(typeId: KeyHiveLocal.hiveUserId)
@@ -20,6 +22,10 @@ class UserModel extends Equatable {
   final List<UserVocab> learnedWords;
   @HiveField(5)
   final List<UserVocab> learningWords;
+  @HiveField(6)
+  final String phoneNumber;
+  @HiveField(7)
+  final Sex sex;
 
   const UserModel({
     required this.uid,
@@ -28,6 +34,8 @@ class UserModel extends Equatable {
     required this.learnedWords,
     required this.achievements,
     required this.learningWords,
+    required this.phoneNumber,
+    required this.sex,
   });
 
   factory UserModel.initWithId(String uid, String userName) {
@@ -38,6 +46,8 @@ class UserModel extends Equatable {
       learnedWords: const [],
       learningWords: const [],
       achievements: const [],
+      phoneNumber: "",
+      sex: Sex.woman,
     );
   }
 
@@ -61,6 +71,8 @@ class UserModel extends Equatable {
         Achievement.defaultInit(),
         Achievement.defaultInit(),
       ],
+      phoneNumber: "0123456789",
+      sex: Sex.woman,
     );
   }
 
@@ -72,12 +84,20 @@ class UserModel extends Equatable {
       learnedWords: [],
       learningWords: [],
       achievements: [],
+      phoneNumber: "",
+      sex: Sex.woman,
     );
   }
 
   factory UserModel.fromMap(Map<String, dynamic> data, String documentId) {
     final String userName = data['userName'] ?? "";
     final int rank = data['rank'] ?? -1;
+    final String phoneNumber = data['phoneNumber'] ?? "";
+    final Sex sex = data['sex'] != null
+        ? data['sex'].toString().trim().toLowerCase() == 'woman'
+            ? Sex.woman
+            : Sex.man
+        : Sex.woman;
     final List<UserVocab> learnedWords = [];
     for (var item in data['learnedWords']) {
       learnedWords.add(UserVocab.fromJson(item));
@@ -100,6 +120,8 @@ class UserModel extends Equatable {
       achievements: listAchievement,
       learnedWords: learnedWords,
       learningWords: learningWords,
+      phoneNumber: phoneNumber,
+      sex: sex,
     );
   }
 
@@ -110,6 +132,8 @@ class UserModel extends Equatable {
     List<UserVocab>? learnedWords,
     List<UserVocab>? learningWords,
     List<Achievement>? achievements,
+    String? phoneNumber,
+    Sex? sex,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -118,6 +142,8 @@ class UserModel extends Equatable {
       learnedWords: learnedWords ?? this.learnedWords,
       learningWords: learningWords ?? this.learningWords,
       achievements: achievements ?? this.achievements,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      sex: sex ?? this.sex,
     );
   }
 
@@ -129,10 +155,20 @@ class UserModel extends Equatable {
       'learnedWords': learnedWords.map((e) => e.toJson()).toList(),
       'learningWords': learningWords.map((e) => e.toJson()).toList(),
       'achievements': achievements.map((e) => e.toJson()).toList(),
+      'phoneNumber': phoneNumber,
+      'sex': sex.value,
     };
   }
 
   @override
-  List<Object?> get props =>
-      [uid, userName, rank, learnedWords, learningWords, achievements];
+  List<Object?> get props => [
+        uid,
+        userName,
+        rank,
+        learnedWords,
+        learningWords,
+        achievements,
+        phoneNumber,
+        sex
+      ];
 }

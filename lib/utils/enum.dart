@@ -32,3 +32,25 @@ enum WordType {
 enum DownloadStatus { notDownloaded, dowloading, downloaded }
 
 enum FlashCardType { topicWidget, listVocabWidget }
+
+//advacned enum, can be used to set value for enum
+@HiveType(typeId: KeyHiveLocal.hiveSexLocal)
+enum Sex {
+  @HiveField(0)
+  man('Man'),
+  @HiveField(1)
+  woman('Woman');
+
+  final String value;
+  const Sex(this.value);
+
+  Sex reverse() {
+    if (value.trim().toLowerCase() == 'man') {
+      return Sex.woman;
+    }
+    if (value.trim().toLowerCase() == 'woman') {
+      return Sex.man;
+    }
+    return Sex.woman;
+  }
+}

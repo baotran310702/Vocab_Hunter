@@ -5,12 +5,14 @@ class ManageUserState extends Equatable {
   final ListTimeNotification listTimeNotification;
   final bool isLoading;
   final String error;
+  final String emailUSer;
 
   const ManageUserState({
     required this.userModel,
     required this.listTimeNotification,
     required this.isLoading,
     required this.error,
+    required this.emailUSer,
   });
 
   factory ManageUserState.initial() {
@@ -19,6 +21,7 @@ class ManageUserState extends Equatable {
       listTimeNotification: ListTimeNotification.initial(),
       isLoading: false,
       error: '',
+      emailUSer: "",
     );
   }
 
@@ -27,12 +30,14 @@ class ManageUserState extends Equatable {
     ListTimeNotification? listTimeNotification,
     bool? isLoading,
     String? error,
+    String? emailUSer,
   }) {
     return ManageUserState(
       userModel: userModel ?? this.userModel,
       listTimeNotification: listTimeNotification ?? this.listTimeNotification,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
+      emailUSer: emailUSer ?? this.emailUSer,
     );
   }
 
@@ -42,6 +47,6 @@ class ManageUserState extends Equatable {
         listTimeNotification,
         isLoading,
         error,
+        emailUSer,
       ];
 }
-

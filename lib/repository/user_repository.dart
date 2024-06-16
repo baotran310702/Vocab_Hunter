@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:english_learner/models/user.dart';
 import 'package:english_learner/services/auth_service.dart';
 import 'package:english_learner/services/user_service.dart';
 
@@ -34,6 +35,10 @@ class UserRepository {
 
   Future<void> syncUserData() async {
     await userServices.syncUserData();
+  }
+
+  Future<void> updateUserLocal(UserModel user) async {
+    await UserServices().updateUserLocal(user);
   }
 
   Stream<QuerySnapshot> streamNotificationApp() {

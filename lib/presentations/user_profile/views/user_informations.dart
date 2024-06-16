@@ -1,3 +1,4 @@
+import 'package:english_learner/models/user.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/presentations/user_profile/widgets/change_name_dialog.dart';
@@ -16,7 +17,6 @@ class UserInformations extends StatefulWidget {
 }
 
 class _UserInformationsState extends State<UserInformations> {
-  bool isMan = true;
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
@@ -26,6 +26,11 @@ class _UserInformationsState extends State<UserInformations> {
       appBar: const MyAppbar(text: 'User Informations'),
       body: BlocBuilder<ManageUserProfileBloc, ManageUserState>(
         builder: (context, state) {
+          bool isMan = state.userModel.sex.value.trim().toLowerCase() == 'man'
+              ? true
+              : false;
+          phoneController.text = state.userModel.phoneNumber;
+          emailController.text = state.emailUSer;
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             height: MediaQuery.of(context).size.height,
@@ -69,7 +74,16 @@ class _UserInformationsState extends State<UserInformations> {
                           showDialog(
                             context: context,
                             builder: (context) => const ChangeNameUser(),
-                          );
+                          ).then((value) {
+                            if (value != null) {
+                              UserModel newUserModel = state.userModel.copyWith(
+                                userName: value,
+                              );
+                              context.read<ManageUserProfileBloc>().add(
+                                  UpdateUserInformation(
+                                      newUserModel: newUserModel));
+                            }
+                          });
                         },
                         child:
                             Image.asset(AppIcons.edit, width: 24, height: 24)),
@@ -88,14 +102,16 @@ class _UserInformationsState extends State<UserInformations> {
                           child: Checkbox(
                             shape: const CircleBorder(),
                             value: isMan,
-                            onChanged: _changeGender,
+                            onChanged: (value) {
+                              _changeGender(value, state.userModel);
+                            },
                             checkColor: AppColors.titleHeaderColor,
                             fillColor: MaterialStateProperty.all(
                               Colors.transparent,
                             ),
                           ),
                         ),
-                        const Text("Nam")
+                        const Text("Man")
                       ],
                     ),
                     Row(
@@ -105,12 +121,14 @@ class _UserInformationsState extends State<UserInformations> {
                           child: Checkbox(
                             shape: const CircleBorder(),
                             value: !isMan,
-                            onChanged: _changeGender,
+                            onChanged: (value) {
+                              _changeGender(value, state.userModel);
+                            },
                             checkColor: AppColors.titleHeaderColor,
                             fillColor: MaterialStateProperty.all(Colors.white),
                           ),
                         ),
-                        const Text("Nữ")
+                        const Text("Woman")
                       ],
                     ),
                   ],
@@ -129,6 +147,7 @@ class _UserInformationsState extends State<UserInformations> {
                   icon: AppIcons.mail,
                   isPassword: false,
                   controller: emailController,
+                  isEnable: false,
                 ),
                 const SizedBox(
                   height: 16,
@@ -148,7 +167,11 @@ class _UserInformationsState extends State<UserInformations> {
                       vertical: 8,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    _onSave(
+                      phoneNumber: phoneController.text,
+                    );
+                  },
                   child: const Text(
                     "SAVE",
                     style: TextStyle(
@@ -166,9 +189,37 @@ class _UserInformationsState extends State<UserInformations> {
     );
   }
 
-  _changeGender(value) {
-    setState(() {
-      isMan = !isMan;
-    });
+  _changeGender(value, UserModel oldUserModel) {
+    UserModel newUserModel =
+        oldUserModel.copyWith(sex: oldUserModel.sex.reverse());
+    context
+        .read<ManageUserProfileBloc>()
+        .add(UpdateUserInformation(newUserModel: newUserModel));
+  }
+
+  _onSave({required String phoneNumber}) {
+    if (validateMobile(phoneNumber) != null) {
+      print("number sai dinh dang");
+      return;
+    }
+    UserModel currentUsermodel =
+        context.read<ManageUserProfileBloc>().state.userModel;
+    UserModel newUserModel =
+        currentUsermodel.copyWith(phoneNumber: phoneNumber);
+    context
+        .read<ManageUserProfileBloc>()
+        .add(UpdateUserInformation(newUserModel: newUserModel));
+    context.read<ManageUserProfileBloc>().add(SaveUserCloud());
+  }
+
+  String? validateMobile(String value) {
+    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    RegExp regExp = RegExp(pattern);
+    if (value.isEmpty) {
+      return 'Please enter mobile number';
+    } else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid mobile number';
+    }
+    return null;
   }
 }

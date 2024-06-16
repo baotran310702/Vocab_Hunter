@@ -30,3 +30,10 @@ class UpdateNewPassWord extends ManageUserEvents {
   final String newPassWord;
   UpdateNewPassWord({required this.newPassWord});
 }
+
+class UpdateUserInformation extends ManageUserEvents {
+  final UserModel newUserModel;
+  UpdateUserInformation({required this.newUserModel});
+}
+
+class SaveUserCloud extends ManageUserEvents {}

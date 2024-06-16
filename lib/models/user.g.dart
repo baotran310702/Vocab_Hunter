@@ -23,13 +23,15 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       learnedWords: (fields[4] as List).cast<UserVocab>(),
       achievements: (fields[3] as List).cast<Achievement>(),
       learningWords: (fields[5] as List).cast<UserVocab>(),
+      phoneNumber: fields[6] as String,
+      sex: fields[7] as Sex,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
@@ -41,7 +43,11 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(4)
       ..write(obj.learnedWords)
       ..writeByte(5)
-      ..write(obj.learningWords);
+      ..write(obj.learningWords)
+      ..writeByte(6)
+      ..write(obj.phoneNumber)
+      ..writeByte(7)
+      ..write(obj.sex);
   }
 
   @override

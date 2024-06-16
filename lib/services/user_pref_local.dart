@@ -51,4 +51,16 @@ class UserPrefererencesLocal {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(KeyLocalPreferences.defaultListLearningVocab) ?? "";
   }
+
+  ///Set email user
+  Future<void> setEmailUser(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(KeyLocalPreferences.email, email);
+  }
+
+  ///Get email user
+  Future<String> getEmailUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(KeyLocalPreferences.email) ?? "";
+  }
 }

@@ -3,6 +3,7 @@ import 'package:english_learner/models/user.dart';
 import 'package:english_learner/repository/user_repository.dart';
 import 'package:english_learner/services/time_notification_local.dart';
 import 'package:english_learner/services/user_hive_local.dart';
+import 'package:english_learner/services/user_pref_local.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,15 +19,30 @@ class ManageUserProfileBloc extends Bloc<ManageUserEvents, ManageUserState> {
     on<RemoveTimeNotificationEvent>(_onRemoveTimeNotificationEvent);
     on<UpdateTimeNotification>(_onUpdateTimeNotification);
     on<UpdateNewPassWord>(_onUpdateNewPassWord);
+    on<UpdateUserInformation>(_onUpdateUserInformation);
+    on<SaveUserCloud>(_onSaveUserCloud);
+  }
+
+  _onSaveUserCloud(SaveUserCloud event, Emitter emit) async {
+    emit(state.copyWith(isLoading: true));
+    await UserHiveLocal().saveUser(state.userModel);
+    await _userRepository.syncUserData();
+    emit(state.copyWith(isLoading: false));
+  }
+
+  _onUpdateUserInformation(UpdateUserInformation event, Emitter emit) async {
+    emit(state.copyWith(userModel: event.newUserModel));
   }
 
   _onInitUserEvent(InitUserEvent event, Emitter emit) async {
     ListTimeNotification listTimeNotification =
         await TimeNotificationLocal().getListTimeNotification();
     UserModel currentUser = await UserHiveLocal().getUser();
+    String emailUser = await UserPrefererencesLocal().getEmailUser();
     emit(state.copyWith(
       userModel: currentUser,
       listTimeNotification: listTimeNotification,
+      emailUSer: emailUser,
     ));
   }
 

@@ -17,6 +17,10 @@ class UserServices {
     return snapshots;
   }
 
+  Future<void> updateUserLocal(UserModel user) async {
+    await UserHiveLocal().saveUser(user);
+  }
+
   Future<void> syncUserData() async {
     UserModel currentUser = await UserHiveLocal().getUser();
 

@@ -104,7 +104,7 @@ class UserProfile extends StatelessWidget {
                               ],
                             ),
                           ),
-                          isHaveAchievement
+                          !isHaveAchievement
                               ? Center(
                                   child: Padding(
                                   padding: const EdgeInsets.symmetric(

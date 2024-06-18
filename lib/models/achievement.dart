@@ -17,6 +17,8 @@ class Achievement {
   final int amount;
   @HiveField(4)
   final int total;
+  @HiveField(5)
+  final CustomAchievement customAchievement;
 
   Achievement({
     required this.title,
@@ -24,6 +26,7 @@ class Achievement {
     required this.type,
     required this.amount,
     required this.total,
+    required this.customAchievement,
   });
 
   factory Achievement.defaultInit() {
@@ -33,6 +36,7 @@ class Achievement {
       type: AchievementType.capySleeping,
       amount: 100,
       total: 150,
+      customAchievement: CustomAchievement.trainRoom,
     );
   }
 
@@ -45,6 +49,10 @@ class Achievement {
           : AchievementType.capySleeping,
       amount: json['amount'],
       total: json['total'],
+      customAchievement: json['customAchievement'] != null
+          ? CustomConverter.convertToCustomAchievement(
+              json['customAchievement'])
+          : CustomAchievement.trainRoom,
     );
   }
 

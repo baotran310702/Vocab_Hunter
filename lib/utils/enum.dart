@@ -70,3 +70,12 @@ enum Sex {
     return Sex.woman;
   }
 }
+
+enum CustomAchievement {
+  topic('Topic'),
+  vocab('Vocabulary'),
+  trainRoom('Train room');
+
+  final String value;
+  const CustomAchievement(this.value);
+}

@@ -17,7 +17,7 @@ class ListFavouriteTopicAdapter extends TypeAdapter<ListFavouriteTopic> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ListFavouriteTopic(
-      favouriteTopics: (fields[0] as List).cast<Topic>(),
+      favouriteTopics: (fields[0] as List).cast<SubTopic>(),
     );
   }
 

@@ -26,10 +26,9 @@ class _YourFavouritePageState extends State<YourFavouritePage> {
           builder: (context, state) {
             return Container(
               color: AppColors.backgroundAppbar,
-              child: const Center(
-                child: Text(
-                  "This is favourite page",
-                ),
+              child: Center(
+                ///TODO: update list favourite by call from local
+                child: Column(children: []),
               ),
             );
           },

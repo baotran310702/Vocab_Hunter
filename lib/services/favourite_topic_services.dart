@@ -1,5 +1,5 @@
 import 'package:english_learner/models/favourite_topic.dart';
-import 'package:english_learner/models/topic.dart';
+import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/utils/constants.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,52 +9,61 @@ class FavouriteTopicLocal {
     final dir = await getApplicationDocumentsDirectory();
 
     Hive.init(dir.path);
+  }
+
+  Future<void> addFavouriteTopic(SubTopic topic) async {
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveFavouriteTopics)) {
       Hive.registerAdapter(ListFavouriteTopicAdapter());
     }
-    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveTopicCacheLocal)) {
-      Hive.registerAdapter(TopicAdapter());
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveSubTopicLocal)) {
+      Hive.registerAdapter(SubTopicAdapter());
     }
-  }
-
-  Future<void> addFavouriteTopic(Topic topic) async {
     final box =
         await Hive.openBox<ListFavouriteTopic>(KeyBoxHiveLocal.favouriteTopic);
 
     ListFavouriteTopic listFavouriteTopic =
         box.get(KeyBoxHiveLocal.favouriteTopic) ?? ListFavouriteTopic.empty();
 
-    List<Topic> currentTopic = listFavouriteTopic.favouriteTopics;
-
-    currentTopic.add(topic);
+    List<SubTopic> currentTopic = [
+      ...List.from(listFavouriteTopic.favouriteTopics),
+      topic
+    ];
 
     ListFavouriteTopic newListTopic =
         ListFavouriteTopic(favouriteTopics: currentTopic);
 
-    await box.clear();
-    await box.add(newListTopic);
+    await box.put(KeyBoxHiveLocal.favouriteTopic, newListTopic);
   }
 
-  Future<List<Topic>> getFavouriteTopic() async {
+  Future<List<SubTopic>> getFavouriteTopic() async {
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveFavouriteTopics)) {
+      Hive.registerAdapter(ListFavouriteTopicAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveSubTopicLocal)) {
+      Hive.registerAdapter(SubTopicAdapter());
+    }
     final box =
         await Hive.openBox<ListFavouriteTopic>(KeyBoxHiveLocal.favouriteTopic);
 
     ListFavouriteTopic currentListFavouriteTopic =
         box.get(KeyBoxHiveLocal.favouriteTopic) ?? ListFavouriteTopic.empty();
+    await box.close();
 
     return currentListFavouriteTopic.favouriteTopics;
   }
 
   Future<void> removeAFavouriteTopic(String id) async {
-    List<Topic> currentTopic = await getFavouriteTopic();
-    List<Topic> newList =
-        currentTopic.where((element) => element.topicId != id).toList();
+    List<SubTopic> currentTopic = await getFavouriteTopic();
+    List<SubTopic> newList = currentTopic
+        .where((element) =>
+            element.name.trim().toLowerCase() != id.trim().toLowerCase())
+        .toList();
     ListFavouriteTopic newListFavouriteTopic =
         ListFavouriteTopic(favouriteTopics: newList);
 
     final box = await Hive.openBox(KeyBoxHiveLocal.favouriteTopic);
 
-    box.clear();
-    await box.add(newListFavouriteTopic);
+    await box.clear();
+    await box.put(KeyBoxHiveLocal.favouriteTopic, newListFavouriteTopic);
   }
 }

@@ -39,7 +39,7 @@ class UpdateUserInformation extends ManageUserEvents {
 class SaveUserCloud extends ManageUserEvents {}
 
 class AddFavouriteTopic extends ManageUserEvents {
-  final Topic topic;
+  final SubTopic topic;
   AddFavouriteTopic({required this.topic});
 }
 

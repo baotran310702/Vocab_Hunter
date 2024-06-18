@@ -22,13 +22,14 @@ class SubTopicAdapter extends TypeAdapter<SubTopic> {
       description: fields[3] as String,
       subTopicId: fields[0] as String,
       amountVocab: fields[4] as int,
+      isLiked: fields[5] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, SubTopic obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.subTopicId)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class SubTopicAdapter extends TypeAdapter<SubTopic> {
       ..writeByte(3)
       ..write(obj.description)
       ..writeByte(4)
-      ..write(obj.amountVocab);
+      ..write(obj.amountVocab)
+      ..writeByte(5)
+      ..write(obj.isLiked);
   }
 
   @override

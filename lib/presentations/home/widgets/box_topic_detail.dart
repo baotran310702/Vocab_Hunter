@@ -17,6 +17,7 @@ class BoxTopicDetail extends StatefulWidget {
   final double radius;
   final SubTopic subTopic;
   final Function(String) handleLoadTopic;
+  final Function(SubTopic) handleLikeSubTopic;
   final DownloadStatus downLoadStatus;
 
   const BoxTopicDetail({
@@ -26,6 +27,7 @@ class BoxTopicDetail extends StatefulWidget {
     required this.subTopic,
     required this.handleLoadTopic,
     required this.downLoadStatus,
+    required this.handleLikeSubTopic,
   });
 
   @override
@@ -248,14 +250,20 @@ class _BoxTopicDetailState extends State<BoxTopicDetail> {
                     child: InkWell(
                       onTap: () {
                         handleScale();
+                        widget.handleLikeSubTopic(widget.subTopic);
                       },
                       child: AnimatedScale(
                         scale: scale,
                         duration: const Duration(milliseconds: 200),
                         child: Image.asset(
-                          AppIcons.heartUnselected,
+                          widget.subTopic.isLiked
+                              ? AppIcons.heartSelected
+                              : AppIcons.heartUnselected,
                           width: 48,
                           height: 48,
+                          color: widget.subTopic.isLiked
+                              ? Colors.red
+                              : Colors.black,
                         ),
                       ),
                     ),

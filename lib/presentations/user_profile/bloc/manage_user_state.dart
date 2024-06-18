@@ -6,6 +6,7 @@ class ManageUserState extends Equatable {
   final bool isLoading;
   final String error;
   final String emailUSer;
+  final List<Topic> favouriteTopics;
 
   const ManageUserState({
     required this.userModel,
@@ -13,6 +14,7 @@ class ManageUserState extends Equatable {
     required this.isLoading,
     required this.error,
     required this.emailUSer,
+    required this.favouriteTopics,
   });
 
   factory ManageUserState.initial() {
@@ -22,6 +24,7 @@ class ManageUserState extends Equatable {
       isLoading: false,
       error: '',
       emailUSer: "",
+      favouriteTopics: const [],
     );
   }
 
@@ -31,6 +34,7 @@ class ManageUserState extends Equatable {
     bool? isLoading,
     String? error,
     String? emailUSer,
+    List<Topic>? topics,
   }) {
     return ManageUserState(
       userModel: userModel ?? this.userModel,
@@ -38,6 +42,7 @@ class ManageUserState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
       emailUSer: emailUSer ?? this.emailUSer,
+      favouriteTopics: topics ?? favouriteTopics,
     );
   }
 
@@ -48,5 +53,6 @@ class ManageUserState extends Equatable {
         isLoading,
         error,
         emailUSer,
+        favouriteTopics,
       ];
 }

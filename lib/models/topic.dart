@@ -58,6 +58,22 @@ class Topic extends Equatable {
     return 'Topic{topicId: $topicId, name: $name, image: $image, description: $description}';
   }
 
+  Topic copyWith({
+    String? topicId,
+    String? name,
+    String? image,
+    String? description,
+    List<SubTopic>? subTopics,
+  }) {
+    return Topic(
+      topicId: topicId ?? this.topicId,
+      name: name ?? this.name,
+      image: image ?? this.image,
+      description: description ?? this.description,
+      subTopics: subTopics ?? this.subTopics,
+    );
+  }
+
   @override
   List<Object?> get props => [
         topicId,

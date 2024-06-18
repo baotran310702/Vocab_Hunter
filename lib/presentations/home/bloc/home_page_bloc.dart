@@ -1,4 +1,5 @@
 import 'package:english_learner/models/news.dart';
+import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/user_vocab.dart';
@@ -10,6 +11,7 @@ import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:english_learner/services/user_hive_local.dart';
 import 'package:english_learner/services/user_pref_local.dart';
 import 'package:english_learner/utils/cache_daily_vocab.dart';
+import 'package:english_learner/utils/cache_topic_choosen.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,6 +27,30 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     on<InitTopicVocabulary>(_onInitTopicVocabulary);
     on<InitDetailTopicVocabulary>(_onInitDetailTopicVocabulary);
     on<DownLoadDetailTopicVocab>(_onDownLoadDetailTopicVocab);
+    on<ChangeLoveSubTopicStatus>(_onChangeLoveSubTopicStatus);
+  }
+
+  _onChangeLoveSubTopicStatus(
+      ChangeLoveSubTopicStatus event, Emitter emit) async {
+    CacheTopicChoosen cacheTopic = CacheTopicChoosen();
+    String topicId = cacheTopic.getTopicId();
+    String subTopicId = event.subTopic.subTopicId;
+
+    List<Topic> newListTopics = state.listTopicVocab.map((topic) {
+      if (topic.topicId == topicId) {
+        List<SubTopic> updatedSubTopics = topic.subTopics.map((subTopic) {
+          if (subTopic.subTopicId == subTopicId) {
+            return subTopic.copyWith(isLiked: !event.subTopic.isLiked);
+          }
+          return subTopic;
+        }).toList();
+        return topic.copyWith(subTopics: updatedSubTopics);
+      }
+      return topic;
+    }).toList();
+
+    //completed update new list topic
+    emit(state.copyWith(isLoading: false, listTopicVocab: newListTopics));
   }
 
   _onDownLoadDetailTopicVocab(

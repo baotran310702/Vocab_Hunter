@@ -17,8 +17,11 @@ class Achievement {
   final int amount;
   @HiveField(4)
   final int total;
+  @HiveField(5)
+  final String id;
 
   Achievement({
+    required this.id,
     required this.title,
     required this.description,
     required this.type,
@@ -28,6 +31,7 @@ class Achievement {
 
   factory Achievement.defaultInit() {
     return Achievement(
+      id: "id",
       title: "title",
       description: "description",
       type: AchievementType.capySleeping,
@@ -38,6 +42,7 @@ class Achievement {
 
   factory Achievement.fromJson(dynamic json) {
     return Achievement(
+      id: json['id'] ?? "",
       title: json['title'].toString(),
       description: json['description'].toString(),
       type: json['type'] != null
@@ -50,6 +55,7 @@ class Achievement {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'title': title,
       'description': description,
       'type': CustomConverter.convertAchievementTypeToIndex(type),
@@ -59,6 +65,7 @@ class Achievement {
   }
 
   Achievement copyWith({
+    String? id,
     String? title,
     String? description,
     AchievementType? type,
@@ -66,6 +73,7 @@ class Achievement {
     int? total,
   }) {
     return Achievement(
+      id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       type: type ?? this.type,
@@ -76,6 +84,7 @@ class Achievement {
 
   static List<Achievement> defaultListAchievement = [
     Achievement(
+      id: "0",
       title: "Capy Vocab",
       description:
           "You have learned 150 words in practise room to receive this achievement.",
@@ -84,6 +93,7 @@ class Achievement {
       total: 150,
     ),
     Achievement(
+      id: "1",
       title: "Capy Topics",
       description: "You have learned 5 topics to receive this achievement.",
       type: AchievementType.capyWritting,
@@ -91,6 +101,7 @@ class Achievement {
       total: 5,
     ),
     Achievement(
+      id: "2",
       title: "Capy Hardwork",
       description:
           "Search 100 words in dictionary to receive this achievement.",
@@ -99,6 +110,7 @@ class Achievement {
       total: 100,
     ),
     Achievement(
+      id: "3",
       title: "Capy Pratise",
       description:
           "You have to completed 5 times in pratises room with no failures to receive this achievement.",

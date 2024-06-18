@@ -1,6 +1,8 @@
 import 'package:english_learner/models/time_notification.dart';
+import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/repository/user_repository.dart';
+import 'package:english_learner/services/favourite_topic_services.dart';
 import 'package:english_learner/services/time_notification_local.dart';
 import 'package:english_learner/services/user_hive_local.dart';
 import 'package:english_learner/services/user_pref_local.dart';
@@ -21,6 +23,8 @@ class ManageUserProfileBloc extends Bloc<ManageUserEvents, ManageUserState> {
     on<UpdateNewPassWord>(_onUpdateNewPassWord);
     on<UpdateUserInformation>(_onUpdateUserInformation);
     on<SaveUserCloud>(_onSaveUserCloud);
+    on<AddFavouriteTopic>(_onAddFavouriteTopic);
+    on<RemoveAFavouriteTopic>(_onRemoveAFavouriteTopic);
   }
 
   _onSaveUserCloud(SaveUserCloud event, Emitter emit) async {
@@ -44,6 +48,18 @@ class ManageUserProfileBloc extends Bloc<ManageUserEvents, ManageUserState> {
       listTimeNotification: listTimeNotification,
       emailUSer: emailUser,
     ));
+  }
+
+  _onAddFavouriteTopic(AddFavouriteTopic event, Emitter emit) async {
+    emit(state.copyWith(isLoading: true));
+    await FavouriteTopicLocal().addFavouriteTopic(event.topic);
+    emit(state.copyWith(isLoading: false));
+  }
+
+  _onRemoveAFavouriteTopic(RemoveAFavouriteTopic event, Emitter emit) async {
+    emit(state.copyWith(isLoading: true));
+    await FavouriteTopicLocal().removeAFavouriteTopic(event.topicId);
+    emit(state.copyWith(isLoading: false));
   }
 
   _onAddTimeNotificationEvent(

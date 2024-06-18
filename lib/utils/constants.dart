@@ -41,6 +41,7 @@ class KeyHiveLocal {
   static const int hiveTopicCacheLocal = 53;
   static const int hiveSubTopicLocal = 54;
   static const int hiveSexLocal = 55;
+  static const int hiveFavouriteTopics = 56;
 }
 
 class KeyBoxHiveLocal {
@@ -54,6 +55,7 @@ class KeyBoxHiveLocal {
   static const String listVocabTranslatedLocal = 'listVocabTranslatedLocal';
   static const String listVocabTopicLocal = 'keyBoxListVocabTopicLocal';
   static const String topicCacheLocal = 'topicCacheLocal';
+  static const String favouriteTopic = 'favouriteTopicLocal';
 }
 
 class APIKeys {

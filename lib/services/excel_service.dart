@@ -74,6 +74,7 @@ class ExcelService {
           image: '',
           description: table.row(i)[2]?.value.toString() ?? "",
           amountVocab: 0,
+          isLiked: false,
         );
         result.add(newVocab);
       }

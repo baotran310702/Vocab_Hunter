@@ -22,3 +22,7 @@ class DownLoadDetailTopicVocab extends HomePageEvent {
   });
 }
 
+class ChangeLoveSubTopicStatus extends HomePageEvent {
+  final SubTopic subTopic;
+  ChangeLoveSubTopicStatus({required this.subTopic});
+}

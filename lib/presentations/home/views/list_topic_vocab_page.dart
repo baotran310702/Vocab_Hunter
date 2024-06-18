@@ -1,6 +1,7 @@
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/presentations/home/bloc/home_page_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/back_button.dart';
+import 'package:english_learner/utils/cache_topic_choosen.dart';
 import 'package:english_learner/utils/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,6 +97,7 @@ class _PageContentState extends State<PageContent> {
                         radius: radius,
                         subTopic: e.$2,
                         handleLoadTopic: _handleLoadTopic,
+                        handleLikeSubTopic: _handleLikeSubTopic,
                         downLoadStatus: e.$1,
                       ))
                   .toList(),
@@ -104,6 +106,10 @@ class _PageContentState extends State<PageContent> {
         );
       },
     );
+  }
+
+  _handleLikeSubTopic(SubTopic subTopic) async {
+    if (subTopic.isLiked) {}
   }
 
   _handleLoadTopic(String subTopicId) async {

@@ -1,8 +1,8 @@
-import 'package:english_learner/models/achievement.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/presentations/user_profile/views/achievement_page.dart';
 import 'package:english_learner/presentations/user_profile/views/change_password_page.dart';
 import 'package:english_learner/presentations/user_profile/views/user_informations.dart';
+import 'package:english_learner/presentations/user_profile/views/your_favourite_page.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/converter.dart';
 import 'package:english_learner/utils/icons.dart';
@@ -235,7 +235,12 @@ class UserProfile extends StatelessWidget {
                         Items(
                           text: "Your Favourite",
                           icon: AppIcons.heartUnselected,
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const YourFavouritePage();
+                            }));
+                          },
                         ),
                         Items(
                           text: "In Progressing",

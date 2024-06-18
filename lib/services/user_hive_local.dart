@@ -91,7 +91,7 @@ class UserHiveLocal {
       Hive.registerAdapter(AchievementTypeAdapter());
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveAchievementId)) {
-      Hive.registerAdapter(Achi());
+      Hive.registerAdapter(AchievementAdapter());
     }
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveUserId)) {
       Hive.registerAdapter(UserModelAdapter());

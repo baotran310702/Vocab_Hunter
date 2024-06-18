@@ -190,7 +190,7 @@ class SexAdapter extends TypeAdapter<Sex> {
 
 class CustomAchievementAdapter extends TypeAdapter<CustomAchievement> {
   @override
-  final int typeId = 56;
+  final int typeId = 57;
 
   @override
   CustomAchievement read(BinaryReader reader) {

@@ -19,7 +19,7 @@ class Achievement {
   final int total;
   @HiveField(5)
   final CustomAchievement customAchievement;
-  @HiveField(5)
+  @HiveField(6)
   final String id;
 
   Achievement({
@@ -82,7 +82,7 @@ class Achievement {
   }) {
     return Achievement(
         id: id ?? this.id,
-      title: title ?? this.title,
+        title: title ?? this.title,
         description: description ?? this.description,
         type: type ?? this.type,
         amount: amount ?? this.amount,
@@ -93,7 +93,7 @@ class Achievement {
   static List<Achievement> defaultListAchievement = [
     Achievement(
         id: "0",
-      title: "Capy Vocab",
+        title: "Capy Vocab",
         description:
             "You have learned 150 words in practise room to receive this achievement.",
         type: AchievementType.capySleeping,
@@ -102,14 +102,14 @@ class Achievement {
         customAchievement: CustomAchievement.trainRoom),
     Achievement(
         id: "1",
-      title: "Capy Topics",
+        title: "Capy Topics",
         description: "You have learned 5 topics to receive this achievement.",
         type: AchievementType.capyWritting,
         amount: 0,
         total: 5,
         customAchievement: CustomAchievement.trainRoom),
     Achievement(
-      id: "2",
+        id: "2",
         title: "Capy Hardwork",
         description:
             "Search 100 words in dictionary to receive this achievement.",
@@ -118,7 +118,7 @@ class Achievement {
         total: 100,
         customAchievement: CustomAchievement.trainRoom),
     Achievement(
-      id: "3",
+        id: "3",
         title: "Capy Pratise",
         description:
             "You have to completed 5 times in pratises room with no failures to receive this achievement.",

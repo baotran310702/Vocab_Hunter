@@ -42,7 +42,7 @@ class KeyHiveLocal {
   static const int hiveSubTopicLocal = 54;
   static const int hiveSexLocal = 55;
   static const int hiveFavouriteTopics = 56;
-  static const int hiveEnumAchievementType = 56;
+  static const int hiveEnumAchievementType = 57;
 }
 
 class KeyBoxHiveLocal {

@@ -41,6 +41,10 @@ class UserHiveLocal {
       Hive.registerAdapter(SexAdapter());
     }
 
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveEnumAchievementType)) {
+      Hive.registerAdapter(CustomAchievementAdapter());
+    }
+
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveEnumAchievementTypeId)) {
       Hive.registerAdapter(AchievementTypeAdapter());
     }
@@ -77,6 +81,10 @@ class UserHiveLocal {
 
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveSexLocal)) {
       Hive.registerAdapter(SexAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveEnumAchievementType)) {
+      Hive.registerAdapter(CustomAchievementAdapter());
     }
 
     if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveEnumAchievementTypeId)) {

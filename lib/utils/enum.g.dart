@@ -187,3 +187,47 @@ class SexAdapter extends TypeAdapter<Sex> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class CustomAchievementAdapter extends TypeAdapter<CustomAchievement> {
+  @override
+  final int typeId = 56;
+
+  @override
+  CustomAchievement read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return CustomAchievement.topic;
+      case 1:
+        return CustomAchievement.vocab;
+      case 2:
+        return CustomAchievement.trainRoom;
+      default:
+        return CustomAchievement.topic;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, CustomAchievement obj) {
+    switch (obj) {
+      case CustomAchievement.topic:
+        writer.writeByte(0);
+        break;
+      case CustomAchievement.vocab:
+        writer.writeByte(1);
+        break;
+      case CustomAchievement.trainRoom:
+        writer.writeByte(2);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CustomAchievementAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

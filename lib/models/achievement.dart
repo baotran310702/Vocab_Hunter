@@ -74,45 +74,45 @@ class Achievement {
     int? total,
   }) {
     return Achievement(
-      title: title ?? this.title,
-      description: description ?? this.description,
-      type: type ?? this.type,
-      amount: amount ?? this.amount,
-      total: total ?? this.total,
-    );
+        title: title ?? this.title,
+        description: description ?? this.description,
+        type: type ?? this.type,
+        amount: amount ?? this.amount,
+        total: total ?? this.total,
+        customAchievement: CustomAchievement.trainRoom);
   }
 
   static List<Achievement> defaultListAchievement = [
     Achievement(
-      title: "Capy Vocab",
-      description:
-          "You have learned 150 words in practise room to receive this achievement.",
-      type: AchievementType.capySleeping,
-      amount: 0,
-      total: 150,
-    ),
+        title: "Capy Vocab",
+        description:
+            "You have learned 150 words in practise room to receive this achievement.",
+        type: AchievementType.capySleeping,
+        amount: 0,
+        total: 150,
+        customAchievement: CustomAchievement.trainRoom),
     Achievement(
-      title: "Capy Topics",
-      description: "You have learned 5 topics to receive this achievement.",
-      type: AchievementType.capyWritting,
-      amount: 0,
-      total: 5,
-    ),
+        title: "Capy Topics",
+        description: "You have learned 5 topics to receive this achievement.",
+        type: AchievementType.capyWritting,
+        amount: 0,
+        total: 5,
+        customAchievement: CustomAchievement.trainRoom),
     Achievement(
-      title: "Capy Hardwork",
-      description:
-          "Search 100 words in dictionary to receive this achievement.",
-      type: AchievementType.capyGraduate1,
-      amount: 0,
-      total: 100,
-    ),
+        title: "Capy Hardwork",
+        description:
+            "Search 100 words in dictionary to receive this achievement.",
+        type: AchievementType.capyGraduate1,
+        amount: 0,
+        total: 100,
+        customAchievement: CustomAchievement.trainRoom),
     Achievement(
-      title: "Capy Pratise",
-      description:
-          "You have to completed 5 times in pratises room with no failures to receive this achievement.",
-      type: AchievementType.capyGraduate,
-      amount: 0,
-      total: 5,
-    ),
+        title: "Capy Pratise",
+        description:
+            "You have to completed 5 times in pratises room with no failures to receive this achievement.",
+        type: AchievementType.capyGraduate,
+        amount: 0,
+        total: 5,
+        customAchievement: CustomAchievement.trainRoom),
   ];
 }

@@ -22,16 +22,6 @@ class BoxTopicItem extends StatefulWidget {
 class _BoxTopicItemState extends State<BoxTopicItem> {
   double scale = 0.6;
 
-  void handleScaleHeart() async {
-    setState(() {
-      scale = 0.8;
-    });
-    await Future.delayed(const Duration(milliseconds: 200));
-    setState(() {
-      scale = 0.6;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     double defaultHeight = 160;
@@ -52,44 +42,16 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
         ),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Stack(
-            children: [
-              Container(
-                height: defaultHeight,
-                width: 160,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 194, 128, 128),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    bottomLeft: Radius.circular(20),
-                  ),
-                ),
+          Container(
+            height: defaultHeight,
+            width: 160,
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 194, 128, 128),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
               ),
-              Positioned(
-                top: 8,
-                left: 8,
-                child: Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: const Color(0xfff0f0f0),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Center(
-                    child: InkWell(
-                      onTap: () {
-                        handleScaleHeart();
-                      },
-                      child: AnimatedScale(
-                        scale: scale,
-                        duration: const Duration(milliseconds: 200),
-                        child: Image.asset(AppIcons.heartUnselected),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
           Flexible(
             child: Padding(

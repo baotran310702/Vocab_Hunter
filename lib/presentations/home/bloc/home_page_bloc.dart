@@ -46,7 +46,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           element.name.trim().toLowerCase() ==
           event.subTopic.name.trim().toLowerCase());
     } else {
-      listSubTopic.add(event.subTopic);
+      listSubTopic.add(event.subTopic.copyWith(isLiked: true));
     }
 
     await _vocabRepository.updateListFavouriteTopic(listSubTopic);

@@ -1,6 +1,4 @@
-import 'package:english_learner/models/favourite_topic.dart';
 import 'package:english_learner/models/sub_topic.dart';
-import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/home/widgets/box_topic_item.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
@@ -33,6 +31,8 @@ class _YourFavouritePageState extends State<YourFavouritePage> {
             return Container(
               color: AppColors.backgroundAppbar,
               child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: favouriteSubTopic.length,
                 itemBuilder: (builder, index) {

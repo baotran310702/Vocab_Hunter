@@ -53,6 +53,16 @@ class Topic extends Equatable {
     };
   }
 
+  factory Topic.empty() {
+    return Topic(
+      topicId: "",
+      name: "",
+      image: "",
+      description: "",
+      subTopics: const [],
+    );
+  }
+
   @override
   String toString() {
     return 'Topic{topicId: $topicId, name: $name, image: $image, description: $description}';

@@ -35,6 +35,7 @@ class HomePageState extends Equatable {
     UserModel? currentUser,
     List<(VocabularyRemote, VocabularyRemote)>? currentRecommendWords,
     List<Topic>? listTopicVocab,
+    List<SubTopic>? listSubTopicFavouriteLocal,
   }) {
     return HomePageState(
       isLoading: isLoading ?? this.isLoading,
@@ -58,6 +59,7 @@ class HomePageState extends Equatable {
 
 class DetailVocabTopicState extends HomePageState {
   final List<ListVocabularyTopic> listSubTopicItemLocal;
+  final List<SubTopic>? listSubTopicFavouriteLocal;
   const DetailVocabTopicState({
     required super.isLoading,
     required super.news,
@@ -65,6 +67,7 @@ class DetailVocabTopicState extends HomePageState {
     required super.currentUser,
     required super.listTopicVocab,
     required this.listSubTopicItemLocal,
+    this.listSubTopicFavouriteLocal,
   });
 
   //factory empty initstate
@@ -77,6 +80,7 @@ class DetailVocabTopicState extends HomePageState {
       currentUser: UserModel.empty(),
       listTopicVocab: const [],
       listSubTopicItemLocal: const [],
+      listSubTopicFavouriteLocal: const [],
     );
   }
 
@@ -89,6 +93,7 @@ class DetailVocabTopicState extends HomePageState {
     List<(VocabularyRemote, VocabularyRemote)>? currentRecommendWords,
     List<Topic>? listTopicVocab,
     List<ListVocabularyTopic>? listSubTopicItemLocal,
+    List<SubTopic>? listSubTopicFavouriteLocal,
   }) {
     return DetailVocabTopicState(
       isLoading: isLoading ?? this.isLoading,
@@ -98,6 +103,8 @@ class DetailVocabTopicState extends HomePageState {
       listTopicVocab: listTopicVocab ?? this.listTopicVocab,
       listSubTopicItemLocal:
           listSubTopicItemLocal ?? this.listSubTopicItemLocal,
+      listSubTopicFavouriteLocal:
+          listSubTopicFavouriteLocal ?? this.listSubTopicFavouriteLocal,
     );
   }
 

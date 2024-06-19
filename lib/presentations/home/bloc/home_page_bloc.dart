@@ -11,7 +11,6 @@ import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:english_learner/services/user_hive_local.dart';
 import 'package:english_learner/services/user_pref_local.dart';
 import 'package:english_learner/utils/cache_daily_vocab.dart';
-import 'package:english_learner/utils/cache_topic_choosen.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,25 +31,30 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
   _onChangeLoveSubTopicStatus(
       ChangeLoveSubTopicStatus event, Emitter emit) async {
-    CacheTopicChoosen cacheTopic = CacheTopicChoosen();
-    String topicId = cacheTopic.getTopicId();
-    String subTopicId = event.subTopic.subTopicId;
+    emit(
+      state.copyWith(isLoading: true),
+    );
 
-    List<Topic> newListTopics = state.listTopicVocab.map((topic) {
-      if (topic.topicId == topicId) {
-        List<SubTopic> updatedSubTopics = topic.subTopics.map((subTopic) {
-          if (subTopic.subTopicId == subTopicId) {
-            return subTopic.copyWith(isLiked: !event.subTopic.isLiked);
-          }
-          return subTopic;
-        }).toList();
-        return topic.copyWith(subTopics: updatedSubTopics);
-      }
-      return topic;
-    }).toList();
+    List<SubTopic> listSubTopic =
+        List.from(await _vocabRepository.getFavouriteTopic());
 
-    //completed update new list topic
-    emit(state.copyWith(isLoading: false, listTopicVocab: newListTopics));
+    if (listSubTopic.indexWhere((element) =>
+            element.name.trim().toLowerCase() ==
+            event.subTopic.name.trim().toLowerCase()) !=
+        -1) {
+      listSubTopic.removeWhere((element) =>
+          element.name.trim().toLowerCase() ==
+          event.subTopic.name.trim().toLowerCase());
+    } else {
+      listSubTopic.add(event.subTopic);
+    }
+
+    await _vocabRepository.updateListFavouriteTopic(listSubTopic);
+
+    emit(state.copyWith(
+      isLoading: false,
+      listSubTopicFavouriteLocal: listSubTopic,
+    ));
   }
 
   _onDownLoadDetailTopicVocab(
@@ -60,6 +64,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       topicId: event.topicId,
       subTopicId: event.subTopicId,
     );
+    List<SubTopic> listSubTopicFavouriteLocal =
+        await _vocabRepository.getFavouriteTopic();
+
     await _vocabRepository.saveAListVocabularyTopicLocal(vocabularyTopic);
     if (state is DetailVocabTopicState) {
       final currentState = state as DetailVocabTopicState;
@@ -68,12 +75,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
             ..add(vocabularyTopic);
 
       emit(DetailVocabTopicState(
-          isLoading: state.isLoading,
-          news: state.news,
-          recommendVocabs: state.recommendVocabs,
-          currentUser: state.currentUser,
-          listTopicVocab: state.listTopicVocab,
-          listSubTopicItemLocal: updatedListSubTopicItemLocal));
+        isLoading: state.isLoading,
+        news: state.news,
+        recommendVocabs: state.recommendVocabs,
+        currentUser: state.currentUser,
+        listTopicVocab: state.listTopicVocab,
+        listSubTopicItemLocal: updatedListSubTopicItemLocal,
+        listSubTopicFavouriteLocal: listSubTopicFavouriteLocal,
+      ));
     }
   }
 
@@ -81,6 +90,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       InitDetailTopicVocabulary event, Emitter emit) async {
     List<ListVocabularyTopic> listVocabTopicLocal =
         await _vocabRepository.getListVocabTopicsLocal();
+    List<SubTopic> listSubTopic = await _vocabRepository.getFavouriteTopic();
     emit(
       DetailVocabTopicState(
         isLoading: state.isLoading,
@@ -89,6 +99,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         currentUser: state.currentUser,
         listTopicVocab: state.listTopicVocab,
         listSubTopicItemLocal: listVocabTopicLocal,
+        listSubTopicFavouriteLocal: listSubTopic,
       ),
     );
   }

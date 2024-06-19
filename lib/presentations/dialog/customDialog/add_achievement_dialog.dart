@@ -12,14 +12,14 @@ class _AddAchievementDialogState extends State<AddAchievementDialog> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SingleChildScrollView(
+        const SingleChildScrollView(
           child: Row(
             children: [],
           ),
         ),
-        Text("Description"),
+        const Text("Description"),
         TextFormField(
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: "Description",
           ),
         ),

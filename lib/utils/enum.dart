@@ -74,11 +74,11 @@ enum Sex {
 @HiveType(typeId: KeyHiveLocal.hiveEnumAchievementType)
 enum CustomAchievement {
   @HiveField(0)
-  topic('Topic'),
+  topic("Topic"),
   @HiveField(1)
-  vocab('Vocabulary'),
+  vocab("Vocabulary"),
   @HiveField(2)
-  trainRoom('Train room');
+  trainRoom("Train room");
 
   final String value;
   const CustomAchievement(this.value);

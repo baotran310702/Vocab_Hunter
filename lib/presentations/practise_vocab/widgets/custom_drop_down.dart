@@ -6,10 +6,16 @@ import 'package:flutter/material.dart';
 class CustomDropDown extends StatefulWidget {
   final Function(String) onChanged;
   final List<String> listItem;
+  final double? customWidth;
+  final double? marginTop;
+  final double? paddingTopIcon;
   const CustomDropDown({
     super.key,
     required this.onChanged,
     required this.listItem,
+    this.customWidth,
+    this.marginTop,
+    this.paddingTopIcon,
   });
 
   @override
@@ -30,13 +36,13 @@ class _CustomDropDownState extends State<CustomDropDown> {
     return Stack(
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(top: widget.marginTop ?? 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Colors.grey),
           ),
           height: 54,
-          width: MediaQuery.of(context).size.width * 0.9,
+          width: widget.customWidth ?? MediaQuery.of(context).size.width * 0.9,
           child: DropdownButton<String>(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
@@ -58,6 +64,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
               ...widget.listItem,
             ].map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
+                key: UniqueKey(),
                 alignment: AlignmentDirectional.center,
                 value: value,
                 child: Text(
@@ -72,7 +79,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
           ),
         ),
         Positioned(
-          top: 40,
+          top: widget.paddingTopIcon ?? 40,
           right: 16,
           child: Transform.rotate(
             angle: pi * 1.5,

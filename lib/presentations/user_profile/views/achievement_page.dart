@@ -21,7 +21,6 @@ class AchievementPage extends StatelessWidget {
       body: BlocBuilder<ManageUserProfileBloc, ManageUserState>(
         builder: (context, state) {
           List<Achievement> userAchievement = state.userModel.achievements;
-
           return SafeArea(
             child: Stack(
               children: [
@@ -59,7 +58,7 @@ class AchievementPage extends StatelessWidget {
                           size: 30,
                         ),
                         onPressed: () {
-                          CustomDialog.showLoadingDialog(context);
+                          CustomDialog.showAddAchiementDialog(context);
                           // Future wait 5 seconds
                           // Future.delayed(const Duration(seconds: 2), () {
                           //   CustomDialog.hide(context);

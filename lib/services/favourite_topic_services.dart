@@ -52,6 +52,20 @@ class FavouriteTopicLocal {
     return currentListFavouriteTopic.favouriteTopics;
   }
 
+  Future<void> updateListFavouriteTopic(List<SubTopic> newList) async {
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveFavouriteTopics)) {
+      Hive.registerAdapter(ListFavouriteTopicAdapter());
+    }
+    if (!Hive.isAdapterRegistered(KeyHiveLocal.hiveSubTopicLocal)) {
+      Hive.registerAdapter(SubTopicAdapter());
+    }
+    final box =
+        await Hive.openBox<ListFavouriteTopic>(KeyBoxHiveLocal.favouriteTopic);
+    await box.clear();
+    await box.put(KeyBoxHiveLocal.favouriteTopic,
+        ListFavouriteTopic(favouriteTopics: newList));
+  }
+
   Future<void> removeAFavouriteTopic(String id) async {
     List<SubTopic> currentTopic = await getFavouriteTopic();
     List<SubTopic> newList = currentTopic

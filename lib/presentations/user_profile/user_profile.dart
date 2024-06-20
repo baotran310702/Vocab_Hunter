@@ -104,7 +104,7 @@ class UserProfile extends StatelessWidget {
                               ],
                             ),
                           ),
-                          isHaveAchievement
+                          !isHaveAchievement
                               ? Center(
                                   child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -236,6 +236,9 @@ class UserProfile extends StatelessWidget {
                           text: "Your Favourite",
                           icon: AppIcons.heartUnselected,
                           onTap: () {
+                            context.read<ManageUserProfileBloc>().add(
+                                  InitFavouriteSubTopic(),
+                                );
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return const YourFavouritePage();

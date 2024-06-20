@@ -47,3 +47,5 @@ class RemoveAFavouriteTopic extends ManageUserEvents {
   final String topicId;
   RemoveAFavouriteTopic({required this.topicId});
 }
+
+class InitFavouriteSubTopic extends ManageUserEvents {}

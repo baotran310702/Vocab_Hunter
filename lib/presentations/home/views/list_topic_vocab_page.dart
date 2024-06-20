@@ -1,7 +1,6 @@
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/presentations/home/bloc/home_page_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/back_button.dart';
-import 'package:english_learner/utils/cache_topic_choosen.dart';
 import 'package:english_learner/utils/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,7 +63,20 @@ class _PageContentState extends State<PageContent> {
       builder: (context, state) {
         if (state is DetailVocabTopicState) {
           statusTopic.clear();
-          for (var item in widget.subTopics) {
+          List<SubTopic> favouriteTopic =
+              state.listSubTopicFavouriteLocal ?? [];
+          List<SubTopic> currentSubTopic = List.from(widget.subTopics);
+          List<SubTopic> newSubTopicUpdated = currentSubTopic.map((e) {
+            int indx = favouriteTopic.indexWhere((element) =>
+                element.name.trim().toLowerCase() ==
+                e.name.trim().toLowerCase());
+            if (indx != -1) {
+              return e.copyWith(isLiked: true);
+            }
+            return e;
+          }).toList();
+
+          for (var item in newSubTopicUpdated) {
             int indx = state.listSubTopicItemLocal.indexWhere((element) =>
                 element.topic.trim().toLowerCase() ==
                 item.name.trim().toLowerCase());
@@ -109,7 +121,9 @@ class _PageContentState extends State<PageContent> {
   }
 
   _handleLikeSubTopic(SubTopic subTopic) async {
-    if (subTopic.isLiked) {}
+    context.read<HomePageBloc>().add(
+          ChangeLoveSubTopicStatus(subTopic: subTopic),
+        );
   }
 
   _handleLoadTopic(String subTopicId) async {
@@ -120,8 +134,6 @@ class _PageContentState extends State<PageContent> {
     if (indx != -1) {
       statusTopic[indx] = (DownloadStatus.dowloading, statusTopic[indx].$2);
     }
-
-    setState(() {});
 
     context.read<HomePageBloc>().add(
           DownLoadDetailTopicVocab(

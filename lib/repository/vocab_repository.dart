@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocab_word_similarity.dart';
 import 'package:english_learner/models/vocabulary/vocabulary.dart';
 import 'package:english_learner/models/vocabulary_topic/list_vocabulary_topic.dart';
+import 'package:english_learner/services/favourite_topic_services.dart';
 import 'package:english_learner/services/recommend_words.dart';
 import 'package:english_learner/services/topic_vocab_service.dart';
 import 'package:english_learner/services/vocab_services.dart';
@@ -15,6 +17,7 @@ class VocabRepository {
   late VocabService vocabService;
   late RecommendsWords recommendsWords;
   late TopicVocabServices topicVocabServices;
+  late FavouriteTopicLocal favouriteTopicLocal;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -22,6 +25,7 @@ class VocabRepository {
     vocabService = VocabService();
     recommendsWords = RecommendsWords();
     topicVocabServices = TopicVocabServices();
+    favouriteTopicLocal = FavouriteTopicLocal();
   }
 
   Future<List<VocabWordSimilarity>> getSimilarVocab(String word) async {
@@ -110,5 +114,22 @@ class VocabRepository {
   /// Save a list of topic to local storage
   Future<void> saveListTopicLocal(List<Topic> listTopic) async {
     await topicVocabServices.saveListTopicLocal(listTopic);
+  }
+
+  ///For favourite local storage
+  ///Add a subtopic to favourite hive local in [FavouriteTopicServices]
+  Future<void> addSubTopicFavourite(SubTopic subTopic) async {
+    await favouriteTopicLocal.addFavouriteTopic(subTopic);
+  }
+
+  ///For favourite local storage
+  ///Remove a subtopic from hive local
+  Future<List<SubTopic>> getFavouriteTopic() async {
+    return await favouriteTopicLocal.getFavouriteTopic();
+  }
+
+  ///For favourite local storage
+  Future<void> updateListFavouriteTopic(List<SubTopic> newListSubTopic) async {
+    await favouriteTopicLocal.updateListFavouriteTopic(newListSubTopic);
   }
 }

@@ -17,19 +17,20 @@ class AchievementAdapter extends TypeAdapter<Achievement> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Achievement(
-      id: fields[5] as String,
+      id: fields[6] as String,
       title: fields[0] as String,
       description: fields[1] as String,
       type: fields[2] as AchievementType,
       amount: fields[3] as int,
       total: fields[4] as int,
+      customAchievement: fields[5] as CustomAchievement,
     );
   }
 
   @override
   void write(BinaryWriter writer, Achievement obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -41,6 +42,8 @@ class AchievementAdapter extends TypeAdapter<Achievement> {
       ..writeByte(4)
       ..write(obj.total)
       ..writeByte(5)
+      ..write(obj.customAchievement)
+      ..writeByte(6)
       ..write(obj.id);
   }
 

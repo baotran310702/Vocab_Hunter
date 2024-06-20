@@ -20,6 +20,22 @@ class CustomConverter {
     }
   }
 
+  static String convertAchievemntToString(CustomAchievement customAchievement) {
+    return customAchievement.value.toString();
+  }
+
+  static CustomAchievement convertToCustomAchievement(dynamic value) {
+    if (value is String) {
+      return CustomAchievement.values
+          .firstWhere((element) => element.value == value);
+    } else if (value is int) {
+      return CustomAchievement.values
+          .firstWhere((element) => element.value == value.toString());
+    } else {
+      return CustomAchievement.trainRoom;
+    }
+  }
+
   /// Convert dynamic to DateTime
   static DateTime convertToDateTime(dynamic value) {
     if (value is String) {

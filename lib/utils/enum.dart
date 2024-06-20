@@ -70,3 +70,16 @@ enum Sex {
     return Sex.woman;
   }
 }
+
+@HiveType(typeId: KeyHiveLocal.hiveEnumAchievementType)
+enum CustomAchievement {
+  @HiveField(0)
+  topic('Topic'),
+  @HiveField(1)
+  vocab('Vocabulary'),
+  @HiveField(2)
+  trainRoom('Train room');
+
+  final String value;
+  const CustomAchievement(this.value);
+}

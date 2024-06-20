@@ -3,6 +3,7 @@ import 'package:english_learner/models/time_notification.dart';
 import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/repository/user_repository.dart';
+import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:english_learner/services/favourite_topic_services.dart';
 import 'package:english_learner/services/time_notification_local.dart';
 import 'package:english_learner/services/user_hive_local.dart';
@@ -15,6 +16,7 @@ part 'manage_user_state.dart';
 
 class ManageUserProfileBloc extends Bloc<ManageUserEvents, ManageUserState> {
   final UserRepository _userRepository = UserRepository();
+  final VocabRepository _vocabRepository = VocabRepository();
 
   ManageUserProfileBloc() : super(ManageUserState.initial()) {
     on<InitUserEvent>(_onInitUserEvent);
@@ -26,6 +28,13 @@ class ManageUserProfileBloc extends Bloc<ManageUserEvents, ManageUserState> {
     on<SaveUserCloud>(_onSaveUserCloud);
     on<AddFavouriteTopic>(_onAddFavouriteTopic);
     on<RemoveAFavouriteTopic>(_onRemoveAFavouriteTopic);
+    on<InitFavouriteSubTopic>(_onInitFavouriteSubTopic);
+  }
+
+  _onInitFavouriteSubTopic(InitFavouriteSubTopic event, Emitter emit) async {
+    emit(state.copyWith(isLoading: true));
+    List<SubTopic> topics = await _vocabRepository.getFavouriteTopic();
+    emit(state.copyWith(isLoading: false, favouriteSubTopic: topics));
   }
 
   _onSaveUserCloud(SaveUserCloud event, Emitter emit) async {

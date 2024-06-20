@@ -7,6 +7,7 @@ class ManageUserState extends Equatable {
   final String error;
   final String emailUSer;
   final List<Topic> favouriteTopics;
+  final List<SubTopic>? favouriteSubTopic;
 
   const ManageUserState({
     required this.userModel,
@@ -15,6 +16,7 @@ class ManageUserState extends Equatable {
     required this.error,
     required this.emailUSer,
     required this.favouriteTopics,
+    this.favouriteSubTopic,
   });
 
   factory ManageUserState.initial() {
@@ -25,6 +27,7 @@ class ManageUserState extends Equatable {
       error: '',
       emailUSer: "",
       favouriteTopics: const [],
+      favouriteSubTopic: const [],
     );
   }
 
@@ -35,6 +38,7 @@ class ManageUserState extends Equatable {
     String? error,
     String? emailUSer,
     List<Topic>? topics,
+    List<SubTopic>? favouriteSubTopic,
   }) {
     return ManageUserState(
       userModel: userModel ?? this.userModel,
@@ -43,6 +47,7 @@ class ManageUserState extends Equatable {
       error: error ?? this.error,
       emailUSer: emailUSer ?? this.emailUSer,
       favouriteTopics: topics ?? favouriteTopics,
+      favouriteSubTopic: favouriteSubTopic ?? this.favouriteSubTopic,
     );
   }
 
@@ -54,5 +59,6 @@ class ManageUserState extends Equatable {
         error,
         emailUSer,
         favouriteTopics,
+        favouriteSubTopic,
       ];
 }

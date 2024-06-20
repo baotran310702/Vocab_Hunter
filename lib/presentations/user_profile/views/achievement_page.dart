@@ -1,3 +1,4 @@
+import 'package:english_learner/presentations/dialog/show_dialog.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/presentations/user_profile/widgets/item_achievement.dart';
@@ -22,21 +23,53 @@ class AchievementPage extends StatelessWidget {
           List<Achievement> userAchievement = state.userModel.achievements;
 
           return SafeArea(
-            child: Container(
-              color: AppColors.backgroundPageAchievement,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: userAchievement.length,
-                      itemBuilder: (context, index) => ItemAchievement(
-                        achievement: userAchievement[index],
+            child: Stack(
+              children: [
+                Container(
+                  color: AppColors.backgroundPageAchievement,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: userAchievement.length,
+                          itemBuilder: (context, index) => ItemAchievement(
+                            achievement: userAchievement[index],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 40,
+                  right: 40,
+                  child: Container(
+                    height: 60,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundAppbar,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Center(
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.add,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          CustomDialog.showLoadingDialog(context);
+                          // Future wait 5 seconds
+                          // Future.delayed(const Duration(seconds: 2), () {
+                          //   CustomDialog.hide(context);
+                          // });
+                        },
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
           );
         },

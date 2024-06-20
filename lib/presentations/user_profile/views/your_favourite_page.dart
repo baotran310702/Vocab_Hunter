@@ -1,4 +1,6 @@
+import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
+import 'package:english_learner/presentations/home/widgets/box_topic_item.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +26,23 @@ class _YourFavouritePageState extends State<YourFavouritePage> {
       body: SafeArea(
         child: BlocBuilder<ManageUserProfileBloc, ManageUserState>(
           builder: (context, state) {
+            List<SubTopic> favouriteSubTopic = state.favouriteSubTopic ?? [];
             return Container(
               color: AppColors.backgroundAppbar,
-              child: Center(
-                ///TODO: update list favourite by call from local
-                child: Column(children: []),
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: favouriteSubTopic.length,
+                itemBuilder: (builder, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: BoxTopicItem(
+                      subTopic: favouriteSubTopic[index],
+                      topicId: "",
+                    ),
+                  );
+                },
               ),
             );
           },

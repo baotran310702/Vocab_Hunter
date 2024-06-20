@@ -16,6 +16,10 @@ class _AddAchievementDialogState extends State<AddAchievementDialog> {
   List<String> customTypeAchievement =
       CustomAchievement.values.map((e) => e.value.toString()).toList();
 
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  CustomAchievement currentTypeAchievement = CustomAchievement.topic;
+
   @override
   Widget build(BuildContext context) {
     List<AchievementType> listAchievementType = AchievementType.values
@@ -77,17 +81,18 @@ class _AddAchievementDialogState extends State<AddAchievementDialog> {
             ),
           ),
           const SizedBox(
-            height: 16,
+            height: 12,
           ),
           const Text(
             "Description",
             style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 12,
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           TextFormField(
+            controller: descriptionController,
             decoration: InputDecoration(
               hintText: "Description",
               contentPadding:
@@ -107,15 +112,19 @@ class _AddAchievementDialogState extends State<AddAchievementDialog> {
             ),
             textAlign: TextAlign.start,
           ),
-          const Text(
-            "Total",
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-          ),
           const SizedBox(
             height: 12,
           ),
+          const Text(
+            "Total",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           TextFormField(
+            controller: amountController,
             decoration: InputDecoration(
               hintText: "Total",
               contentPadding:
@@ -145,14 +154,22 @@ class _AddAchievementDialogState extends State<AddAchievementDialog> {
           const Text(
             "Choose Type Achievement",
             style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           CustomDropDown(
-            onChanged: (value) {},
+            onChanged: (value) {
+              setState(() {
+                currentTypeAchievement =
+                    CustomConverter.convertToCustomAchievement(value);
+              });
+            },
             listItem:
                 customTypeAchievement.isNotEmpty ? customTypeAchievement : [],
             customWidth: MediaQuery.of(context).size.width * 0.7,
-            marginTop: 12,
+            marginTop: 0,
             paddingTopIcon: 32,
           ),
           const SizedBox(
@@ -192,7 +209,7 @@ class _AddAchievementDialogState extends State<AddAchievementDialog> {
                     MediaQuery.of(context).size.width * 0.3,
                     52,
                   ),
-                  backgroundColor: AppColors.titleHeaderColor,
+                  backgroundColor: Colors.red,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),

@@ -17,6 +17,13 @@ class ProgressBar extends StatelessWidget {
             : state.questionList.isNotEmpty
                 ? state.currentQuestionIndex / (state.questionList.length - 1)
                 : 0;
+        int totalVocab = isTopicVocab != null && isTopicVocab == true
+            ? (state.questionTopicVocabList.isNotEmpty
+                ? state.questionTopicVocabList.length - 1
+                : 0)
+            : (state.questionList.isNotEmpty
+                ? state.questionList.length - 1
+                : 0);
 
         return Container(
           decoration: BoxDecoration(
@@ -27,7 +34,7 @@ class ProgressBar extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                "Progress: ${state.currentQuestionIndex}/${isTopicVocab != null && isTopicVocab == true ? (state.questionTopicVocabList.length - 1) : (state.questionList.length - 1)}",
+                "Progress: ${state.currentQuestionIndex}/$totalVocab",
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

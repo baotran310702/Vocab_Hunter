@@ -56,4 +56,8 @@ class AppIcons {
   static const String animation = "assets/icons/animation.gif";
   static const String loading = "assets/icons/loading.gif";
   static const String bubble = "assets/icons/bubble.gif";
+  static const String trophyAnimation = "assets/icons/trophy_animation.gif";
+  static const String fireAnimation = "assets/icons/fire_animation.gif";
+  static const String backgroundAnimation =
+      "assets/icons/background_animation.gif";
 }

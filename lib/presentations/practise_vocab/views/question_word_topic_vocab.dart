@@ -19,13 +19,13 @@ class _QuestionVocabTopicState extends State<QuestionVocabTopic> {
     return BlocBuilder<PractiseVocabBloc, PractiseVocabState>(
       builder: (context, state) {
         if (state.isLoading) {
-          return const LoadingPage(message: "Loadinggg");
+          return const LoadingPage(message: "Loading...");
         }
 
         if (state.questionTopicVocabList.isEmpty) {
           return const Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 40),
               child: Text(
                 "No question available, this list may have no words to practise.",
                 style: TextStyle(
@@ -40,7 +40,7 @@ class _QuestionVocabTopicState extends State<QuestionVocabTopic> {
 
         if (state.questionTopicVocabList.isNotEmpty) {
           if (state.currentQuestionIndex <
-                  state.questionTopicVocabList.length  &&
+                  state.questionTopicVocabList.length &&
               state.sentences.containsKey(state
                   .questionTopicVocabList[state.currentQuestionIndex].word)) {
             return FillBlankTopicVocabQuesiton(

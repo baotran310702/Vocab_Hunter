@@ -41,7 +41,7 @@ class ItemAchievement extends StatelessWidget {
               ),
             ),
             child: Image.asset(
-              CustomConverter.convertAchievement(achievement.type),
+              CustomConverter.convertAchievementType(achievement.type),
               width: 60,
               height: 60,
             ),

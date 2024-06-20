@@ -20,7 +20,8 @@ class CustomConverter {
     }
   }
 
-  static String convertAchievemntToString(CustomAchievement customAchievement) {
+  static String convertCustomAchievemntToString(
+      CustomAchievement customAchievement) {
     return customAchievement.value.toString();
   }
 
@@ -114,7 +115,7 @@ class CustomConverter {
     return result;
   }
 
-  static String convertAchievement(AchievementType type) {
+  static String convertAchievementType(AchievementType type) {
     switch (type) {
       case AchievementType.capyBathing:
         return AppIcons.capyBathing;

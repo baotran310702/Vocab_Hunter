@@ -3,6 +3,7 @@ import 'package:english_learner/presentations/dialog/customDialog/loading_dialog
 import 'package:flutter/material.dart';
 
 import 'customDialog/add_achievement_dialog.dart';
+import 'customDialog/alert_achievement.dart';
 
 class CustomDialog {
   static void showLoadingDialog(BuildContext context) {
@@ -36,6 +37,26 @@ class CustomDialog {
     ).then((value) {
       return value;
     });
+  }
+
+  static void showAlertAchievementDialog(
+      BuildContext ctx, Achievement achievement) {
+    showDialog(
+      context: ctx,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(0),
+          alignment: Alignment.center,
+          backgroundColor: Colors.transparent,
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: AlertAchievement(
+              achievement: achievement,
+            ),
+          ),
+        );
+      },
+    );
   }
 
   static void hide(BuildContext context) {

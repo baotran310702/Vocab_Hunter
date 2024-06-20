@@ -37,7 +37,7 @@ class Achievement {
       id: "id",
       title: "title",
       description: "description",
-      type: AchievementType.capySleeping,
+      type: AchievementType.capyDoctor,
       amount: 100,
       total: 150,
       customAchievement: CustomAchievement.trainRoom,
@@ -95,10 +95,10 @@ class Achievement {
         id: "0",
         title: "Capy Vocab",
         description:
-            "You have learned 150 words in practise room to receive this achievement.",
+            "You have to learn 10 words in practise room to receive this achievement.",
         type: AchievementType.capySleeping,
         amount: 0,
-        total: 150,
+        total: 10,
         customAchievement: CustomAchievement.trainRoom),
     Achievement(
         id: "1",
@@ -106,16 +106,16 @@ class Achievement {
         description: "You have learned 5 topics to receive this achievement.",
         type: AchievementType.capyWritting,
         amount: 0,
-        total: 5,
+        total: 1,
         customAchievement: CustomAchievement.trainRoom),
     Achievement(
         id: "2",
         title: "Capy Hardwork",
         description:
-            "Search 100 words in dictionary to receive this achievement.",
+            "Search 5 words in dictionary to receive this achievement.",
         type: AchievementType.capyGraduate1,
         amount: 0,
-        total: 100,
+        total: 5,
         customAchievement: CustomAchievement.trainRoom),
     Achievement(
         id: "3",
@@ -124,7 +124,7 @@ class Achievement {
             "You have to completed 5 times in pratises room with no failures to receive this achievement.",
         type: AchievementType.capyGraduate,
         amount: 0,
-        total: 5,
+        total: 1,
         customAchievement: CustomAchievement.trainRoom),
   ];
 }

@@ -54,3 +54,8 @@ class AddAchievementEvent extends ManageUserEvents {
   final Achievement achievement;
   AddAchievementEvent({required this.achievement});
 }
+
+class UpdateAchievementEvent extends ManageUserEvents {
+  CustomAchievement customAchievement;
+  UpdateAchievementEvent({required this.customAchievement});
+}

@@ -372,7 +372,7 @@ class _ImageBoxState extends State<ImageBox> {
               margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               child: Center(
                 child: Image.asset(
-                  CustomConverter.convertAchievement(
+                  CustomConverter.convertAchievementType(
                     widget.achievementType,
                   ),
                   fit: BoxFit.fill,

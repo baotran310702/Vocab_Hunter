@@ -9,6 +9,7 @@ import 'package:english_learner/services/favourite_topic_services.dart';
 import 'package:english_learner/services/time_notification_local.dart';
 import 'package:english_learner/services/user_hive_local.dart';
 import 'package:english_learner/services/user_pref_local.dart';
+import 'package:english_learner/utils/enum.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,6 +32,34 @@ class ManageUserProfileBloc extends Bloc<ManageUserEvents, ManageUserState> {
     on<RemoveAFavouriteTopic>(_onRemoveAFavouriteTopic);
     on<InitFavouriteSubTopic>(_onInitFavouriteSubTopic);
     on<AddAchievementEvent>(_onAddAchievementEvent);
+    on<UpdateAchievementEvent>(_onUpdateAchievementEvent);
+  }
+
+  _onUpdateAchievementEvent(UpdateAchievementEvent event, Emitter emit) async {
+    emit(state.copyWith(isLoading: true));
+    UserModel userModel = state.userModel;
+    List<Achievement> achievements = List.from(userModel.achievements);
+
+    List<Achievement> newListAchievement = achievements.map((element) {
+      if (element.customAchievement == event.customAchievement) {
+        if (element.amount == element.total) {
+          return element;
+        } else {
+          Achievement newAchievement =
+              element.copyWith(amount: element.amount + 1);
+          return newAchievement;
+        }
+      } else {
+        return element;
+      }
+    }).toList();
+
+    UserModel newUserModel =
+        userModel.copyWith(achievements: newListAchievement);
+
+    await UserHiveLocal().saveUser(newUserModel);
+    add(SaveUserCloud());
+    emit(state.copyWith(isLoading: false, userModel: newUserModel));
   }
 
   _onAddAchievementEvent(AddAchievementEvent event, Emitter emit) async {

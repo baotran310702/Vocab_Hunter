@@ -1,3 +1,4 @@
+import 'package:english_learner/models/achievement.dart';
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/time_notification.dart';
 import 'package:english_learner/models/topic.dart';
@@ -29,6 +30,18 @@ class ManageUserProfileBloc extends Bloc<ManageUserEvents, ManageUserState> {
     on<AddFavouriteTopic>(_onAddFavouriteTopic);
     on<RemoveAFavouriteTopic>(_onRemoveAFavouriteTopic);
     on<InitFavouriteSubTopic>(_onInitFavouriteSubTopic);
+    on<AddAchievementEvent>(_onAddAchievementEvent);
+  }
+
+  _onAddAchievementEvent(AddAchievementEvent event, Emitter emit) async {
+    emit(state.copyWith(isLoading: true));
+    UserModel userModel = state.userModel;
+    List<Achievement> achievements = List.from(userModel.achievements);
+    achievements.add(event.achievement);
+    UserModel newUserModel = userModel.copyWith(achievements: achievements);
+    await UserHiveLocal().saveUser(newUserModel);
+    add(SaveUserCloud());
+    emit(state.copyWith(isLoading: false, userModel: newUserModel));
   }
 
   _onInitFavouriteSubTopic(InitFavouriteSubTopic event, Emitter emit) async {

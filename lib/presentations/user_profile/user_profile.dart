@@ -114,7 +114,7 @@ class UserProfile extends StatelessWidget {
                                       Column(
                                         children: [
                                           const Text(
-                                            "Receive achievemement by completed it!, ",
+                                            "Receive achievemement by completed task!, ",
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: Colors.black,

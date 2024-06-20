@@ -49,3 +49,8 @@ class RemoveAFavouriteTopic extends ManageUserEvents {
 }
 
 class InitFavouriteSubTopic extends ManageUserEvents {}
+
+class AddAchievementEvent extends ManageUserEvents {
+  final Achievement achievement;
+  AddAchievementEvent({required this.achievement});
+}

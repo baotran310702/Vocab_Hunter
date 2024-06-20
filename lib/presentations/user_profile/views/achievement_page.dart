@@ -57,12 +57,17 @@ class AchievementPage extends StatelessWidget {
                           Icons.add,
                           size: 30,
                         ),
-                        onPressed: () {
-                          CustomDialog.showAddAchiementDialog(context);
-                          // Future wait 5 seconds
-                          // Future.delayed(const Duration(seconds: 2), () {
-                          //   CustomDialog.hide(context);
-                          // });
+                        onPressed: () async {
+                          Achievement? result =
+                              await CustomDialog.showAddAchiementDialog(
+                                  context);
+                          if (result != null && context.mounted) {
+                            context.read<ManageUserProfileBloc>().add(
+                                  AddAchievementEvent(
+                                    achievement: result,
+                                  ),
+                                );
+                          }
                         },
                       ),
                     ),

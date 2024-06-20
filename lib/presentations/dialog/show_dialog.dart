@@ -1,3 +1,4 @@
+import 'package:english_learner/models/achievement.dart';
 import 'package:english_learner/presentations/dialog/customDialog/loading_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -18,11 +19,12 @@ class CustomDialog {
     );
   }
 
-  static void showAddAchiementDialog(BuildContext ctx) {
-    showDialog(
+  static Future<Achievement?> showAddAchiementDialog(BuildContext ctx) async {
+    return await showDialog(
       context: ctx,
       builder: (context) {
         return const AlertDialog(
+          contentPadding: EdgeInsets.all(0),
           alignment: Alignment.center,
           backgroundColor: Colors.transparent,
           content: SingleChildScrollView(
@@ -31,7 +33,9 @@ class CustomDialog {
           ),
         );
       },
-    );
+    ).then((value) {
+      return value;
+    });
   }
 
   static void hide(BuildContext context) {

@@ -27,7 +27,6 @@ class _YourFavouritePageState extends State<YourFavouritePage> {
         child: BlocBuilder<ManageUserProfileBloc, ManageUserState>(
           builder: (context, state) {
             List<SubTopic> favouriteSubTopic = state.favouriteSubTopic ?? [];
-
             return Container(
               color: AppColors.backgroundAppbar,
               child: ListView.builder(

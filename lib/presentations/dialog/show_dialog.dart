@@ -25,7 +25,10 @@ class CustomDialog {
         return const AlertDialog(
           alignment: Alignment.center,
           backgroundColor: Colors.transparent,
-          content: AddAchievementDialog(),
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: AddAchievementDialog(),
+          ),
         );
       },
     );

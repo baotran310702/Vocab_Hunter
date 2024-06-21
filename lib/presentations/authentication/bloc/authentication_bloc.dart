@@ -1,6 +1,7 @@
 import 'package:english_learner/repository/user_repository.dart';
 import 'package:english_learner/services/user_pref_local.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'authentication_event.dart';
@@ -29,12 +30,12 @@ class AuthenticationBloc
       );
       return;
     } catch (e) {
+      debugPrint("Exception: $e");
       emit(
         state.copyWith(
           isLoading: false,
           error: "Something went wrong, please try again.",
           success: null,
-          
         ),
       );
       return;

@@ -6,6 +6,9 @@ class APIPath {
       "http://192.168.2.40:5000/api/recommend-similar-words/";
   static const String listWordSimilarityLocalhost =
       "http://192.168.2.40:5000/api/recommend-list-similar-words/";
+
+  static const String newsBaseURL =
+      "https://newsapi.org/v2/everything?q=keyword&apiKey=";
 }
 
 class KeyLocalPreferences {
@@ -61,4 +64,5 @@ class KeyBoxHiveLocal {
 
 class APIKeys {
   static const String geminiAPIKey = "AIzaSyDI2JmRf-0cUeAXIbCxw6bogA3TIewUSJg";
+  static const String newsAPIKey = "faf009816a284e979dbc949520228818";
 }

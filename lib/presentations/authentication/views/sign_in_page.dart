@@ -1,3 +1,4 @@
+import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +19,18 @@ class SignInPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthenticationBloc(),
       child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+        listenWhen: (previous, current) {
+          if (previous.success != current.success) {
+            return true;
+          }
+          if (previous.error != current.success) {
+            return true;
+          }
+          if (previous.isLoading != current.isLoading) {
+            return true;
+          }
+          return false;
+        },
         listener: (context, state) {
           if (state.success != null && state.error == null) {
             Navigator.pushReplacementNamed(context, "/home");
@@ -35,6 +48,7 @@ class SignInPage extends StatelessWidget {
               textColor: Colors.white,
               fontSize: 16.0,
             );
+            Navigator.pushReplacementNamed(context, "/login");
           }
         },
         buildWhen: (previous, current) {
@@ -49,158 +63,160 @@ class SignInPage extends StatelessWidget {
                 color: AppColors.backgroundHeader,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: state.isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : Stack(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                AppIcons.logo,
-                                width: 300,
-                                height: 300,
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              //text form field to enter email
-                              InputTextFields(
-                                textController: emailController,
-                                hintText: "Tên đăng nhập/Gmail",
-                                labelText: "Tên đăng nhập/Gmail",
-                                isPassword: false,
-                              ),
-
-                              const SizedBox(height: 12),
-
-                              InputTextFields(
-                                textController: passwordController,
-                                hintText: "Mật khẩu",
-                                labelText: "Mật khẩu",
-                                isPassword: true,
-                              ),
-
-                              //text form field to enter password
-
-                              const SizedBox(height: 12),
-
-                              Row(
-                                children: [
-                                  Text(
-                                    "Quên mật khẩu?",
-                                    style: TextStyle(
-                                      color: AppColors.textColors,
-                                    ),
-                                  ),
-                                  Text(
-                                    " Nhấn vào đây",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.textColors,
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              const SizedBox(height: 30),
-
-                              //buttom submit
-                              CustomButton(
-                                backgroundColor: AppColors.textInputs,
-                                text: Text(
-                                  "Đăng nhập",
-                                  style: TextStyle(
-                                    color: AppColors.primaryTextButton,
-                                  ),
+                    ? const LoadingPage(message: "Logging in...")
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Stack(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  AppIcons.logo,
+                                  width: 300,
+                                  height: 300,
                                 ),
-                                onPressed: () async {
-                                  if (emailController.text.isEmpty ||
-                                      passwordController.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                      msg: "Vui lòng nhập đầy đủ thông tin",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.BOTTOM,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.red,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0,
-                                    );
-                                  } else {
-                                    context.read<AuthenticationBloc>().add(
-                                          Login(
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                          ),
-                                        );
-                                  }
-                                },
-                              ),
-
-                              const SizedBox(height: 12),
-                              Text(
-                                "- Or -",
-                                style: TextStyle(
-                                  color: AppColors.textColors,
+                                const SizedBox(
+                                  height: 20,
                                 ),
-                              ),
-                              const SizedBox(height: 12),
+                                //text form field to enter email
+                                InputTextFields(
+                                  textController: emailController,
+                                  hintText: "Tên đăng nhập/Gmail",
+                                  labelText: "Tên đăng nhập/Gmail",
+                                  isPassword: false,
+                                ),
 
-                              CustomButton(
-                                backgroundColor: AppColors.achievedSlider,
-                                text: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                const SizedBox(height: 12),
+
+                                InputTextFields(
+                                  textController: passwordController,
+                                  hintText: "Mật khẩu",
+                                  labelText: "Mật khẩu",
+                                  isPassword: true,
+                                ),
+
+                                //text form field to enter password
+
+                                const SizedBox(height: 12),
+
+                                Row(
                                   children: [
-                                    Image.asset(
-                                      AppIcons.google,
-                                      width: 24,
-                                      height: 24,
-                                    ),
-                                    const SizedBox(
-                                      width: 4,
+                                    Text(
+                                      "Quên mật khẩu?",
+                                      style: TextStyle(
+                                        color: AppColors.textColors,
+                                      ),
                                     ),
                                     Text(
-                                      "Đăng nhập bằng Google",
+                                      " Nhấn vào đây",
                                       style: TextStyle(
-                                        color: AppColors.secondaryTextButton,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.textColors,
                                       ),
                                     ),
                                   ],
                                 ),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-                          Positioned(
-                            bottom: 20,
-                            left: 10,
-                            right: 10,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text("Bạn chưa có tài khoản?"),
-                                const SizedBox(
-                                  width: 4,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, "/sign-up");
-                                  },
-                                  child: Text(
-                                    "Đăng ký",
+
+                                const SizedBox(height: 30),
+
+                                //buttom submit
+                                CustomButton(
+                                  backgroundColor: AppColors.textInputs,
+                                  text: Text(
+                                    "Đăng nhập",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.textColors,
+                                      color: AppColors.primaryTextButton,
                                     ),
                                   ),
+                                  onPressed: () async {
+                                    if (emailController.text.isEmpty ||
+                                        passwordController.text.isEmpty) {
+                                      Fluttertoast.showToast(
+                                        msg: "Vui lòng nhập đầy đủ thông tin",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0,
+                                      );
+                                    } else {
+                                      context.read<AuthenticationBloc>().add(
+                                            Login(
+                                              email: emailController.text,
+                                              password: passwordController.text,
+                                            ),
+                                          );
+                                    }
+                                  },
+                                ),
+
+                                const SizedBox(height: 12),
+                                Text(
+                                  "- Or -",
+                                  style: TextStyle(
+                                    color: AppColors.textColors,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+
+                                CustomButton(
+                                  backgroundColor: AppColors.achievedSlider,
+                                  text: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        AppIcons.google,
+                                        width: 24,
+                                        height: 24,
+                                      ),
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                        "Đăng nhập bằng Google",
+                                        style: TextStyle(
+                                          color: AppColors.secondaryTextButton,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  onPressed: () {},
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                            Positioned(
+                              bottom: 20,
+                              left: 10,
+                              right: 10,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text("Bạn chưa có tài khoản?"),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, "/sign-up");
+                                    },
+                                    child: Text(
+                                      "Đăng ký",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.textColors,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
               ),
             ),

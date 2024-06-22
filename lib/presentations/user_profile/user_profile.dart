@@ -36,275 +36,283 @@ class UserProfile extends StatelessWidget {
               }
             }
           }
-          return SafeArea(
-            child: Container(
-              color: AppColors.backgroundHeader,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const HeaderInformations(
-                      title: "",
-                      description: "",
-                      isUserProifile: true,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.backgroundColorAchievement,
-                        borderRadius: BorderRadius.circular(20),
+          return PopScope(
+            canPop: false,
+            child: SafeArea(
+              child: Container(
+                color: AppColors.backgroundHeader,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const HeaderInformations(
+                        title: "",
+                        description: "",
+                        isUserProifile: true,
                       ),
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 12,
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, bottom: 4),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Your Achievement",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundColorAchievement,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 16,
+                          horizontal: 12,
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16, right: 16, bottom: 4),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    "Your Achievement",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return const AchievementPage();
-                                    }));
-                                  },
-                                  child: InkWell(
+                                  InkWell(
                                     onTap: () {
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
                                         return const AchievementPage();
                                       }));
                                     },
-                                    child: const Text(
-                                      "Explore More...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w400,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const AchievementPage();
+                                        }));
+                                      },
+                                      child: const Text(
+                                        "Explore More...",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          !isHaveAchievement
-                              ? Center(
-                                  child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12.0, horizontal: 60),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          const Text(
-                                            "Receive achievemement by completed task!, ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            overflow: TextOverflow.clip,
-                                            maxLines: 2,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) {
-                                                return const AchievementPage();
-                                              }));
-                                            },
-                                            child: Text(
-                                              "Explore now?",
+                            !isHaveAchievement
+                                ? Center(
+                                    child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12.0, horizontal: 60),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            const Text(
+                                              "Receive achievemement by completed task!, ",
                                               style: TextStyle(
                                                 fontSize: 12,
-                                                color: Colors.red[800],
+                                                color: Colors.black,
                                                 fontWeight: FontWeight.w500,
-                                                fontStyle: FontStyle.italic,
                                               ),
                                               textAlign: TextAlign.center,
                                               overflow: TextOverflow.clip,
                                               maxLines: 2,
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ))
-                              : SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      for (int i = 0;
-                                          i <
-                                              state.userModel.achievements
-                                                  .length;
-                                          i++)
-                                        if (state.userModel.achievements[i]
-                                                .total ==
-                                            state.userModel.achievements[i]
-                                                .amount)
-                                          BoxAchievement(
-                                            icon: Image.asset(
-                                              CustomConverter
-                                                  .convertAchievementType(state
-                                                      .userModel
-                                                      .achievements[i]
-                                                      .type),
-                                              width: 80,
-                                              height: 80,
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.push(context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                  return const AchievementPage();
+                                                }));
+                                              },
+                                              child: Text(
+                                                "Explore now?",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.red[800],
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle: FontStyle.italic,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                                overflow: TextOverflow.clip,
+                                                maxLines: 2,
+                                              ),
                                             ),
-                                            title: state.userModel
-                                                .achievements[i].title,
-                                          ),
-                                    ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ))
+                                : SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        for (int i = 0;
+                                            i <
+                                                state.userModel.achievements
+                                                    .length;
+                                            i++)
+                                          if (state.userModel.achievements[i]
+                                                  .total ==
+                                              state.userModel.achievements[i]
+                                                  .amount)
+                                            BoxAchievement(
+                                              icon: Image.asset(
+                                                CustomConverter
+                                                    .convertAchievementType(
+                                                        state
+                                                            .userModel
+                                                            .achievements[i]
+                                                            .type),
+                                                width: 80,
+                                                height: 80,
+                                              ),
+                                              title: state.userModel
+                                                  .achievements[i].title,
+                                            ),
+                                      ],
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding:
+                                EdgeInsets.only(left: 16, right: 16, bottom: 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Setting",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
+                              ],
+                            ),
+                          ),
+                          Items(
+                            text: "User Informations",
+                            icon: AppIcons.userProfile,
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const UserInformations();
+                              }));
+                            },
+                          ),
+                          Items(
+                            text: "Change Password",
+                            icon: AppIcons.security,
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const ChangePasswordPage();
+                              }));
+                            },
+                          ),
+                          // Items(
+                          //   text: "Targets",
+                          //   icon: AppIcons.cup,
+                          //   onTap: () {
+                          //     Navigator.push(context,
+                          //         MaterialPageRoute(builder: (context) {
+                          //       return const UserTest();
+                          //     }));
+                          //   },
+                          // ),
+                          Items(
+                            text: "Your Favourite",
+                            icon: AppIcons.heartUnselected,
+                            onTap: () {
+                              context.read<ManageUserProfileBloc>().add(
+                                    InitFavouriteSubTopic(),
+                                  );
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const YourFavouritePage();
+                              }));
+                            },
+                          ),
+                          // Items(
+                          //   text: "In Progressing",
+                          //   icon: AppIcons.following,
+                          //   onTap: () {},
+                          // ),
+                          Items(
+                            text: "Notifications",
+                            icon: AppIcons.alert,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const SettingNotifications();
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+
+                          ///TODO: Language
+                          // Items(
+                          //   text: "Language",
+                          //   icon: AppIcons.language,
+                          //   onTap: () {
+                          //     CustomDialog.showAlertAchievementDialog(
+                          //       Achievement.defaultInit(),
+                          //     );
+                          //   },
+                          // ),
                         ],
                       ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding:
-                              EdgeInsets.only(left: 16, right: 16, bottom: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Setting",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(
+                            MediaQuery.of(context).size.width * 0.9,
+                            52,
+                          ),
+                          backgroundColor: AppColors.colorExitButton,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
                           ),
                         ),
-                        Items(
-                          text: "User Informations",
-                          icon: AppIcons.userProfile,
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const UserInformations();
-                            }));
-                          },
-                        ),
-                        Items(
-                          text: "Change Password",
-                          icon: AppIcons.security,
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const ChangePasswordPage();
-                            }));
-                          },
-                        ),
-                        // Items(
-                        //   text: "Targets",
-                        //   icon: AppIcons.cup,
-                        //   onTap: () {
-                        //     Navigator.push(context,
-                        //         MaterialPageRoute(builder: (context) {
-                        //       return const UserTest();
-                        //     }));
-                        //   },
-                        // ),
-                        Items(
-                          text: "Your Favourite",
-                          icon: AppIcons.heartUnselected,
-                          onTap: () {
-                            context.read<ManageUserProfileBloc>().add(
-                                  InitFavouriteSubTopic(),
-                                );
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const YourFavouritePage();
-                            }));
-                          },
-                        ),
-                        // Items(
-                        //   text: "In Progressing",
-                        //   icon: AppIcons.following,
-                        //   onTap: () {},
-                        // ),
-                        Items(
-                          text: "Notifications",
-                          icon: AppIcons.alert,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return const SettingNotifications();
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        Items(
-                          text: "Language",
-                          icon: AppIcons.language,
-                          onTap: () {
-                            CustomDialog.showAlertAchievementDialog(
-                              Achievement.defaultInit(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(
-                          MediaQuery.of(context).size.width * 0.9,
-                          52,
-                        ),
-                        backgroundColor: AppColors.colorExitButton,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
+                        onPressed: () {
+                          _onLogout();
+                          Navigator.pushReplacementNamed(context, '/');
+                        },
+                        child: const Text("Log Out"),
                       ),
-                      onPressed: () {
-                        _onLogout();
-                        Navigator.pushReplacementNamed(context, '/');
-                      },
-                      child: const Text("Log Out"),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 16,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -141,6 +141,8 @@ class CustomConverter {
         return AppIcons.capyRabbit;
       case AchievementType.capyDoctor:
         return AppIcons.capyDoctor;
+      case AchievementType.capyNoti:
+        return AppIcons.capyNoti;
       default:
         return "";
     }
@@ -222,5 +224,10 @@ class CustomConverter {
       default:
         return "Chưa phân loại";
     }
+  }
+
+  //convert time to string type dmy hh mm
+  static String convertTimeToString(DateTime time) {
+    return "${time.day}/${time.month}/${time.year} ${time.hour}:${time.minute}";
   }
 }

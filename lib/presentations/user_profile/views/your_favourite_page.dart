@@ -28,7 +28,8 @@ class _YourFavouritePageState extends State<YourFavouritePage> {
           builder: (context, state) {
             List<SubTopic> favouriteSubTopic = state.favouriteSubTopic ?? [];
             return Container(
-              color: AppColors.backgroundAppbar,
+              color: AppColors.backgroundPageAchievement,
+              height: MediaQuery.of(context).size.height,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 physics: const BouncingScrollPhysics(),

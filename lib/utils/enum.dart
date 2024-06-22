@@ -28,7 +28,9 @@ enum AchievementType {
   @HiveField(10)
   capyRabbit,
   @HiveField(11)
-  capyDoctor
+  capyDoctor,
+  @HiveField(12)
+  capyNoti,
 }
 
 @HiveType(typeId: KeyHiveLocal.hiveEnumWordTypeId)

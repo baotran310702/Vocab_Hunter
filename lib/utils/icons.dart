@@ -51,6 +51,7 @@ class AppIcons {
   static const String capyCooking = "assets/icons/capy_nau_an.png";
   static const String capyRabbit = "assets/icons/capy_tho.png";
   static const String capyDoctor = "assets/icons/capy_tien_si.png";
+  static const String capyNoti = "assets/icons/capy_noti.png";
 
   //gif icons
   static const String animation = "assets/icons/animation.gif";

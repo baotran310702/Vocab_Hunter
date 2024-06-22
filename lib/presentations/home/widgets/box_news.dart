@@ -24,7 +24,9 @@ class _BoxNewsState extends State<BoxNews> {
           isImageWork = true;
         });
       }
-    } catch (e) {}
+    } catch (e) {
+      debugPrint("Error: $e");
+    }
   }
 
   @override
@@ -56,25 +58,25 @@ class _BoxNewsState extends State<BoxNews> {
         ),
         child: Row(
           children: [
-            Container(
-              height: 120,
-              width: 160,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
-                ),
-                color: Colors.amber,
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
               ),
-              child: isImageWork
-                  ? Image.network(
-                      widget.news.urlToImage,
-                      fit: BoxFit.fitHeight,
-                    )
-                  : Image.asset(
-                      AppIcons.capySleeping,
-                      fit: BoxFit.fitHeight,
-                    ),
+              child: Container(
+                height: 120,
+                width: 160,
+                color: Colors.amber,
+                child: isImageWork
+                    ? Image.network(
+                        widget.news.urlToImage,
+                        fit: BoxFit.fitHeight,
+                      )
+                    : Image.asset(
+                        AppIcons.capySleeping,
+                        fit: BoxFit.fitHeight,
+                      ),
+              ),
             ),
             const SizedBox(width: 10),
             Flexible(

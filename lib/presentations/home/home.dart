@@ -68,8 +68,10 @@ class _HomePageState extends State<HomePage> {
                     builder: (context, state) {
                       if (state.isLoading ||
                           state.currentRecommendWords == null) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.achievedSlider,
+                          ),
                         );
                       }
                       if (state.currentRecommendWords!.isEmpty) {

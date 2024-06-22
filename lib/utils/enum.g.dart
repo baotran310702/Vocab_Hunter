@@ -37,6 +37,8 @@ class AchievementTypeAdapter extends TypeAdapter<AchievementType> {
         return AchievementType.capyRabbit;
       case 11:
         return AchievementType.capyDoctor;
+      case 12:
+        return AchievementType.capyNoti;
       default:
         return AchievementType.capyEating;
     }
@@ -80,6 +82,9 @@ class AchievementTypeAdapter extends TypeAdapter<AchievementType> {
         break;
       case AchievementType.capyDoctor:
         writer.writeByte(11);
+        break;
+      case AchievementType.capyNoti:
+        writer.writeByte(12);
         break;
     }
   }

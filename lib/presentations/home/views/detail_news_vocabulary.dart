@@ -23,7 +23,9 @@ class _DetailNewsPageState extends State<DetailNewsPage> {
           isImageWork = true;
         });
       }
-    } catch (e) {}
+    } catch (e) {
+      debugPrint("Error: $e");
+    }
   }
 
   @override

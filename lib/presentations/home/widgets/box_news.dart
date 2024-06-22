@@ -1,14 +1,38 @@
+import 'package:dio/dio.dart';
+import 'package:english_learner/models/news.dart';
 import 'package:english_learner/presentations/home/views/detail_news_vocabulary.dart';
+import 'package:english_learner/utils/extension.dart';
+import 'package:english_learner/utils/icons.dart';
 import 'package:flutter/material.dart';
 
 class BoxNews extends StatefulWidget {
-  const BoxNews({super.key});
+  final News news;
+  const BoxNews({super.key, required this.news});
 
   @override
   State<BoxNews> createState() => _BoxNewsState();
 }
 
 class _BoxNewsState extends State<BoxNews> {
+  bool isImageWork = false;
+
+  void checkValidImage() async {
+    try {
+      var res = await Dio().get(widget.news.urlToImage);
+      if (res.statusCode == 200) {
+        setState(() {
+          isImageWork = true;
+        });
+      }
+    } catch (e) {}
+  }
+
+  @override
+  void initState() {
+    checkValidImage();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -16,7 +40,9 @@ class _BoxNewsState extends State<BoxNews> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const DetailNewsPage(),
+            builder: (context) => DetailNewsPage(
+              news: widget.news,
+            ),
           ),
         );
       },
@@ -40,12 +66,21 @@ class _BoxNewsState extends State<BoxNews> {
                 ),
                 color: Colors.amber,
               ),
+              child: isImageWork
+                  ? Image.network(
+                      widget.news.urlToImage,
+                      fit: BoxFit.fitHeight,
+                    )
+                  : Image.asset(
+                      AppIcons.capySleeping,
+                      fit: BoxFit.fitHeight,
+                    ),
             ),
             const SizedBox(width: 10),
-            const Flexible(
+            Flexible(
               child: Text(
-                "Tin tức mới nhất về chủ đề học tiếng Anh",
-                style: TextStyle(
+                widget.news.title.capitalize(),
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),

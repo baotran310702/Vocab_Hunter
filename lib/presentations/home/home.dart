@@ -1,3 +1,4 @@
+import 'package:english_learner/models/news.dart';
 import 'package:english_learner/presentations/home/bloc/home_page_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/box_list_vocab_type.dart';
 import 'package:english_learner/presentations/home/widgets/box_news.dart';
@@ -16,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  List<int> listNews = [1, 2, 3, 4];
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -123,15 +124,20 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Column(
-                    children: [
-                      for (int i in listNews)
-                        BoxNews(
-                          key: Key(
-                            i.toString(),
-                          ),
-                        ),
-                    ],
+                  BlocBuilder<HomePageBloc, HomePageState>(
+                    builder: (context, state) {
+                      List<News> listNews = state.news;
+
+                      return Column(
+                        children: [
+                          for (News i in listNews)
+                            BoxNews(
+                              key: UniqueKey(),
+                              news: i,
+                            ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),

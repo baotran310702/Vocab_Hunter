@@ -6,6 +6,7 @@ import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocab_word_similarity.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/models/vocabulary_topic/list_vocabulary_topic.dart';
+import 'package:english_learner/repository/news_repository.dart';
 import 'package:english_learner/repository/translate_repository.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:english_learner/services/user_hive_local.dart';
@@ -20,6 +21,7 @@ part 'home_page_state.dart';
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   final VocabRepository _vocabRepository = VocabRepository();
   final TranslateRepository _translateRepository = TranslateRepository();
+  final NewsRepository _newsRepository = NewsRepository();
   HomePageBloc() : super(HomePageState.initial()) {
     on<HomePageInitialEvent>(_onInitial);
     on<CreateRecommendWords>(_onCreateRecommendWords);
@@ -124,8 +126,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
     var listInformation = await Future.wait([
       UserHiveLocal().getUser(),
-      UserPrefererencesLocal().getDefaultListLearningVocab()
+      UserPrefererencesLocal().getDefaultListLearningVocab(),
     ]);
+
+    List<News> news = News.defaultNews;
 
     //init cache instance to get daily vocab
     var currentVocabGlobal = GlobalDailyVocab();
@@ -138,9 +142,12 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         state.copyWith(
           isLoading: false,
           currentRecommendWords: currentRecommendWords,
+          news: news,
         ),
       );
       return;
+    } else {
+      emit(state.copyWith(news: news));
     }
 
     UserModel user = listInformation[0] as UserModel;
@@ -179,6 +186,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         isLoading: false,
         currentUser: user,
         currentRecommendWords: currentVocabRemotesTranslated,
+        news: news,
       ),
     );
   }

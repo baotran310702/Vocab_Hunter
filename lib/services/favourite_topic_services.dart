@@ -47,7 +47,6 @@ class FavouriteTopicLocal {
 
     ListFavouriteTopic currentListFavouriteTopic =
         box.get(KeyBoxHiveLocal.favouriteTopic) ?? ListFavouriteTopic.empty();
-    await box.close();
 
     return currentListFavouriteTopic.favouriteTopics;
   }

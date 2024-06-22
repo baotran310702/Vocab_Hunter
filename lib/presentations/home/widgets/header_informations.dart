@@ -67,8 +67,8 @@ class _HeaderInformationsState extends State<HeaderInformations> {
           ],
         ),
         Positioned(
-          top: 0,
-          right: 0,
+          top: -10,
+          right: -10,
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -81,13 +81,13 @@ class _HeaderInformationsState extends State<HeaderInformations> {
             child: Stack(
               children: [
                 Image.asset(
-                  AppIcons.bell,
-                  width: 32,
-                  height: 32,
+                  AppIcons.bellAlert,
+                  width: 48,
+                  height: 48,
                 ),
                 Positioned(
-                  top: -0.5,
-                  right: 0,
+                  top: 10,
+                  right: 10,
                   child: Container(
                     width: 14,
                     height: 14,

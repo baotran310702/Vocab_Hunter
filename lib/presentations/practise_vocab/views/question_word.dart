@@ -2,9 +2,12 @@ import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/practise_vocab/bloc/practise_vocab_bloc.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/fill_blank.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/multi_choice.dart';
+import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
+import 'package:english_learner/utils/enum.dart';
 import 'package:english_learner/utils/toasty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 class QuestionVocab extends StatefulWidget {
   const QuestionVocab({super.key});
@@ -65,11 +68,19 @@ class _QuestionVocabState extends State<QuestionVocab> {
 
   _onChangeNextQuestion(bool isTrue, bool isEnd) {
     if (isTrue) {
+      context.read<ManageUserProfileBloc>().add(
+            UpdateAchievementEvent(customAchievement: CustomAchievement.vocab),
+          );
       Toasty.showToastCorner(msg: "Correct!", context: context);
     } else {
       Toasty.showToastCorner(msg: "Incorrect!", context: context);
     }
     if (isEnd) {
+      context.read<ManageUserProfileBloc>().add(
+            UpdateAchievementEvent(
+              customAchievement: CustomAchievement.trainRoom,
+            ),
+          );
       Toasty.disposeAllToasty();
     }
 

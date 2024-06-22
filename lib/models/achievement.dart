@@ -1,12 +1,13 @@
 import 'package:english_learner/utils/constants.dart';
 import 'package:english_learner/utils/converter.dart';
 import 'package:english_learner/utils/enum.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'achievement.g.dart';
 
 @HiveType(typeId: KeyHiveLocal.hiveAchievementId)
-class Achievement {
+class Achievement extends ChangeNotifier {
   @HiveField(0)
   final String title;
   @HiveField(1)
@@ -14,13 +15,15 @@ class Achievement {
   @HiveField(2)
   final AchievementType type;
   @HiveField(3)
-  final int amount;
+  int amount;
   @HiveField(4)
   final int total;
   @HiveField(5)
   final CustomAchievement customAchievement;
   @HiveField(6)
   final String id;
+  @HiveField(7)
+  bool isAlert;
 
   Achievement({
     required this.id,
@@ -30,7 +33,13 @@ class Achievement {
     required this.amount,
     required this.total,
     required this.customAchievement,
+    required this.isAlert,
   });
+
+  void updateAmount() {
+    amount++;
+    notifyListeners();
+  }
 
   factory Achievement.defaultInit() {
     return Achievement(
@@ -41,6 +50,7 @@ class Achievement {
       amount: 100,
       total: 150,
       customAchievement: CustomAchievement.trainRoom,
+      isAlert: false,
     );
   }
 
@@ -58,6 +68,7 @@ class Achievement {
           ? CustomConverter.convertToCustomAchievement(
               json['customAchievement'])
           : CustomAchievement.trainRoom,
+      isAlert: json['isAlert'] ?? false,
     );
   }
 
@@ -69,6 +80,9 @@ class Achievement {
       'type': CustomConverter.convertAchievementTypeToIndex(type),
       'amount': amount,
       'total': total,
+      'customAchievement':
+          CustomConverter.convertCustomAchievemntToString(customAchievement),
+      'isAlert': isAlert,
     };
   }
 
@@ -79,52 +93,63 @@ class Achievement {
     AchievementType? type,
     int? amount,
     int? total,
+    CustomAchievement? customAchievement,
+    bool? isAlert,
   }) {
     return Achievement(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        type: type ?? this.type,
-        amount: amount ?? this.amount,
-        total: total ?? this.total,
-        customAchievement: CustomAchievement.trainRoom);
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      type: type ?? this.type,
+      amount: amount ?? this.amount,
+      total: total ?? this.total,
+      customAchievement: customAchievement ?? this.customAchievement,
+      isAlert: isAlert ?? this.isAlert,
+    );
   }
 
   static List<Achievement> defaultListAchievement = [
     Achievement(
-        id: "0",
-        title: "Capy Vocab",
-        description:
-            "You have to learn 10 words in practise room to receive this achievement.",
-        type: AchievementType.capySleeping,
-        amount: 0,
-        total: 10,
-        customAchievement: CustomAchievement.trainRoom),
+      id: "0",
+      title: "Capy Vocab",
+      description:
+          "You have to learn 10 words in practise room to receive this achievement.",
+      type: AchievementType.capySleeping,
+      amount: 0,
+      total: 10,
+      customAchievement: CustomAchievement.vocab,
+      isAlert: false,
+    ),
     Achievement(
-        id: "1",
-        title: "Capy Topics",
-        description: "You have learned 5 topics to receive this achievement.",
-        type: AchievementType.capyWritting,
-        amount: 0,
-        total: 1,
-        customAchievement: CustomAchievement.trainRoom),
+      id: "1",
+      title: "Capy Topics",
+      description: "You have learned 5 topics to receive this achievement.",
+      type: AchievementType.capyWritting,
+      amount: 0,
+      total: 1,
+      customAchievement: CustomAchievement.topic,
+      isAlert: false,
+    ),
     Achievement(
-        id: "2",
-        title: "Capy Hardwork",
-        description:
-            "Search 5 words in dictionary to receive this achievement.",
-        type: AchievementType.capyGraduate1,
-        amount: 0,
-        total: 5,
-        customAchievement: CustomAchievement.trainRoom),
+      id: "2",
+      title: "Capy Hardwork",
+      description: "Search 5 words in dictionary to receive this achievement.",
+      type: AchievementType.capyGraduate1,
+      amount: 0,
+      total: 5,
+      customAchievement: CustomAchievement.vocab,
+      isAlert: false,
+    ),
     Achievement(
-        id: "3",
-        title: "Capy Pratise",
-        description:
-            "You have to completed 5 times in pratises room with no failures to receive this achievement.",
-        type: AchievementType.capyGraduate,
-        amount: 0,
-        total: 1,
-        customAchievement: CustomAchievement.trainRoom),
+      id: "3",
+      title: "Capy Pratise",
+      description:
+          "You have to completed 5 times in pratises room with no failures to receive this achievement.",
+      type: AchievementType.capyGraduate,
+      amount: 0,
+      total: 1,
+      customAchievement: CustomAchievement.trainRoom,
+      isAlert: false,
+    ),
   ];
 }

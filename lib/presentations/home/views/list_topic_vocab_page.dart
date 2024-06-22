@@ -1,6 +1,7 @@
 import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/presentations/home/bloc/home_page_bloc.dart';
 import 'package:english_learner/presentations/home/widgets/back_button.dart';
+import 'package:english_learner/utils/cache_topic_choosen.dart';
 import 'package:english_learner/utils/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,6 +104,7 @@ class _PageContentState extends State<PageContent> {
             scrollDirection: Axis.vertical,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: statusTopic
                   .map((e) => BoxTopicDetail(
                         boxHeight: boxHeight,
@@ -127,6 +129,8 @@ class _PageContentState extends State<PageContent> {
   }
 
   _handleLoadTopic(String subTopicId) async {
+    CacheTopicChoosen topicChoosen = CacheTopicChoosen();
+    String topicId = topicChoosen.getTopicId();
     //update status to downloading subtopic
     int indx = statusTopic.indexWhere((element) =>
         element.$2.name.trim().toLowerCase() ==
@@ -138,7 +142,7 @@ class _PageContentState extends State<PageContent> {
     context.read<HomePageBloc>().add(
           DownLoadDetailTopicVocab(
             subTopicId: subTopicId,
-            topicId: widget.topicId,
+            topicId: topicId,
           ),
         );
   }

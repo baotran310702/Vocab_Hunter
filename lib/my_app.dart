@@ -49,16 +49,11 @@ class _MyMainAppState extends State<MyMainApp> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      body: PopScope(
-        onPopInvoked: (canPop) {
-          return;
-        },
-        child: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          children: bottomBarPages,
-          onPageChanged: (int index) {},
-        ),
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        children: bottomBarPages,
+        onPageChanged: (int index) {},
       ),
       bottomNavigationBar: AnimatedNotchBottomBar(
         notchBottomBarController: _controller,

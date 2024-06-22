@@ -65,15 +65,4 @@ class _ListVocabTopicItemState extends State<ListVocabTopicItem> {
       ),
     );
   }
-
-  // void _onTapVocabItem(BuildContext context, VocabTranslatedLocalModel vocab) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => DetailVocabulary(
-  //         vocabTranslatedLocal: vocab,
-  //       ),
-  //     ),
-  //   );
-  // }
 }

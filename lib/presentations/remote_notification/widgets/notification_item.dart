@@ -23,7 +23,7 @@ class _NotificationItemsState extends State<NotificationItems> {
           context,
           MaterialPageRoute(
             builder: (context) => DetailNotificaitons(
-              notificationApp: widget.notificationApp,
+            notificationApp: widget.notificationApp,
             ),
           ),
         );

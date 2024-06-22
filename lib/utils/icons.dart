@@ -60,6 +60,7 @@ class AppIcons {
   static const String trophyAnimation = "assets/icons/trophy_animation.gif";
   static const String fireAnimation = "assets/icons/fire_animation.gif";
   static const String congrasAnimation = "assets/icons/congras_animation.gif";
+  static const String bellAlert = "assets/icons/bell_alert.gif";
   static const String backgroundAnimation =
       "assets/icons/background_animation.gif";
 }

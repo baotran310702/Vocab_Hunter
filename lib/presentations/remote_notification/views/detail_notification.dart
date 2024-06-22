@@ -33,6 +33,7 @@ class _DetailNotificaitonsState extends State<DetailNotificaitons> {
                 ),
                 textAlign: TextAlign.start,
               ),
+              const SizedBox(height: 12),
               Row(
                 children: [
                   Text(
@@ -43,13 +44,19 @@ class _DetailNotificaitonsState extends State<DetailNotificaitons> {
                   ),
                 ],
               ),
+              const SizedBox(height: 12),
               Image.asset(
                 AppIcons.capyNoti,
                 width: 200,
                 height: 200,
               ),
+              const SizedBox(height: 12),
               Text(
                 widget.notificationApp.body,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                ),
                 textAlign: TextAlign.start,
               ),
             ],

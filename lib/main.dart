@@ -15,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
-
 import 'package:path_provider/path_provider.dart';
 
 import 'presentations/dictionary_page/bloc/translate_page_bloc.dart';
@@ -34,7 +33,6 @@ void main() async {
   final dir = await getApplicationDocumentsDirectory();
 
   Hive.init(dir.path);
-
   await Future.wait([
     UserHiveLocal().init(),
     WordNotificationServices().init(),
@@ -55,7 +53,9 @@ void main() async {
     });
   }
 
-  runApp(const MyApp());
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -93,6 +93,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         builder: FToastBuilder(),
         debugShowCheckedModeBanner: false,
         routes: {

@@ -271,7 +271,6 @@ class UserProfile extends StatelessWidget {
                           icon: AppIcons.language,
                           onTap: () {
                             CustomDialog.showAlertAchievementDialog(
-                              context,
                               Achievement.defaultInit(),
                             );
                           },
@@ -407,6 +406,7 @@ class BoxAchievement extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(left: 16),
       height: 160,
+      width: 120,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -425,12 +425,18 @@ class BoxAchievement extends StatelessWidget {
               child: icon,
             ),
           ),
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text(
+              title,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.clip,
+              maxLines: 2,
             ),
           ),
         ],

@@ -24,13 +24,14 @@ class AchievementAdapter extends TypeAdapter<Achievement> {
       amount: fields[3] as int,
       total: fields[4] as int,
       customAchievement: fields[5] as CustomAchievement,
+      isAlert: fields[7] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Achievement obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class AchievementAdapter extends TypeAdapter<Achievement> {
       ..writeByte(5)
       ..write(obj.customAchievement)
       ..writeByte(6)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(7)
+      ..write(obj.isAlert);
   }
 
   @override

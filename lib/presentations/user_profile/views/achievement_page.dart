@@ -32,6 +32,7 @@ class AchievementPage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ListView.builder(
+                          padding: const EdgeInsets.only(bottom: 60),
                           itemCount: userAchievement.length,
                           itemBuilder: (context, index) => ItemAchievement(
                             achievement: userAchievement[index],
@@ -59,8 +60,7 @@ class AchievementPage extends StatelessWidget {
                         ),
                         onPressed: () async {
                           Achievement? result =
-                              await CustomDialog.showAddAchiementDialog(
-                                  context);
+                              await CustomDialog.showAddAchiementDialog();
                           if (result != null && context.mounted) {
                             context.read<ManageUserProfileBloc>().add(
                                   AddAchievementEvent(

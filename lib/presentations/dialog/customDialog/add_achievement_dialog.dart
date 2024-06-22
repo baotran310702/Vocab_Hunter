@@ -319,6 +319,7 @@ class _AddAchievementDialogState extends State<AddAchievementDialog> {
         amount: 0,
         total: CustomConverter.convertToInt(amount),
         customAchievement: currentTypeAchievement,
+        isAlert: false,
       ),
     );
   }

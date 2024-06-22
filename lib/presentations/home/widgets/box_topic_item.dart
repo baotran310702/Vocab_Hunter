@@ -1,5 +1,5 @@
 import 'package:english_learner/models/sub_topic.dart';
-import 'package:english_learner/presentations/user_profile/views/detail_topic_item.dart';
+import 'package:english_learner/presentations/home/views/list_topic_vocab_page.dart';
 import 'package:english_learner/utils/cache_topic_choosen.dart';
 import 'package:english_learner/utils/extension.dart';
 import 'package:english_learner/utils/icons.dart';
@@ -29,10 +29,13 @@ class _BoxTopicItemState extends State<BoxTopicItem> {
 
     return InkWell(
       onTap: () {
-        CacheTopicChoosen().setTopicId(widget.topicId);
+        CacheTopicChoosen topicChoosen = CacheTopicChoosen();
+        topicChoosen.setTopicId(widget.topicId);
+
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DetailFavouriteVocabPage(
-            subTopic: widget.subTopic,
+          return ListDetailTopicVocab(
+            listSubtopics: [widget.subTopic],
+            nameTopic: widget.subTopic.name,
           );
         }));
       },

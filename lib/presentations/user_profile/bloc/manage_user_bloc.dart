@@ -3,6 +3,7 @@ import 'package:english_learner/models/sub_topic.dart';
 import 'package:english_learner/models/time_notification.dart';
 import 'package:english_learner/models/topic.dart';
 import 'package:english_learner/models/user.dart';
+import 'package:english_learner/presentations/dialog/show_dialog.dart';
 import 'package:english_learner/repository/user_repository.dart';
 import 'package:english_learner/repository/vocab_repository.dart';
 import 'package:english_learner/services/favourite_topic_services.dart';
@@ -41,7 +42,8 @@ class ManageUserProfileBloc extends Bloc<ManageUserEvents, ManageUserState> {
     List<Achievement> achievements = List.from(userModel.achievements);
 
     List<Achievement> newListAchievement = achievements.map((element) {
-      if (element.customAchievement == event.customAchievement) {
+      if (element.customAchievement == event.customAchievement &&
+          element.isAlert == false) {
         if (element.amount == element.total) {
           return element;
         } else {
@@ -53,6 +55,13 @@ class ManageUserProfileBloc extends Bloc<ManageUserEvents, ManageUserState> {
         return element;
       }
     }).toList();
+    //Check if any achievement is completed and show alert and update isAlert value
+    for (var element in newListAchievement) {
+      if (element.amount == element.total && element.isAlert == false) {
+        element.isAlert = true;
+        CustomDialog.showAlertAchievementDialog(element);
+      }
+    }
 
     UserModel newUserModel =
         userModel.copyWith(achievements: newListAchievement);

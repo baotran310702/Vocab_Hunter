@@ -50,8 +50,26 @@ class _AlertAchievementState extends State<AlertAchievement> {
                       scale: 3,
                       child: Image.asset(AppIcons.backgroundAnimation)),
                 ),
-                Image.asset(CustomConverter.convertAchievementType(
-                    widget.achievement.type)),
+                Image.asset(
+                  CustomConverter.convertAchievementType(
+                      widget.achievement.type),
+                ),
+                Image.asset(
+                  AppIcons.congrasAnimation,
+                ),
+                Positioned(
+                  right: -50,
+                  child: Image.asset(
+                    AppIcons.congrasAnimation,
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  bottom: -50,
+                  child: Image.asset(
+                    AppIcons.congrasAnimation,
+                  ),
+                ),
                 Positioned(
                   bottom: -30,
                   right: -60,

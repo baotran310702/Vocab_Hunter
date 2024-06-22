@@ -67,7 +67,9 @@ class _CardTopicState extends State<CardTopic> {
               PronounceWord(word: widget.vocabulary.word),
               const SizedBox(width: 14),
               Text(
-                "/${widget.vocabulary.pronounce}/cc",
+                widget.vocabulary.pronounce.contains("/")
+                    ? widget.vocabulary.pronounce
+                    : "/${widget.vocabulary.pronounce}/",
                 style: const TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,

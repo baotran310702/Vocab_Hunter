@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                               child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 30),
                             child: Text(
-                              "No words recommends,please check your list words if it's empty.",
+                              "No words recommends, please check your list words if it's empty.",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,

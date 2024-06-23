@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:english_learner/models/summarize_pratise.dart';
 import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/extension.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 class MultiChoiceVocab extends StatefulWidget {
   final List<(VocabularyRemote, VocabularyRemote)> questionList;
   final (VocabularyRemote, VocabularyRemote) currentQuestion;
-  final Function(bool, bool) onChangeNextQuestion;
+  final Function(bool, bool, SummarizeResult) onChangeNextQuestion;
   const MultiChoiceVocab({
     super.key,
     required this.questionList,
@@ -77,9 +78,25 @@ class _MultiChoiceVocabState extends State<MultiChoiceVocab> {
                     element.$1.word == widget.currentQuestion.$1.word);
 
                 bool isEnd = index == widget.questionList.length - 1;
+
+                List<(TupleVocab, bool)> listCurrentQuestion = [];
+
+                for (((VocabularyRemote, VocabularyRemote), bool) item
+                    in listAnswer) {
+                  TupleVocab tupleVocab = TupleVocab(
+                    vocabRemote: item.$1,
+                  );
+                  listCurrentQuestion.add((tupleVocab, item.$2));
+                }
+
+                SummarizeResult sumResult = SummarizeResult(
+                    questionList: listCurrentQuestion,
+                    userAnswer: listAnswer[i].$1.$2.word ?? "");
+
                 widget.onChangeNextQuestion(
                   listAnswer[i].$1.$1.word == widget.currentQuestion.$1.word,
                   isEnd,
+                  sumResult,
                 );
               },
               child: Text(

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:english_learner/models/summarize_pratise.dart';
 import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/extension.dart';
@@ -9,7 +10,7 @@ class FillBlankTopicVocabQuesiton extends StatefulWidget {
   final List<VocabTopic> questionTopicVocabList;
   final VocabTopic currentTopicVocabQuestion;
 
-  final Function(bool, bool) onChangeNextTopicVocabQuestion;
+  final Function(bool, bool, SummarizeResult) onChangeNextTopicVocabQuestion;
   const FillBlankTopicVocabQuesiton({
     super.key,
     required this.questionTopicVocabList,
@@ -125,10 +126,23 @@ class _FillBlankTopicVocabQuesitonState
                         element.word == widget.currentTopicVocabQuestion.word);
 
                 bool isEnd = index == widget.questionTopicVocabList.length - 1;
+
+                List<(TupleVocab, bool)> listCurrentQuestion = [];
+                for ((VocabTopic, bool) item in listAnswer) {
+                  TupleVocab tupleVocab = TupleVocab(
+                    vocabTopic: item.$1,
+                  );
+                  listCurrentQuestion.add((tupleVocab, item.$2));
+                }
+
+                SummarizeResult sumResult = SummarizeResult(
+                    questionList: listCurrentQuestion,
+                    userAnswer: listAnswer[i].$1.word);
                 widget.onChangeNextTopicVocabQuestion(
                   listAnswer[i].$1.word ==
                       widget.currentTopicVocabQuestion.word,
                   isEnd,
+                  sumResult,
                 );
               },
               child: Text(

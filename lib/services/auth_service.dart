@@ -27,6 +27,7 @@ class AuthenticationServices {
 
   Future<String> signIn(String email, String password) async {
     try {
+      ///TODO: check uid why it not found when sync user data
       var result = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       String uid = result.user?.uid ?? "";

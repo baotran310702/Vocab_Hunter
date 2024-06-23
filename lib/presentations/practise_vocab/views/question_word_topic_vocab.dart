@@ -1,7 +1,10 @@
+import 'package:english_learner/models/summarize_pratise.dart';
 import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/practise_vocab/bloc/practise_vocab_bloc.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/fill_blank_topic_vocab.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/multi_choice_topic_vocab.dart';
+import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
+import 'package:english_learner/utils/enum.dart';
 import 'package:english_learner/utils/toasty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,18 +66,30 @@ class _QuestionVocabTopicState extends State<QuestionVocabTopic> {
     );
   }
 
-  _onChangeNextQuestion(bool isTrue, bool isEnd) {
+  _onChangeNextQuestion(
+      bool isTrue, bool isEnd, SummarizeResult currentQuestion) {
     if (isTrue) {
+      context.read<ManageUserProfileBloc>().add(
+            UpdateAchievementEvent(customAchievement: CustomAchievement.vocab),
+          );
       Toasty.showToastCorner(msg: "Correct!", context: context);
     } else {
       Toasty.showToastCorner(msg: "Incorrect!", context: context);
     }
     if (isEnd) {
+      context.read<ManageUserProfileBloc>().add(
+            UpdateAchievementEvent(
+              customAchievement: CustomAchievement.trainRoom,
+            ),
+          );
       Toasty.disposeAllToasty();
     }
 
-    context
-        .read<PractiseVocabBloc>()
-        .add(ChangeNextQuestionTopicVocab(isTrue: isTrue));
+    context.read<PractiseVocabBloc>().add(
+          ChangeNextQuestionTopicVocab(
+            isTrue: isTrue,
+            currentQuestion: currentQuestion,
+          ),
+        );
   }
 }

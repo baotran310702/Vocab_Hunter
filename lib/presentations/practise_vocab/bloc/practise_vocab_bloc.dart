@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:english_learner/models/summarize_pratise.dart';
 import 'package:english_learner/models/user.dart';
 import 'package:english_learner/models/user_vocab.dart';
 import 'package:english_learner/models/vocabulary/vocab_topic.dart';
@@ -63,8 +64,15 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
             .toList(),
       ]);
 
+      List<SummarizeResult> currentResult = [
+        ...state.summarizeResult,
+        event.currentQuestion
+      ];
+      emit(state.copyWith(summarizeResult: currentResult));
+
       emit(
         AnswerResult(
+          summarizeResult: currentResult,
           message: "Congratulations!",
           isTopicVocab: true,
           isLoading: state.isLoading,
@@ -87,28 +95,33 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
 
       return;
     }
+    List<SummarizeResult> currentResult = [
+      ...state.summarizeResult,
+      event.currentQuestion
+    ];
     if (event.isTrue) {
       List<VocabTopic> newCorrectVocabTopicList =
           List.from(state.correctAnswerTopicVocabList);
       newCorrectVocabTopicList
           .add(state.questionTopicVocabList[state.currentQuestionIndex]);
 
-
-
       emit(state.copyWith(
-          correctAnswerTopicVocabList: newCorrectVocabTopicList,
-          currentQuestionIndex: state.currentQuestionIndex + 1));
+        correctAnswerTopicVocabList: newCorrectVocabTopicList,
+        currentQuestionIndex: state.currentQuestionIndex + 1,
+        summarizeResult: currentResult,
+      ));
     } else {
       List<VocabTopic> newFailedVocabTopicList =
           List.from(state.failedAnswerTopicVocabList);
       newFailedVocabTopicList
           .add(state.questionTopicVocabList[state.currentQuestionIndex]);
 
-
       emit(
         state.copyWith(
-            failedAnswerTopicVocabList: newFailedVocabTopicList,
-            currentQuestionIndex: state.currentQuestionIndex + 1),
+          failedAnswerTopicVocabList: newFailedVocabTopicList,
+          currentQuestionIndex: state.currentQuestionIndex + 1,
+          summarizeResult: currentResult,
+        ),
       );
     }
   }
@@ -269,8 +282,15 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
             .toList(),
       ]);
 
+      List<SummarizeResult> currentList = [
+        ...state.summarizeResult,
+        event.currentQuestion
+      ];
+      emit(state.copyWith(summarizeResult: currentList));
+
       emit(
         AnswerResult(
+          summarizeResult: currentList,
           message: "Congratulations!",
           isLoading: state.isLoading,
           isTopicVocab: false,

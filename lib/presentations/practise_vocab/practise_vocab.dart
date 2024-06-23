@@ -5,6 +5,7 @@ import 'package:english_learner/presentations/practise_vocab/bloc/practise_vocab
 import 'package:english_learner/presentations/practise_vocab/widgets/custom_drop_down.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/progress.dart';
 import 'package:english_learner/presentations/practise_vocab/views/question_word.dart';
+import 'package:english_learner/utils/toasty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +26,13 @@ class _PractiseVocabState extends State<PractiseVocab> {
       create: (context) => practiseVocabBloc..add(PractiseVocabInitial()),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: const MyAppbar(text: "Practise Room"),
+        appBar: MyAppbar(
+          text: "Practise Room",
+          onPressed: () {
+            Toasty.disposeAllToasty();
+            Navigator.pop(context);
+          },
+        ),
         body: BlocBuilder<PractiseVocabBloc, PractiseVocabState>(
           builder: (context, state) {
             List<String> currentLearningList = state.currentUser.learningWords

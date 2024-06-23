@@ -1,5 +1,5 @@
+import 'package:english_learner/models/summarize_pratise.dart';
 import 'package:english_learner/models/vocabulary/vocab_topic.dart';
-import 'package:english_learner/models/vocabulary/vocabulary_remote.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/practise_vocab/bloc/practise_vocab_bloc.dart';
@@ -53,6 +53,7 @@ class _PractiseVocabTopicState extends State<PractiseVocabTopic> {
                     questionList: state.questionTopicVocabList,
                     correctAnswerList: state.correctAnswerTopicVocabList,
                     failedAnswerList: state.failedAnswerTopicVocabList,
+                    summarizeResults: state.summarizeResult,
                   ),
                 );
               } else {
@@ -90,12 +91,14 @@ class SummarizePage extends StatefulWidget {
   final List<VocabTopic> questionList;
   final List<VocabTopic> correctAnswerList;
   final List<VocabTopic> failedAnswerList;
+  final List<SummarizeResult> summarizeResults;
 
   const SummarizePage({
     super.key,
     required this.questionList,
     required this.correctAnswerList,
     required this.failedAnswerList,
+    required this.summarizeResults,
   });
 
   @override
@@ -107,9 +110,10 @@ class _SummarizePageState extends State<SummarizePage> {
   Widget build(BuildContext context) {
     bool isActive =
         widget.correctAnswerList.length > widget.questionList.length / 2;
-    String accompanish = isActive
-        ? "Congratulations, your result is incredable!"
-        : "It looks like you have to try harder next time!";
+
+    String accompanish = isActive ? "Congratulations!" : "FAILED!";
+    String advice =
+        isActive ? "Your result is incredable!" : "You need to try again!";
     List<(bool, VocabTopic)> resultList = [];
     for (int i = 0; i < widget.questionList.length; i++) {
       if (widget.correctAnswerList.contains(widget.questionList[i])) {
@@ -118,6 +122,11 @@ class _SummarizePageState extends State<SummarizePage> {
         resultList.add((false, widget.questionList[i]));
       }
     }
+
+    TextStyle titleStyle = const TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+    );
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -128,41 +137,79 @@ class _SummarizePageState extends State<SummarizePage> {
           Text(
             accompanish,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
+          Text(
+            advice,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(
+            height: 12,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Stack(children: [
-                Image.asset(
-                  isActive ? AppIcons.capyDoctor : AppIcons.capyWritting,
-                  width: 200,
-                  height: 200,
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Image.asset(
-                    isActive ? AppIcons.congrasAnimation : AppIcons.sad,
-                    width: 100,
-                    height: 100,
-                  ),
-                ),
-              ]),
+              isActive
+                  ? Stack(
+                      children: [
+                        Image.asset(
+                          AppIcons.capyDoctor,
+                          width: 200,
+                          height: 200,
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Image.asset(
+                            AppIcons.congrasAnimation,
+                            width: 60,
+                            height: 60,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Stack(
+                      children: [
+                        Image.asset(
+                          AppIcons.capyWritting,
+                          width: 200,
+                          height: 200,
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Image.asset(
+                            AppIcons.sad,
+                            width: 60,
+                            height: 60,
+                          ),
+                        ),
+                      ],
+                    ),
             ],
           ),
           const SizedBox(height: 20),
           Text(
             "Correct Answer: ${widget.correctAnswerList.length}",
-            style: const TextStyle(fontSize: 20),
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+            ),
             textAlign: TextAlign.center,
           ),
           Text(
             "Failed Answer: ${widget.failedAnswerList.length}",
-            style: const TextStyle(fontSize: 20),
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+            ),
             textAlign: TextAlign.center,
           ),
 
@@ -176,71 +223,122 @@ class _SummarizePageState extends State<SummarizePage> {
             ),
             textAlign: TextAlign.center,
           ),
-          const Row(
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            height: 2,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.black,
+          ),
+          Row(
             children: [
               Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Text(
-                    "Number",
+                    "No.",
                     textAlign: TextAlign.center,
+                    style: titleStyle,
                   )),
               Expanded(
-                  flex: 5,
+                  flex: 4,
                   child: Text(
                     "Question",
                     textAlign: TextAlign.center,
+                    style: titleStyle,
                   )),
               Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Text(
                     "Your answer",
                     textAlign: TextAlign.center,
+                    style: titleStyle,
                   )),
               Expanded(
                   flex: 3,
                   child: Text(
                     "Correct answer",
                     textAlign: TextAlign.center,
+                    style: titleStyle,
                   )),
             ],
           ),
 
-          ///Show which words are wrong and correct
+          ///Devider line
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            height: 2,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.black,
+          ),
+
           Flexible(
             child: ListView.builder(
               shrinkWrap: true,
+              itemCount: widget.summarizeResults.length,
               itemBuilder: (context, index) {
+                String exampleEnglish = widget
+                    .summarizeResults[index].questionList
+                    .firstWhere((element) => element.$2 == true)
+                    .$1
+                    .vocabTopic!
+                    .exampleEnglish;
+                String correctAnswer = widget
+                    .summarizeResults[index].questionList
+                    .firstWhere((element) => element.$2 == true)
+                    .$1
+                    .vocabTopic!
+                    .word;
+
+                String yourAnswer = widget.summarizeResults[index].userAnswer;
+                bool isCorrect = correctAnswer.trim().toLowerCase() ==
+                    yourAnswer.trim().toLowerCase();
                 return Column(
                   children: [
                     const SizedBox(height: 4),
-                    //TODO: lam tiep chjuc nang hien thi ket qua
                     Row(
                       children: [
                         Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: Text(
                               index.toString(),
+                              style: TextStyle(
+                                color: isCorrect ? Colors.green : Colors.black,
+                              ),
                               textAlign: TextAlign.center,
                             )),
                         Expanded(
-                            flex: 5,
+                            flex: 4,
                             child: Text(
-                              resultList[index].$2.exampleEnglish,
-                              textAlign: TextAlign.center,
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: Text(
-                              "Your answer",
+                              exampleEnglish,
+                              style: TextStyle(
+                                color: isCorrect ? Colors.green : Colors.black,
+                              ),
                               textAlign: TextAlign.center,
                             )),
                         Expanded(
                             flex: 3,
                             child: Text(
-                              "Correct answer",
+                              yourAnswer,
+                              style: TextStyle(
+                                color: isCorrect ? Colors.green : Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            )),
+                        Expanded(
+                            flex: 3,
+                            child: Text(
+                              correctAnswer,
+                              style: TextStyle(
+                                color: isCorrect ? Colors.green : Colors.black,
+                              ),
                               textAlign: TextAlign.center,
                             )),
                       ],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      height: 0.5,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.black,
                     ),
                   ],
                 );

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:english_learner/models/summarize_pratise.dart';
 import 'package:english_learner/models/vocabulary/vocab_topic.dart';
 import 'package:english_learner/utils/colors.dart';
 import 'package:english_learner/utils/extension.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 class MultiChoiceTopicVocab extends StatefulWidget {
   final List<VocabTopic> questionList;
   final VocabTopic currentQuestion;
-  final Function(bool, bool) onChangeNextQuestion;
+  final Function(bool, bool, SummarizeResult) onChangeNextQuestion;
   const MultiChoiceTopicVocab({
     super.key,
     required this.questionList,
@@ -77,10 +78,21 @@ class _MultiChoiceTopicVocabState extends State<MultiChoiceTopicVocab> {
                     (element) => element.word == widget.currentQuestion.word);
 
                 bool isEnd = index == widget.questionList.length - 1;
+                List<(TupleVocab, bool)> listCurrentQuestion = [];
+                for ((VocabTopic, bool) item in listAnswer) {
+                  TupleVocab tupleVocab = TupleVocab(
+                    vocabTopic: item.$1,
+                  );
+                  listCurrentQuestion.add((tupleVocab, item.$2));
+                }
+
+                SummarizeResult sumResult = SummarizeResult(
+                    questionList: listCurrentQuestion,
+                    userAnswer: listAnswer[i].$1.word);
                 widget.onChangeNextQuestion(
-                  listAnswer[i].$1.word == widget.currentQuestion.word,
-                  isEnd,
-                );
+                    listAnswer[i].$1.word == widget.currentQuestion.word,
+                    isEnd,
+                    sumResult);
               },
               child: Text(
                 listAnswer[i].$1.meaning.capitalize(),

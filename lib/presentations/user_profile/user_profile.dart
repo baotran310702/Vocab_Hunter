@@ -1,5 +1,3 @@
-import 'package:english_learner/models/achievement.dart';
-import 'package:english_learner/presentations/dialog/show_dialog.dart';
 import 'package:english_learner/presentations/user_profile/bloc/manage_user_bloc.dart';
 import 'package:english_learner/presentations/user_profile/views/achievement_page.dart';
 import 'package:english_learner/presentations/user_profile/views/change_password_page.dart';
@@ -272,7 +270,7 @@ class UserProfile extends StatelessWidget {
                             },
                           ),
 
-                          ///TODO: Language
+                          ///TODO: Language + music
                           // Items(
                           //   text: "Language",
                           //   icon: AppIcons.language,

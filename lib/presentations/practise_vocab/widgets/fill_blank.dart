@@ -35,6 +35,9 @@ class _FillBlankQuesitonState extends State<FillBlankQuesiton> {
       widget.currentQuestion.$1.word ?? "",
     );
 
+    String questionSentences =
+        "${splitedSentences.$1}${splitedSentences.$2 == "" ? "" : "_____"}${splitedSentences.$2.contains(".") ? splitedSentences.$2 : "${splitedSentences.$2}."}";
+
     return Column(
       children: [
         Container(
@@ -120,6 +123,7 @@ class _FillBlankQuesitonState extends State<FillBlankQuesiton> {
                 }
 
                 SummarizeResult sumResult = SummarizeResult(
+                    question: questionSentences,
                     questionList: listCurrentQuestion,
                     userAnswer: listAnswer[i].$1.$2.word ?? "");
                 widget.onChangeNextQuestion(

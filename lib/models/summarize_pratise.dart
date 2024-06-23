@@ -9,19 +9,23 @@ class TupleVocab<T1, T2> {
 
 class SummarizeResult {
   final List<(TupleVocab, bool)> questionList;
+  final String question;
   final String userAnswer;
 
   const SummarizeResult({
     required this.questionList,
+    required this.question,
     required this.userAnswer,
   });
 
   SummarizeResult copyWith({
     List<(TupleVocab, bool)>? questionList,
+    String? question,
     String? userAnswer,
   }) {
     return SummarizeResult(
       questionList: questionList ?? this.questionList,
+      question: question ?? this.question,
       userAnswer: userAnswer ?? this.userAnswer,
     );
   }

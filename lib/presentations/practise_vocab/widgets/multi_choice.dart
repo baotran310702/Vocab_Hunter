@@ -90,8 +90,10 @@ class _MultiChoiceVocabState extends State<MultiChoiceVocab> {
                 }
 
                 SummarizeResult sumResult = SummarizeResult(
+                    question:
+                        "What is the meaning of ${widget.currentQuestion.$1.word ?? ""}?",
                     questionList: listCurrentQuestion,
-                    userAnswer: listAnswer[i].$1.$2.word ?? "");
+                    userAnswer: listAnswer[i].$1.$1.word ?? "");
 
                 widget.onChangeNextQuestion(
                   listAnswer[i].$1.$1.word == widget.currentQuestion.$1.word,

@@ -311,22 +311,30 @@ class PractiseVocabBloc extends Bloc<PractiseVocabEvent, PractiseVocabState> {
 
       return;
     }
+    List<SummarizeResult> currentList = [
+      ...state.summarizeResult,
+      event.currentQuestion
+    ];
     if (event.isTrue) {
       List<(VocabularyRemote, VocabularyRemote)> currentAnswerList =
           List.from(state.correctAnswerList);
       currentAnswerList.add(state.questionList[state.currentQuestionIndex]);
 
       emit(state.copyWith(
-          correctAnswerList: currentAnswerList,
-          currentQuestionIndex: state.currentQuestionIndex + 1));
+        correctAnswerList: currentAnswerList,
+        currentQuestionIndex: state.currentQuestionIndex + 1,
+        summarizeResult: currentList,
+      ));
     } else {
       List<(VocabularyRemote, VocabularyRemote)> currentAnswerList =
           List.from(state.failedAnswerList);
       currentAnswerList.add(state.questionList[state.currentQuestionIndex]);
       emit(
         state.copyWith(
-            failedAnswerList: currentAnswerList,
-            currentQuestionIndex: state.currentQuestionIndex + 1),
+          failedAnswerList: currentAnswerList,
+          currentQuestionIndex: state.currentQuestionIndex + 1,
+          summarizeResult: currentList,
+        ),
       );
     }
   }

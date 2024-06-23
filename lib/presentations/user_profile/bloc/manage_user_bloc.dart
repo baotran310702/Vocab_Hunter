@@ -67,7 +67,9 @@ class ManageUserProfileBloc extends Bloc<ManageUserEvents, ManageUserState> {
         userModel.copyWith(achievements: newListAchievement);
 
     await UserHiveLocal().saveUser(newUserModel);
-    add(SaveUserCloud());
+    if (event.isEnd) {
+      add(SaveUserCloud());
+    }
     emit(state.copyWith(isLoading: false, userModel: newUserModel));
   }
 

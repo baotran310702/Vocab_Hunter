@@ -1,7 +1,9 @@
+import 'package:english_learner/models/summarize_pratise.dart';
 import 'package:english_learner/models/vocabulary_topic/vocabulary_topic.dart';
 import 'package:english_learner/presentations/global_instance/appbar.dart';
 import 'package:english_learner/presentations/global_instance/loading.dart';
 import 'package:english_learner/presentations/practise_vocab/bloc/practise_vocab_bloc.dart';
+import 'package:english_learner/presentations/practise_vocab/views/sumarize_result.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/custom_drop_down.dart';
 import 'package:english_learner/presentations/practise_vocab/widgets/progress.dart';
 import 'package:english_learner/presentations/practise_vocab/views/question_word.dart';
@@ -43,24 +45,22 @@ class _PractiseVocabState extends State<PractiseVocab> {
               return const LoadingPage(message: "Loading, please wait...");
             }
             if (state is AnswerResult) {
+              List<TupleVocab> questionList = state.questionList
+                  .map((e) => TupleVocab(vocabRemote: e))
+                  .toList();
+              List<TupleVocab> failedAnswerList = state.failedAnswerList
+                  .map((e) => TupleVocab(vocabRemote: e))
+                  .toList();
+
+              List<TupleVocab> correctAnswerList = state.correctAnswerList
+                  .map((e) => TupleVocab(vocabRemote: e))
+                  .toList();
               return SafeArea(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Correct Answer: ${state.correctAnswerList.length}",
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                      Text(
-                        "Failed Answer: ${state.failedAnswerList.length}",
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                    ],
-                  ),
+                child: SummarizePage(
+                  questionList: questionList,
+                  failedAnswerList: failedAnswerList,
+                  correctAnswerList: correctAnswerList,
+                  summarizeResults: state.summarizeResult,
                 ),
               );
             } else {

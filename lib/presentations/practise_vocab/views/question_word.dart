@@ -70,7 +70,10 @@ class _QuestionVocabState extends State<QuestionVocab> {
       bool isTrue, bool isEnd, SummarizeResult currentQuestion) {
     if (isTrue) {
       context.read<ManageUserProfileBloc>().add(
-            UpdateAchievementEvent(customAchievement: CustomAchievement.vocab),
+            UpdateAchievementEvent(
+              customAchievement: CustomAchievement.vocab,
+              isEnd: false,
+            ),
           );
       Toasty.showToastCorner(msg: "Correct!", context: context);
     } else {
@@ -80,6 +83,7 @@ class _QuestionVocabState extends State<QuestionVocab> {
       context.read<ManageUserProfileBloc>().add(
             UpdateAchievementEvent(
               customAchievement: CustomAchievement.trainRoom,
+              isEnd: false,
             ),
           );
       Toasty.disposeAllToasty();

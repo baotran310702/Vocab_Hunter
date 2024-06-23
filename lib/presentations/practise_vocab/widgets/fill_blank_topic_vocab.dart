@@ -35,6 +35,9 @@ class _FillBlankTopicVocabQuesitonState
       widget.currentTopicVocabQuestion.word,
     );
 
+    String questionSentences =
+        "${splitedSentences.$1}${splitedSentences.$2 == "" ? "" : "_____"}${splitedSentences.$2.contains(".") ? splitedSentences.$2 : "${splitedSentences.$2}."}";
+
     return Column(
       children: [
         Container(
@@ -137,6 +140,7 @@ class _FillBlankTopicVocabQuesitonState
 
                 SummarizeResult sumResult = SummarizeResult(
                     questionList: listCurrentQuestion,
+                    question: questionSentences,
                     userAnswer: listAnswer[i].$1.word);
                 widget.onChangeNextTopicVocabQuestion(
                   listAnswer[i].$1.word ==
